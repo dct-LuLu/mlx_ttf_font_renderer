@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 11:53:08 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/05/15 18:19:39 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/05/17 00:06:50 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,13 +55,13 @@ int	read_tables(const char *path, t_ttf_font *font, const bool little_endian)
 	font->loca = parse_table_loca(font, font->buf, little_endian);
 	if (!font->loca)
 		return (error(errno, ": t_loca_table"));
-	font->glyf = parse_table_glyf(font, font->buf, little_endian);
-	if (!font->glyf)
+	font->glyfs = parse_table_glyfs(font, font->buf, little_endian);
+	if (!font->glyfs)
 		return (error(errno, ": t_glyf_table"));
 	return (0);
 }
 
-int	read_ttf(const char *path)
+t_ttf_font	*read_ttf(const char *path)
 {
 	const bool	little_endian = is_little_endian();
 	t_ttf_font	*font;
@@ -83,5 +83,5 @@ int	read_ttf(const char *path)
 		ret = read_tables(path, font, little_endian);
 	if (ret)
 		free_ttf(font);
-	return (ret);
+	return (font);
 }

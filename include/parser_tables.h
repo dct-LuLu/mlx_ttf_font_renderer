@@ -6,7 +6,7 @@
 /*   By: jaubry-- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 10:14:51 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/05/15 18:24:02 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/05/16 19:08:36 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ typedef struct s_glyf_header
 
 typedef struct s_glyf_table
 {
-	t_glyf_header	header;
+	t_glyf_header	*header;
 	uint16_t		*end_pts;			// Array of contour end points
 	uint8_t			*flags;				// Array of flags
 	int16_t			*x_coordinates;		// Array of x coordinates

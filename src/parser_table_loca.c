@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_table_loca.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaubry-- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 17:47:15 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/05/15 18:22:31 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/05/17 00:50:19 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,15 +24,15 @@ static void debug_table_loca(t_loca_table loca, uint16_t num_glyphs)
     	printf("short\n");
     else
     	printf("long\n");
-    printf("\tFirst 5 offsets:\n\t{\n");
+    printf("\tFirst %d offsets:\n\t{\n", DEBUG_NUM);
     i = 0;
-    while ((i < 5) && (i <= num_glyphs))
+    while ((i < DEBUG_NUM) && (i <= num_glyphs))
     {
         printf("\t\t[%zu] ", i);
     	if (loca.format == 0)
-    		printf("%u\n", *(uint16_t *)(loca.offsets + i));
+    		printf("%u\n", ((uint16_t *)(loca.offsets))[i]);
     	else
-    		printf("%u\n", *(uint32_t *)(loca.offsets + i));
+    		printf("%u\n", ((uint32_t *)(loca.offsets))[i]);
     	i++;
     }
     printf("\t}\n}\n\n");
@@ -44,27 +44,26 @@ static void endian_swap_table_loca(t_loca_table *loca, uint16_t num_glyphs, cons
 	uint32_t	*offsets32;
 	size_t		i;
 
-    if (little_endian)
-    {
-        if (loca->format == 0) // 16-bit offsets
+    if (!little_endian)
+    	return ;
+    if (loca->format == 0) // 16-bit offsets
+	{
+        offsets16 = (uint16_t *)loca->offsets;
+        i = 0;
+        while (i < num_glyphs)
         {
-            offsets16 = (uint16_t *)loca->offsets;
-            i = 0;
-            while (i < num_glyphs)
-            {
-                offsets16[i] = uswap16(offsets16[i]);
-                i++;
-            }
+            offsets16[i] = uswap16(offsets16[i]);
+            i++;
         }
-        else // 32-bit offsets
+    }
+    else // 32-bit offsets
+    {
+        offsets32 = (uint32_t *)loca->offsets;
+        i = 0;
+        while (i < num_glyphs)
         {
-            offsets32 = (uint32_t *)loca->offsets;
-            i = 0;
-            while (i < num_glyphs)
-            {
-                offsets32[i] = swap32(offsets32[i]);
-                i++;
-            }
+            offsets32[i] = uswap32(offsets32[i]);
+            i++;
         }
     }
 }

@@ -1,0 +1,160 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser_table_glyf_utils.c                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jaubry-- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/16 20:29:39 by jaubry--          #+#    #+#             */
+/*   Updated: 2025/05/16 22:22:24 by jaubry--         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "parser_font_ttf.h"
+#include "endian_utils.h"
+#include "error_handler.h"
+#include "file_utils.h"
+#include "libft.h"
+
+static int	parse_glyf_flags(t_glyf_table *glyf, t_buffer *buf,
+							const bool little_endian)
+{
+	size_t	i;
+	(void)little_endian;
+	// Allocate and read flags
+	glyf->flags = ft_calloc(glyf->point_count, sizeof(uint8_t));
+	if (!glyf->flags)
+		return (1);
+	// Read flags with repeat handling
+	i = 0;
+	while (i < glyf->point_count)
+	{
+		uint8_t flag;
+		uint8_t repeat_count = 1;
+		
+		read_bytes(buf, &flag, 1);
+		glyf->flags[i] = flag;
+		
+		if (flag & 0x08) // REPEAT flag
+		{
+			read_bytes(buf, &repeat_count, 1);
+			while ((repeat_count > 0) && ((i + 1) < glyf->point_count))
+			{
+				glyf->flags[++i] = flag;
+				repeat_count--;
+			}
+		}
+		i++;
+	}
+	return (0);
+}
+
+static void	parse_glyf_x_coordinates(t_glyf_table *glyf, t_buffer *buf, const bool little_endian)
+{
+	int16_t	delta16;
+	uint8_t	delta8;
+	int16_t	x;
+	size_t	i;
+
+	x = 0;
+	i = 0;
+	while (i < glyf->point_count)
+	{
+		if (glyf->flags[i] & 0x02) // X_SHORT
+		{
+			read_bytes(buf, &delta8, 1); // no bit swapping?
+			if (glyf->flags[i] & 0x10) // X_IS_POSITIVE
+				x += delta8;
+			else
+				x -= delta8;
+		}
+		else if (!(glyf->flags[i] & 0x10)) // X_IS_SAME (bit not set)
+		{
+			read_bytes(buf, &delta16, 2);
+			if (little_endian)
+				delta16 = swap16(delta16);
+			x += delta16;
+		}
+		glyf->x_coordinates[i] = x;
+		i++;
+	}
+}
+
+static void	parse_glyf_y_coordinates(t_glyf_table *glyf, t_buffer *buf, const bool little_endian)
+{
+	int16_t	delta16;
+	uint8_t	delta8;
+	int16_t	y;
+	size_t	i;
+
+	y = 0;
+	i = 0;
+	while (i < glyf->point_count)
+	{
+		if (glyf->flags[i] & 0x04) // Y_SHORT
+		{
+			read_bytes(buf, &delta8, 1);
+			if (glyf->flags[i] & 0x20) // Y_IS_POSITIVE
+				y += delta8;
+			else
+				y -= delta8;
+		}
+		else if (!(glyf->flags[i] & 0x20)) // Y_IS_SAME (bit not set)
+		{
+			read_bytes(buf, &delta16, 2);
+			if (little_endian)
+				delta16 = swap16(delta16);
+			y += delta16;
+		}
+		glyf->y_coordinates[i] = y;
+		i++;
+	}
+}
+
+static int	parse_glyf_coordinates(t_glyf_table *glyf, t_buffer *buf, const bool little_endian)
+{
+	glyf->x_coordinates = ft_calloc(glyf->point_count, sizeof(int16_t));
+	if (!glyf->x_coordinates)
+		return (1);
+	glyf->y_coordinates = ft_calloc(glyf->point_count, sizeof(int16_t));
+	if (!glyf->y_coordinates)
+		return (1);
+	parse_glyf_x_coordinates(glyf, buf, little_endian);
+	parse_glyf_y_coordinates(glyf, buf, little_endian);
+	return (0);
+}
+
+int	parse_glyf(t_glyf_table *glyf, t_buffer *buf, const bool little_endian)
+{
+	uint16_t	instruction_length;
+	uint16_t	last_point;
+	int16_t		i;
+	
+	// Read end points` of contours
+	glyf->end_pts = ft_calloc(glyf->header->number_of_contours, sizeof(uint16_t));
+	if (!glyf->end_pts)
+		return (1);
+	read_bytes(buf, glyf->end_pts, glyf->header->number_of_contours * 2);
+	i = 0;
+	while (i < glyf->header->number_of_contours)
+	{
+		glyf->end_pts[i] = uswap16(glyf->end_pts[i]);
+		i++;
+	}
+	// endian swap ?
+	// Get the last point index (determines total points)
+	last_point = glyf->end_pts[glyf->header->number_of_contours - 1];
+	glyf->point_count = last_point + 1;
+	
+	// Skip instruction bytes
+	read_bytes(buf, &instruction_length, 2);
+	if (little_endian)
+		instruction_length = uswap16(instruction_length);
+	buf->pos += instruction_length;
+	if (parse_glyf_flags(glyf, buf, little_endian))
+		return (1);
+	//endian_swap_table_glyf(glyf, little_endian);
+	if (parse_glyf_coordinates(glyf, buf, little_endian))
+		return (1);
+	return (0);
+}
