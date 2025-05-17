@@ -6,7 +6,7 @@
 #    By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/11 10:16:04 by jaubry--          #+#    #+#              #
-#    Updated: 2025/05/15 18:16:51 by jaubry--         ###   ########.fr        #
+#    Updated: 2025/05/17 00:43:30 by jaubry--         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,33 +24,43 @@ OBJDIR		= .obj
 DEPDIR		= .dep
 INCDIR		= include
 LIBFTDIR	= libft
+MLXDIR		= minilibx-linux
 
 # Output
 NAME		= font_renderer
 LIBFT		= $(LIBFTDIR)/libft.a
+MLX			= $(MLXDIR)/libmlx.a
 
 # Compiler and flags
 CC			= cc
 CFLAGS		= -Wall -Wextra -Werror $(if $(filter 1,$(DEBUG)),-g3) -D DEBUG=$(DEBUG)
 DFLAGS		= -MMD -MP -MF $(DEPDIR)/$*.d
-IFLAGS		= -I$(INCDIR) -I$(LIBFTDIR)/include
-LFLAGS		= -L$(LIBFTDIR) -lft
+IFLAGS		= -I$(INCDIR) -I$(LIBFTDIR)/include -I$(MLXDIR)
+LFLAGS		= -L$(MLXDIR) -L$(LIBFTDIR) -lXext -lX11 -lXrender -lm -lmlx -lft
 CF			= $(CC) $(CFLAGS) $(IFLAGS)
 
 # VPATH
 vpath %.c $(SRCDIR)
-vpath %.h $(INCDIR) $(LIBFTDIR)/$(INCDIR)
+vpath %.h $(INCDIR) $(LIBFTDIR)/$(INCDIR) $(MLXDIR)
 vpath %.o $(OBJDIR) $(LIBFTDIR)/$(OBJDIR)
 vpath %.d $(DEPDIR) $(LIBFTDIR)/$(DEPDIR)
 
 # Sources
 SRCS		= main.c parser_font_ttf.c \
 			  parser_subtable_offset.c parser_subtable_entry.c \
-			  parser_table_head.c parser_table_cmap.c parser_table_maxp.c parser_table_hhea.c parser_table_hmtx.c parser_table_loca.c parser_table_glyf.c \
+			  parser_table_head.c \
+			  parser_table_cmap.c \
+			  parser_table_maxp.c \
+			  parser_table_hhea.c \
+			  parser_table_hmtx.c \
+			  parser_table_loca.c \
+			  parser_table_glyf.c parser_table_glyf_header.c parser_table_glyf_utils.c \
 			  tag_utils.c \
 			  init_utils.c free_utils.c \
 			  endian_utils.c file_utils.c \
-			  error_handler.c
+			  error_handler.c \
+			  img_utils.c math_utils.c mlx_draw.c mlx_draw_utils.c mlx_font_renderer.c \
+			  mlx_hooks.c vec2.c
 
 
 SRCS		:= $(addprefix $(SRCDIR)/, $(SRCS))
@@ -62,7 +72,7 @@ all: $(LIBFT) $(NAME)
 
 debug: $(NAME)
 
-$(NAME): $(LIBFT) $(OBJS)
+$(NAME): $(MLX) $(LIBFT) $(OBJS)
 	@$(CF) $^ $(LFLAGS) -o $@
 ifeq ($(DEBUG),1)
 	$(call color,$(ORANGE)$(BOLD),"✓ Debug build %UL%$(NAME)%NUL% complete")
@@ -72,6 +82,10 @@ endif
 
 $(LIBFT):
 	@$(MAKE) -s -C $(LIBFTDIR) $(if $(filter 1,$(DEBUG)),debug)
+
+$(MLX):
+	@echo -e "$(PURPLE)-> Building $(UNDERLINE)minilibx$(RESET)"
+	@$(MAKE) -s -C $(MLXDIR)
 
 $(OBJDIR)/%.o: %.c | $(OBJDIR) $(DEPDIR) buildmsg
 	$(call color,$(BLUE),"➜ Compiling %UL%$<")
@@ -106,6 +120,7 @@ clean:
 	@rm -rf $(OBJDIR) $(DEPDIR)
 
 fclean:
+	@$(MAKE) -s -C $(MLXDIR) clean
 	@$(MAKE) -s -C $(LIBFTDIR) fclean
 	$(call color,$(RED),"Cleaning %UL%$(NAME)%NUL% object files from %UL%$(OBJDIR)%NUL% and %UL%$(DEPDIR)")
 	@rm -rf $(OBJDIR) $(DEPDIR)

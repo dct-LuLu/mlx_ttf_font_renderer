@@ -6,13 +6,11 @@
 /*   By: jaubry-- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 10:17:42 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/05/15 10:22:37 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/05/17 00:06:17 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <fcntl.h>
-#include "parser_font_ttf.h"
-#include "libft.h"
+#include "font_renderer.h"
 
 static bool	is_ttf_ext(char *filename)
 {
@@ -30,12 +28,19 @@ static bool	is_ttf_ext(char *filename)
 
 int	main(int argc, char **argv)
 {
+	t_env	*env;
+
+	env = ft_calloc(sizeof(t_env), 1);
+	if (!env)
+		return (1);
 	if (argc == 2)
 	{
 		if (!is_ttf_ext(argv[1]))
 			return (error(ERR_FILE_EXT, ": '%s'", argv[1]));
-		//access here
-		return (read_ttf(argv[1]));
+		env->font = read_ttf(argv[1]);
+		if (!env->font)
+			return (1);
+		renderer_mainloop(env);
 	}
 	return (error(ERR_ARG_NUM, ": %d", argc - 1));
 }

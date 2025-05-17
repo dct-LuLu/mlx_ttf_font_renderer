@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 10:18:00 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/05/15 18:17:49 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/05/17 01:28:47 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,14 @@
 # include "parser_subtables.h"
 # include "parser_tables.h"
 
+# ifndef DEBUG
+#  define DEBUG 0
+# endif //DEBUG
+
+# ifndef DEBUG_NUM
+#  define DEBUG_NUM 100
+# endif //DEBUG_NUM
+
 typedef struct s_ttf_font
 {
 	t_offset_subtable	*ot;
@@ -29,13 +37,13 @@ typedef struct s_ttf_font
 	t_hhea_table		*hhea;
 	t_hmtx_table		*hmtx;
 	t_loca_table		*loca;
-	t_glyf_table		*glyf;
+	t_glyf_table		**glyfs;
 	t_buffer			*buf;
 }						t_ttf_font;
 
 int				init_ttf_struct(t_ttf_font **font);
 
-int				read_ttf(const char *path);
+t_ttf_font		*read_ttf(const char *path);
 void			free_ttf(t_ttf_font *font);
 
 int				read_subtable_offset(int fd, t_ttf_font *font, const bool little_endian);
@@ -49,6 +57,11 @@ t_maxp_table	*parse_table_maxp(t_ttf_font *font, t_buffer *buf, const bool littl
 t_hhea_table	*parse_table_hhea(t_ttf_font *font, t_buffer *buf, const bool little_endian);
 t_hmtx_table	*parse_table_hmtx(t_ttf_font *font, t_buffer *buf, const bool little_endian);
 t_loca_table 	*parse_table_loca(t_ttf_font *font, t_buffer *buf, const bool little_endian);
-t_glyf_table	*parse_table_glyf(t_ttf_font *font, t_buffer *buf, const bool little_endian);
+t_glyf_table	**parse_table_glyfs(t_ttf_font *font, t_buffer *buf, const bool little_endian);
+int				parse_glyf(t_glyf_table *glyf, t_buffer *buf, const bool little_endian);
+t_glyf_header	*parse_glyf_header(t_buffer *buf, const bool little_endian);
+void			debug_glyf_header(t_glyf_header header);
+
+size_t			get_glyph_index(t_ttf_font *font, size_t ch);
 
 #endif // PARSER_FONT_TTF_H
