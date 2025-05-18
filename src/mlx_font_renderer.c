@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 22:13:23 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/05/17 01:07:03 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/05/18 15:58:32 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,17 +30,23 @@ static t_mlx	*init_mlx(void)
 	if (!mlx->img.img)
 		return (kill_mlx(mlx), NULL);
 	mlx->ret = 0;
+	mlx->origin = new_vec2(0,0);
+	mlx->size = new_vec2(WIDTH, HEIGHT);
 	return (mlx);
 }
 
 void	*renderer_mainloop(t_env *env)
 {
+	env->zoom = 10;
+	env->x = 0;
+	env->y = 0;
 	env->mlx = init_mlx();
 	if (!env->mlx)
 		return (NULL);
 	mlx_hook(env->mlx->win, DestroyNotify, StructureNotifyMask, &kill_mlx,
 		env->mlx);
-	mlx_hook(env->mlx->win, KeyRelease, KeyReleaseMask, &on_keypress, env->mlx);
+	mlx_hook(env->mlx->win, KeyPress, KeyPressMask, &on_keypress, env);
+	mlx_mouse_hook(env->mlx->win, &mouse_handler, env);
 	mlx_loop_hook(env->mlx->mlx, &draw_routine, env);
 	mlx_loop(env->mlx->mlx);
 	kill_mlx(env->mlx);

@@ -6,7 +6,7 @@
 /*   By: jaubry-- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 23:07:22 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/05/17 01:06:13 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/05/18 15:27:36 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,14 @@ typedef struct s_env
 {
 	t_mlx		*mlx;
 	t_ttf_font	*font;
+	int			x;
+	int			y;
+	float		zoom;
 }	t_env;
 
 void	*renderer_mainloop(t_env *env);
 int		draw_routine(t_env *env);
 
+int		on_keypress(int keysym, t_env *env);
+int		mouse_handler(int mousecode, int x, int y, t_env *env);
 #endif //FONT_RENDERER_H
