@@ -6,11 +6,12 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 09:27:08 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/05/14 14:57:19 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/05/18 15:04:33 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <string.h>
+#include <stdarg.h>
 #include "libft.h"
 #include "error_handler.h"
 

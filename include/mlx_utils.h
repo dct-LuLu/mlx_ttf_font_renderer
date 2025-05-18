@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 12:09:17 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/05/17 01:34:18 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/05/18 15:59:04 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 #  define HEIGHT 2000
 # endif
 
-# define BACKGROUND 0x0F000000
+# define BACKGROUND 0x0F0000000
 
 typedef struct s_img
 {
@@ -62,15 +62,12 @@ typedef struct s_line
 	int	e2;
 }	t_line;
 
-int		abs(int x);
-
 t_img	init_img(void *mlx, int width, int height);
 void	ft_mlx_pixel_put(t_img *data, t_vec2 pos, int color);
 void	ft_mlx_line_put(t_img *data, t_vec2 a, t_vec2 b, int color);
 void	ft_mlx_batch_put(t_img *data, t_vec2 pos, t_vec2 size, int color);
 
 int		kill_mlx(t_mlx *mlx);
-int		on_keypress(int keysym, t_mlx *mlx);
 void	kill_img(void *mlx, t_img *img);
 
 #endif // MLX_UTILS_H

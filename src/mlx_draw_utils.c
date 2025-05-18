@@ -6,10 +6,11 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 01:06:14 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/05/16 23:44:28 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/05/18 15:50:16 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <math.h>
 #include "mlx_utils.h"
 
 void	ft_mlx_batch_put(t_img *img, t_vec2 pos, t_vec2 size, int color)
