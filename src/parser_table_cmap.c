@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 10:40:32 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/05/15 14:16:24 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/05/19 17:05:09 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,13 +73,13 @@ static int	parse_table_cmap_seg(t_cmap_table *cmap, t_buffer *buf)
 	if (!cmap->end_code)
 		return (1);
 	read_bytes(buf, cmap->end_code, cmap->seg_count_x2);
-
+	buf->pos += 2;
 	cmap->start_code = ft_calloc(cmap->seg_count, sizeof(uint16_t));
 	if (!cmap->start_code)
 		return (1);
 	read_bytes(buf, cmap->start_code, cmap->seg_count_x2);
 
-	cmap->id_delta = ft_calloc(cmap->seg_count, sizeof(uint16_t));
+	cmap->id_delta = ft_calloc(cmap->seg_count, sizeof(int16_t));
 	if (!cmap->id_delta)
 		return (1);
 	read_bytes(buf, cmap->id_delta, cmap->seg_count_x2);
@@ -173,7 +173,7 @@ t_cmap_table	*parse_table_cmap(t_ttf_font *font, t_buffer *buf, const bool littl
 		buf->pos += 2;
 		read_bytes(buf, &cmap->seg_count_x2, 2);
 		cmap->seg_count_x2 = uswap16(cmap->seg_count_x2);
-		cmap->seg_count = cmap->seg_count_x2 / 2;
+		cmap->seg_count = cmap->seg_count_x2 >> 1;
 		buf->pos += 6;
 		if (parse_table_cmap_seg(cmap, buf))
 			return (NULL); // free table cmap
