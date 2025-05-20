@@ -59,7 +59,7 @@ SRCS		= main.c parser_font_ttf.c \
 			  parser_table_glyf.c parser_table_glyf_header.c parser_table_glyf_utils.c \
 			  tag_utils.c \
 			  init_utils.c free_utils.c \
-			  endian_utils.c file_utils.c \
+			  file_utils.c \
 			  error_handler.c \
 			  img_utils.c mlx_draw.c mlx_draw_utils.c mlx_font_renderer.c \
 			  mlx_hooks.c vec2.c
