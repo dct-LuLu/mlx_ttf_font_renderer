@@ -12,7 +12,7 @@
 
 #include "parser_font_ttf.h"
 #include "libft.h"
-#include "endian_utils.h"
+
 
 static void	debug_offset_subtable(t_offset_subtable offset_subtable)
 {
@@ -30,23 +30,20 @@ static void	debug_offset_subtable(t_offset_subtable offset_subtable)
 /*
 	Function that check endianness and will swap if necessary
 */
-static void	endian_swap_offset_subtable(t_offset_subtable *ot, const bool little_endian)
+static void	endian_swap_offset_subtable(t_offset_subtable *ot)
 {
-	if (little_endian)
-	{
-		ot->sfnt_version = uswap32(ot->sfnt_version);
-		ot->num_tables = uswap16(ot->num_tables);
-		ot->search_range = uswap16(ot->search_range);
-		ot->entry_selector = uswap16(ot->entry_selector);
-		ot->range_shift = uswap16(ot->range_shift);
-		// verify values snft, and possible tables
-	}
+	ot->sfnt_version = be32toh(ot->sfnt_version);
+	ot->num_tables = be16toh(ot->num_tables);
+	ot->search_range = be16toh(ot->search_range);
+	ot->entry_selector = be16toh(ot->entry_selector);
+	ot->range_shift = be16toh(ot->range_shift);
+	// verify values snft, and possible tables
 }
 
 /*
 	Function that reads the offset_subtable of the font
 */
-int	read_subtable_offset(int fd, t_ttf_font *font, const bool little_endian)
+int	read_subtable_offset(int fd, t_ttf_font *font)
 {
 	int	ot_len;
 	int	read_ret;
@@ -58,7 +55,7 @@ int	read_subtable_offset(int fd, t_ttf_font *font, const bool little_endian)
 	if (read_ret < ot_len)
 		return (error(ERR_CORRUPTED_FONT,
 				"offset_subtable read size: %d", read_ret));
-	endian_swap_offset_subtable(font->ot, little_endian);
+	endian_swap_offset_subtable(font->ot);
 	if (DEBUG)
 		debug_offset_subtable(*(font->ot));
 	return (0);

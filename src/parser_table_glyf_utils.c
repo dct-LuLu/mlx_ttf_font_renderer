@@ -11,16 +11,14 @@
 /* ************************************************************************** */
 
 #include "parser_font_ttf.h"
-#include "endian_utils.h"
+
 #include "error_handler.h"
 #include "file_utils.h"
 #include "libft.h"
 
-static int	parse_glyf_flags(t_glyf_table *glyf, t_buffer *buf,
-							const bool little_endian)
+static int	parse_glyf_flags(t_glyf_table *glyf, t_buffer *buf)
 {
 	size_t	i;
-	(void)little_endian;
 	// Allocate and read flags
 	glyf->flags = ft_calloc(glyf->point_count, sizeof(uint8_t));
 	if (!glyf->flags)
@@ -49,7 +47,7 @@ static int	parse_glyf_flags(t_glyf_table *glyf, t_buffer *buf,
 	return (0);
 }
 
-static void	parse_glyf_x_coordinates(t_glyf_table *glyf, t_buffer *buf, const bool little_endian)
+static void	parse_glyf_x_coordinates(t_glyf_table *glyf, t_buffer *buf)
 {
 	int16_t	delta16;
 	uint8_t	delta8;
@@ -71,8 +69,7 @@ static void	parse_glyf_x_coordinates(t_glyf_table *glyf, t_buffer *buf, const bo
 		else if (!(glyf->flags[i] & 0x10)) // X_IS_SAME (bit not set)
 		{
 			read_bytes(buf, &delta16, 2);
-			if (little_endian)
-				delta16 = swap16(delta16);
+			delta16 = be16toh(delta16);
 			x += delta16;
 		}
 		glyf->x_coordinates[i] = x;
@@ -80,7 +77,7 @@ static void	parse_glyf_x_coordinates(t_glyf_table *glyf, t_buffer *buf, const bo
 	}
 }
 
-static void	parse_glyf_y_coordinates(t_glyf_table *glyf, t_buffer *buf, const bool little_endian)
+static void	parse_glyf_y_coordinates(t_glyf_table *glyf, t_buffer *buf)
 {
 	int16_t	delta16;
 	uint8_t	delta8;
@@ -102,8 +99,7 @@ static void	parse_glyf_y_coordinates(t_glyf_table *glyf, t_buffer *buf, const bo
 		else if (!(glyf->flags[i] & 0x20)) // Y_IS_SAME (bit not set)
 		{
 			read_bytes(buf, &delta16, 2);
-			if (little_endian)
-				delta16 = swap16(delta16);
+			delta16 = be16toh(delta16);
 			y += delta16;
 		}
 		glyf->y_coordinates[i] = y;
@@ -111,7 +107,7 @@ static void	parse_glyf_y_coordinates(t_glyf_table *glyf, t_buffer *buf, const bo
 	}
 }
 
-static int	parse_glyf_coordinates(t_glyf_table *glyf, t_buffer *buf, const bool little_endian)
+static int	parse_glyf_coordinates(t_glyf_table *glyf, t_buffer *buf)
 {
 	glyf->x_coordinates = ft_calloc(glyf->point_count, sizeof(int16_t));
 	if (!glyf->x_coordinates)
@@ -119,12 +115,12 @@ static int	parse_glyf_coordinates(t_glyf_table *glyf, t_buffer *buf, const bool 
 	glyf->y_coordinates = ft_calloc(glyf->point_count, sizeof(int16_t));
 	if (!glyf->y_coordinates)
 		return (1);
-	parse_glyf_x_coordinates(glyf, buf, little_endian);
-	parse_glyf_y_coordinates(glyf, buf, little_endian);
+	parse_glyf_x_coordinates(glyf, buf);
+	parse_glyf_y_coordinates(glyf, buf);
 	return (0);
 }
 
-int	parse_glyf(t_glyf_table *glyf, t_buffer *buf, const bool little_endian)
+int	parse_glyf(t_glyf_table *glyf, t_buffer *buf)
 {
 	uint16_t	instruction_length;
 	uint16_t	last_point;
@@ -138,7 +134,7 @@ int	parse_glyf(t_glyf_table *glyf, t_buffer *buf, const bool little_endian)
 	i = 0;
 	while (i < glyf->header->number_of_contours)
 	{
-		glyf->end_pts[i] = uswap16(glyf->end_pts[i]);
+		glyf->end_pts[i] = be16toh(glyf->end_pts[i]);
 		i++;
 	}
 	// endian swap ?
@@ -148,13 +144,12 @@ int	parse_glyf(t_glyf_table *glyf, t_buffer *buf, const bool little_endian)
 	
 	// Skip instruction bytes
 	read_bytes(buf, &instruction_length, 2);
-	if (little_endian)
-		instruction_length = uswap16(instruction_length);
+	instruction_length = be16toh(instruction_length);
 	buf->pos += instruction_length;
-	if (parse_glyf_flags(glyf, buf, little_endian))
+	if (parse_glyf_flags(glyf, buf))
 		return (1);
-	//endian_swap_table_glyf(glyf, little_endian);
-	if (parse_glyf_coordinates(glyf, buf, little_endian))
+	//endian_swap_table_glyf(glyf);
+	if (parse_glyf_coordinates(glyf, buf))
 		return (1);
 	return (0);
 }

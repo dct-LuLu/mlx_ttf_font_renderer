@@ -13,10 +13,10 @@
 #include <fcntl.h>
 #include "parser_font_ttf.h"
 #include "libft.h"
-#include "endian_utils.h"
+
 #include "file_utils.h"
 
-int	read_subtables(const char *path, t_ttf_font *font, const bool little_endian)
+int	read_subtables(const char *path, t_ttf_font *font)
 {
 	int	ret;
 	int	fd;
@@ -24,46 +24,42 @@ int	read_subtables(const char *path, t_ttf_font *font, const bool little_endian)
 	fd = open(path, O_RDONLY);
 	if (fd == -1)
 		return (error(errno, ": %s", path));
-	ret = read_subtable_offset(fd, font, little_endian);
+	ret = read_subtable_offset(fd, font);
 	if (!ret)
-		ret = read_subtable_entries(fd, font, little_endian);
+		ret = read_subtable_entries(fd, font);
 	return (close(fd), ret);// check close
 }
 
-int	read_tables(const char *path, t_ttf_font *font, const bool little_endian)
+static int	read_tables(const char *path, t_ttf_font *font)
 {
-	int	ret;
+	size_t	i;
+	int		ret;
+	int		(* const parse_table[])(t_ttf_font *, t_buffer *) = {
+		parse_table_head,
+		parse_table_cmap,
+		parse_table_maxp,
+		parse_table_hhea,
+		parse_table_hmtx,
+		parse_table_loca,
+		parse_table_glyfs,
+		NULL
+	};
 
 	ret = load_file(path, &font->buf);
-	if (ret)
-		return (ret);
-	font->head = parse_table_head(font, font->buf, little_endian);
-	if (!font->head)
-		return (error(errno, ": t_head_table"));
-	font->cmap = parse_table_cmap(font, font->buf, little_endian);
-	if (!font->cmap)
-		return (error(errno, ": t_cmap_table"));
-	font->maxp = parse_table_maxp(font, font->buf, little_endian);
-	if (!font->maxp)
-		return (error(errno, ": t_maxp_table"));
-	font->hhea = parse_table_hhea(font, font->buf, little_endian);
-	if (!font->hhea)
-		return (error(errno, ": t_hhea_table"));
-	font->hmtx = parse_table_hmtx(font, font->buf, little_endian);
-	if (!font->hmtx)
-		return (error(errno, ": t_hmtx_table"));
-	font->loca = parse_table_loca(font, font->buf, little_endian);
-	if (!font->loca)
-		return (error(errno, ": t_loca_table"));
-	font->glyfs = parse_table_glyfs(font, font->buf, little_endian);
-	if (!font->glyfs)
-		return (error(errno, ": t_glyf_table"));
-	return (0);
+	i = 0;
+	while (parse_table[i] && !ret)
+	{
+		ret = parse_table[i](font, font->buf);
+		i++;
+	}
+	//if (ret)
+	//	free_ttf(font);
+	return (ret);
+	//return (error(errno, ": t_glyf_table"));
 }
 
 t_ttf_font	*read_ttf(const char *path)
 {
-	const bool	little_endian = is_little_endian();
 	t_ttf_font	*font;
 	int			ret;
 
@@ -72,7 +68,7 @@ t_ttf_font	*read_ttf(const char *path)
 	if (ret)
 		free_ttf(font);
 	else
-		ret = read_subtables(path, font, little_endian);
+		ret = read_subtables(path, font);
 	if (ret)
 		free_ttf(font);
 	else
@@ -80,7 +76,7 @@ t_ttf_font	*read_ttf(const char *path)
 	if (ret)
 		free_ttf(font);
 	else
-		ret = read_tables(path, font, little_endian);
+		ret = read_tables(path, font);
 	if (ret)
 		free_ttf(font);
 	return (font);

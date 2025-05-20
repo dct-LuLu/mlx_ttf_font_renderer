@@ -24,7 +24,7 @@
 # endif //DEBUG
 
 # ifndef DEBUG_NUM
-#  define DEBUG_NUM 100
+#  define DEBUG_NUM 5
 # endif //DEBUG_NUM
 
 typedef struct s_ttf_font
@@ -41,27 +41,27 @@ typedef struct s_ttf_font
 	t_buffer			*buf;
 }						t_ttf_font;
 
-int				init_ttf_struct(t_ttf_font **font);
+int			init_ttf_struct(t_ttf_font **font);
 
-t_ttf_font		*read_ttf(const char *path);
-void			free_ttf(t_ttf_font *font);
+t_ttf_font	*read_ttf(const char *path);
+void		free_ttf(t_ttf_font *font);
 
-int				read_subtable_offset(int fd, t_ttf_font *font, const bool little_endian);
-int				read_subtable_entries(int fd, t_ttf_font *font, const bool little_endian);
+int			read_subtable_offset(int fd, t_ttf_font *font);
+int			read_subtable_entries(int fd, t_ttf_font *font);
 
-ssize_t			get_table_offset(t_ttf_font *font, enum e_entry_tag);
+ssize_t		get_table_offset(t_ttf_font *font, enum e_entry_tag);
 
-t_head_table	*parse_table_head(t_ttf_font *font, t_buffer *buf, const bool little_endian);
-t_cmap_table	*parse_table_cmap(t_ttf_font *font, t_buffer *buf, const bool little_endian);
-t_maxp_table	*parse_table_maxp(t_ttf_font *font, t_buffer *buf, const bool little_endian);
-t_hhea_table	*parse_table_hhea(t_ttf_font *font, t_buffer *buf, const bool little_endian);
-t_hmtx_table	*parse_table_hmtx(t_ttf_font *font, t_buffer *buf, const bool little_endian);
-t_loca_table 	*parse_table_loca(t_ttf_font *font, t_buffer *buf, const bool little_endian);
-t_glyf_table	**parse_table_glyfs(t_ttf_font *font, t_buffer *buf, const bool little_endian);
-int				parse_glyf(t_glyf_table *glyf, t_buffer *buf, const bool little_endian);
-t_glyf_header	*parse_glyf_header(t_buffer *buf, const bool little_endian);
-void			debug_glyf_header(t_glyf_header header);
+int			parse_table_head(t_ttf_font *font, t_buffer *buf);
+int			parse_table_cmap(t_ttf_font *font, t_buffer *buf);
+int			parse_table_maxp(t_ttf_font *font, t_buffer *buf);
+int			parse_table_hhea(t_ttf_font *font, t_buffer *buf);
+int			parse_table_hmtx(t_ttf_font *font, t_buffer *buf);
+int			parse_table_loca(t_ttf_font *font, t_buffer *buf);
+int			parse_table_glyfs(t_ttf_font *font, t_buffer *buf);
+int			parse_glyf(t_glyf_table *glyf, t_buffer *buf);
+int			parse_glyf_header(t_glyf_table *glyf, t_buffer *buf);
+void		debug_glyf_header(t_glyf_header header);
 
-size_t			get_glyph_index(t_ttf_font *font, size_t ch);
+size_t		get_glyph_index(t_ttf_font *font, size_t ch);
 
 #endif // PARSER_FONT_TTF_H

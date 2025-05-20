@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "parser_font_ttf.h"
-#include "endian_utils.h"
+
 #include "libft.h"
 
 static void	debug_subtable_entry(t_subtable_entry subtable_entry, size_t i)
@@ -59,22 +59,18 @@ static int	check_entries(t_subtable_entry *subtable_entry,
 /*
 	Function that check endianness and will swap if necessary
 */
-static void	endian_swap_subtable_entry(t_subtable_entry *subtable_entry,
-		const bool little_endian)
+static void	endian_swap_subtable_entry(t_subtable_entry *subtable_entry)
 {
-	if (little_endian)
-	{
-		subtable_entry->checksum = uswap32(subtable_entry->checksum);
-		subtable_entry->offset = uswap32(subtable_entry->offset);
-		subtable_entry->length = uswap32(subtable_entry->length);
-	}
+	subtable_entry->checksum = be32toh(subtable_entry->checksum);
+	subtable_entry->offset = be32toh(subtable_entry->offset);
+	subtable_entry->length = be32toh(subtable_entry->length);
 }
 
 /*
 	Function that reads throught all entries to get mandatory entries
 	for font rendering
 */
-int	read_subtable_entries(int fd, t_ttf_font *font, const bool little_endian)
+int	read_subtable_entries(int fd, t_ttf_font *font)
 {
 	enum e_entry_tag	entry_tag;
 	int					read_ret;
@@ -93,7 +89,7 @@ int	read_subtable_entries(int fd, t_ttf_font *font, const bool little_endian)
 		if (read_ret < entry_len)
 			return (error(ERR_CORRUPTED_FONT, "subtable_entry[%d] read size: %d",
 					read_ret));
-		endian_swap_subtable_entry(font->entries[j], little_endian);
+		endian_swap_subtable_entry(font->entries[j]);
 		entry_tag = get_entry_tag_type(*(font->entries[j]));
 		check_entries(font->entries[j], entry_tag, i);
 		if (entry_tag)

@@ -13,7 +13,7 @@
 #include "parser_font_ttf.h"
 #include "libft.h"
 #include "file_utils.h"
-#include "endian_utils.h"
+
 
 
 static void	debug_table_glyf(t_glyf_table glyf, size_t i)
@@ -26,16 +26,16 @@ static void	debug_table_glyf(t_glyf_table glyf, size_t i)
 }
 
 /*
-static void	endian_swap_glyf(t_glyf_table *glyf, const bool little_endian)
+static void	endian_swap_glyf(t_glyf_table *glyf)
 {
 	int16_t	i;
 
-	if (little_endian && glyf->end_pts)
+	if (glyf->end_pts)
 	{
 		i = 0;
 		while (i < glyf->header->number_of_contours)
 		{
-			glyf->end_pts[i] = uswap16(glyf->end_pts[i]);
+			glyf->end_pts[i] = be16toh(glyf->end_pts[i]);
 			i++;
 		}
 	}
@@ -67,11 +67,11 @@ static ssize_t	get_glyf_offset(t_ttf_font *font, uint16_t glyf_index)
 	return (glyf_offset);
 }
 
-static t_glyf_table	*parse_table_glyf(t_ttf_font *font, t_buffer *buf, uint16_t glyf_index, const bool little_endian)
+static t_glyf_table	*parse_table_glyf(t_ttf_font *font, t_buffer *buf, uint16_t glyf_index)
 {
 	const ssize_t	glyfs_table_offset = get_table_offset(font, GLYF_TAG);
 	const ssize_t	glyf_offset = get_glyf_offset(font, glyf_index);
-	t_glyf_table			*glyf;
+	t_glyf_table	*glyf;
 
 	if (glyfs_table_offset == -1)
 		return (error(ERR_GET_OFFSET, ": glyf"), NULL);
@@ -81,12 +81,11 @@ static t_glyf_table	*parse_table_glyf(t_ttf_font *font, t_buffer *buf, uint16_t 
 	if (!glyf)
 		return (error(errno, "t_glyf_table"), NULL);
 	buf->pos = glyfs_table_offset + glyf_offset;
-	glyf->header = parse_glyf_header(buf, little_endian);
-	if (!glyf->header)
+	if (parse_glyf_header(glyf, buf))
 		return (NULL);
 	if (glyf->header->number_of_contours >= 0)
 	{
-		if (parse_glyf(glyf, buf, little_endian))
+		if (parse_glyf(glyf, buf))
 			return (NULL);
 	}
 	else
@@ -152,13 +151,13 @@ size_t get_glyph_index(t_ttf_font *font, size_t ch)
     size_t i;
 
     // Input validation
-    if (!font || !font->cmap || ch > 0xFFFF)
-        return 0; // Return missing glyph for invalid inputs
+    //if (ch > 0xFFFF)
+    //    return (0); // Return missing glyph for invalid inputs
     
     cmap = font->cmap;
-    
   // Search for the segment containing the character code
-    for (i = 0; i < cmap->seg_count; i++)
+	i = 0;
+    while (i < cmap->seg_count)
     {
         // Found a segment where endCode >= char_code
         if (ch <= cmap->end_code[i])
@@ -198,44 +197,44 @@ size_t get_glyph_index(t_ttf_font *font, size_t ch)
                             // Handle negative result as per specification
                             if (result < 0)
                                 result += 65536;
-                                
+                            printf("feur %d\n", result);
                             return (size_t)(result & 0xFFFF);
                         }
                     }
                     
                     // Return missing glyph (0) if index is out of bounds
                     // or the glyph ID at that index is 0
-                    return 0;
+                    return (0);
                 }
             }
             // Character is not in this segment but we've gone past where
             // it could be, so exit the search
             break;
         }
+		i++;
     }
-    
-    // Character not found in any segment, return missing glyph
-    return 0;
+	return (0);
 }
 
 
-t_glyf_table	**parse_table_glyfs(t_ttf_font *font, t_buffer *buf, const bool little_endian)
+int	parse_table_glyfs(t_ttf_font *font, t_buffer *buf)
 {
 	t_glyf_table	**glyfs;
 	size_t			i;
-	//size_t			glyf_i;	
+	//size_t			glyf_i;
 
 	glyfs = ft_calloc(sizeof(t_glyf_table *), font->maxp->num_glyphs);
 	if (!glyfs)
-		return (error(errno, "t_glyf_table *"), NULL);
+		return (error(errno, "t_glyf_table *"));
 	i = 0;
 	while (i < font->maxp->num_glyphs)
 	{
 		//glyf_i = get_glyph_index(font, i);
-		glyfs[i] = parse_table_glyf(font, buf, i, little_endian);
+		glyfs[i] = parse_table_glyf(font, buf, i);
 		if (DEBUG && glyfs[i] && (i < DEBUG_NUM))
 			debug_table_glyf(*(glyfs[i]), i);
 		i++;
 	}
-	return (glyfs);
+	font->glyfs = glyfs;
+	return (0);
 }

@@ -13,7 +13,7 @@
 #include "parser_font_ttf.h"
 #include "libft.h"
 #include "file_utils.h"
-#include "endian_utils.h"
+
 
 static void	debug_table_maxp(t_maxp_table maxp)
 {
@@ -22,22 +22,21 @@ static void	debug_table_maxp(t_maxp_table maxp)
 	printf("}\n");
 }
 
-t_maxp_table	*parse_table_maxp(t_ttf_font *font, t_buffer *buf, const bool little_endian)
+int	parse_table_maxp(t_ttf_font *font, t_buffer *buf)
 {
 	const ssize_t	maxp_offset = get_table_offset(font, MAXP_TAG);
 	t_maxp_table	*maxp;
 
 	if (maxp_offset == -1)
-		return (error(ERR_GET_OFFSET, ": maxp"), NULL);
+		return (error(ERR_GET_OFFSET, ": maxp"));
 	maxp = ft_calloc(sizeof(t_maxp_table), 1);
-	if (maxp)
-	{
-		buf->pos = maxp_offset + 4;
-		read_bytes(buf, &maxp->num_glyphs, 2);
-		if (little_endian)
-			maxp->num_glyphs = uswap16(maxp->num_glyphs);
-		if (DEBUG)
-			debug_table_maxp(*maxp);
-	}
-	return (maxp);
+	if (!maxp)
+		return (error(errno, ": t_maxp_table"));
+	buf->pos = maxp_offset + 4;
+	read_bytes(buf, &maxp->num_glyphs, 2);
+	maxp->num_glyphs = be16toh(maxp->num_glyphs);
+	if (DEBUG)
+		debug_table_maxp(*maxp);
+	font->maxp = maxp;
+	return (0);
 }
