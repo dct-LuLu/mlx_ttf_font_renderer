@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 22:32:25 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/05/18 15:57:39 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/05/21 11:12:41 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,14 +40,16 @@ int	on_keypress(int keysym, t_env *env)
 {
 	if (keysym == 65307)
 		return (mlx_loop_end(env->mlx->mlx));
-	else if (keysym == 65361)
+	else if (keysym == XK_Left)
 		env->x += 200;
-	else if (keysym == 65362)
+	else if (keysym == XK_Up)
 		env->y += 200;
-	else if (keysym == 65363)
+	else if (keysym == XK_Right)
 		env->x -= 200;
-	else if (keysym == 65364)
+	else if (keysym == XK_Down)
 		env->y -= 200;
+	else if (keysym == XK_v)
+		env->view_mode = !env->view_mode;
 	return (0);
 }
 

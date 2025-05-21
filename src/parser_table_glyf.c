@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_table_glyf.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaubry-- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 17:41:23 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/05/19 19:47:51 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/05/21 20:38:47 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,70 +146,42 @@ size_t	get_glyph_index(t_ttf_font *font, size_t ch)
 size_t get_glyph_index(t_ttf_font *font, size_t ch)
 {
     t_cmap_table *cmap;
-    uint16_t glyph_id;
-    int result;
+    //uint16_t glyph_id;
+    uint16_t idx;
     size_t i;
 
-    // Input validation
-    //if (ch > 0xFFFF)
-    //    return (0); // Return missing glyph for invalid inputs
-    
     cmap = font->cmap;
-  // Search for the segment containing the character code
 	i = 0;
     while (i < cmap->seg_count)
     {
-        // Found a segment where endCode >= char_code
-        if (ch <= cmap->end_code[i])
+        if (!((ch <= cmap->end_code[i]) && (ch >= cmap->start_code[i])))
+		{
+			i++;
+			continue ;
+		}
+        // Case 1: Direct mapping (idRangeOffset is 0)
+        if (cmap->id_range_offset[i] == 0)
         {
-            // Check if character is in this segment's range
-            if (ch >= cmap->start_code[i])
-            {
-                // Case 1: Direct mapping (idRangeOffset is 0)
-                if (cmap->id_range_offset[i] == 0)
-                {
-                    // Calculate glyph index with idDelta
-                    result = (int)ch + (int)cmap->id_delta[i];
-                    
-                    // Handle negative result as per specification
-                    if (result < 0)
-                        result += 65536;
-                        
-                    return (size_t)(result & 0xFFFF);
-                }
-                // Case 2: Indirect mapping using glyphIdArray
-                else
-                {
-                    // Calculate the offset into glyphIdArray
-                    uint16_t offset = cmap->id_range_offset[i] / 2;
-                    uint16_t idx = offset + (ch - cmap->start_code[i]);
-                    
-                    // Ensure we don't access beyond array bounds
-                    if (idx < cmap->glyph_id_count)
-                    {
-                        glyph_id = cmap->glyph_id_array[idx];
-                        
-                        // If glyph ID is not 0 (missing glyph), apply idDelta
-                        if (glyph_id != 0)
-                        {
-                            result = (int)glyph_id + (int)cmap->id_delta[i];
-                            
-                            // Handle negative result as per specification
-                            if (result < 0)
-                                result += 65536;
-                            printf("feur %d\n", result);
-                            return (size_t)(result & 0xFFFF);
-                        }
-                    }
-                    
-                    // Return missing glyph (0) if index is out of bounds
-                    // or the glyph ID at that index is 0
-                    return (0);
-                }
-            }
-            // Character is not in this segment but we've gone past where
-            // it could be, so exit the search
-            break;
+            idx = ch + cmap->id_delta[i];
+            if (idx < 0)
+                idx += 65536;  
+            return ((idx & 0xFFFF));
+        }
+        else
+        {
+
+			uint32_t	glyph_offset = cmap->pos_id_range_offset + (i * 2)
+			+ cmap->id_range_offset[i] + ((ch - cmap->start_code[i]) * 2);
+
+				
+			uint16_t idx = *(uint16_t *)(font->buf->data + glyph_offset);
+			idx = be16toh(idx);
+			if (idx == 0)
+				return (0);
+			idx += cmap->id_delta[i];
+			if (idx < 0)
+				idx += 65536;
+			return (idx & 0xFFFF);
         }
 		i++;
     }

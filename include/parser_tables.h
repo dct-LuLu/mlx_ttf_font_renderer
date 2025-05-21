@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_tables.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaubry-- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 10:14:51 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/05/16 19:08:36 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/05/21 20:27:18 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,16 @@
 # define PARSER_TABLES_H
 
 # include "file_utils.h"
+
+# define REPEAT_FLAG 0x08
+
+# define X_SHORT 0x02
+# define X_IS_POSITIVE 0x10
+# define X_IS_SAME 0x10
+
+# define Y_SHORT 0x04
+# define Y_IS_POSITIVE 0x20
+# define Y_IS_SAME 0x20
 
 # pragma pack(push, 1)
 
@@ -52,6 +62,7 @@ typedef struct s_cmap_table
 	uint16_t	*id_range_offset;		// Offset in bytes to glyph indexArray
 	uint16_t	glyph_id_count;
 	uint16_t	*glyph_id_array;		// Glyph index array
+	size_t		pos_id_range_offset;
 }				t_cmap_table;
 
 

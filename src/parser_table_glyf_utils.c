@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   parser_table_glyf_utils.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaubry-- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 20:29:39 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/05/19 15:57:36 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/05/21 10:59:01 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser_font_ttf.h"
-
 #include "error_handler.h"
 #include "file_utils.h"
 #include "libft.h"
@@ -19,21 +18,19 @@
 static int	parse_glyf_flags(t_glyf_table *glyf, t_buffer *buf)
 {
 	size_t	i;
-	// Allocate and read flags
+	uint8_t flag;
+	uint8_t	repeat_count;
+
 	glyf->flags = ft_calloc(glyf->point_count, sizeof(uint8_t));
 	if (!glyf->flags)
 		return (1);
-	// Read flags with repeat handling
 	i = 0;
 	while (i < glyf->point_count)
 	{
-		uint8_t flag;
-		uint8_t repeat_count = 1;
-		
+		repeat_count = 1;
 		read_bytes(buf, &flag, 1);
 		glyf->flags[i] = flag;
-		
-		if (flag & 0x08) // REPEAT flag
+		if (flag & REPEAT_FLAG)
 		{
 			read_bytes(buf, &repeat_count, 1);
 			while ((repeat_count > 0) && ((i + 1) < glyf->point_count))
@@ -58,15 +55,15 @@ static void	parse_glyf_x_coordinates(t_glyf_table *glyf, t_buffer *buf)
 	i = 0;
 	while (i < glyf->point_count)
 	{
-		if (glyf->flags[i] & 0x02) // X_SHORT
+		if (glyf->flags[i] & X_SHORT)
 		{
-			read_bytes(buf, &delta8, 1); // no bit swapping?
-			if (glyf->flags[i] & 0x10) // X_IS_POSITIVE
+			read_bytes(buf, &delta8, 1);
+			if (glyf->flags[i] & X_IS_POSITIVE)
 				x += delta8;
 			else
 				x -= delta8;
 		}
-		else if (!(glyf->flags[i] & 0x10)) // X_IS_SAME (bit not set)
+		else if (!(glyf->flags[i] & X_IS_SAME))
 		{
 			read_bytes(buf, &delta16, 2);
 			delta16 = be16toh(delta16);
@@ -88,15 +85,15 @@ static void	parse_glyf_y_coordinates(t_glyf_table *glyf, t_buffer *buf)
 	i = 0;
 	while (i < glyf->point_count)
 	{
-		if (glyf->flags[i] & 0x04) // Y_SHORT
+		if (glyf->flags[i] & Y_SHORT)
 		{
 			read_bytes(buf, &delta8, 1);
-			if (glyf->flags[i] & 0x20) // Y_IS_POSITIVE
+			if (glyf->flags[i] & Y_IS_POSITIVE)
 				y += delta8;
 			else
 				y -= delta8;
 		}
-		else if (!(glyf->flags[i] & 0x20)) // Y_IS_SAME (bit not set)
+		else if (!(glyf->flags[i] & Y_IS_SAME))
 		{
 			read_bytes(buf, &delta16, 2);
 			delta16 = be16toh(delta16);
