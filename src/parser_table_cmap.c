@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 10:40:32 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/05/19 17:05:09 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/05/21 20:27:46 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,8 @@ static int	parse_table_cmap_seg(t_cmap_table *cmap, t_buffer *buf)
 	cmap->id_range_offset = ft_calloc(cmap->seg_count, sizeof(uint16_t));
 	if (!cmap->id_range_offset)
 		return (1);
+	//cmap->id_range_offset_ptr = (void *)(buf->data + buf->pos);
+	cmap->pos_id_range_offset = buf->pos;
 	read_bytes(buf, cmap->id_range_offset, cmap->seg_count_x2);
 	return (0);
 }

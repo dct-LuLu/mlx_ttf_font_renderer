@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   font_renderer.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaubry-- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 23:07:22 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/05/18 15:27:36 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/05/21 11:16:02 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,10 @@
 # include "mlx_utils.h"
 # include "libft.h"
 
+# define WHITE 0x00FFFFFF
+# define GREEN 0x0000FF00
+# define RED 0x00FF0000
+
 typedef struct s_env
 {
 	t_mlx		*mlx;
@@ -24,6 +28,7 @@ typedef struct s_env
 	int			x;
 	int			y;
 	float		zoom;
+	int			view_mode;
 }	t_env;
 
 void	*renderer_mainloop(t_env *env);

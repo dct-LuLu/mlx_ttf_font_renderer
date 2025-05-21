@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 12:39:37 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/05/19 19:50:24 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/05/21 14:48:52 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,15 +156,9 @@ void	draw_glyph_grid(t_env *env, int grid_cols, float cell_width,
 		cell_pos = new_vec2(col * cell_width, row * cell_height);
 
 		// Draw both bounding boxes
-		draw_max_bounding_box(env, cell_pos, 0x00FF0000);  // Red for max bounding box
-		draw_glyph_bounding_box(env, glyph_index, cell_pos, 0x0000FF00);  // Green for glyph bounding box
-
-		//if ((glyph_index >= 239 && glyph_index <= 268) || (glyph_index >= 88 && glyph_index <= 130))
-		//	draw_glyph_outline(env, glyph_index, cell_pos, 0x0000FF00);
-		//else if (glyph_index >= 566 && glyph_index <= 575)  // 0-9 range
-		//	draw_glyph_outline(env, glyph_index, cell_pos, 0x0000FFFF);
-		//else
-		draw_glyph_outline(env, glyph_index, cell_pos, 0x00FFFFFF);
+		draw_max_bounding_box(env, cell_pos, RED);  // Red for max bounding box
+		draw_glyph_bounding_box(env, glyph_index, cell_pos, GREEN);  // Green for glyph bounding box
+		draw_glyph_outline(env, glyph_index, cell_pos, WHITE);
 
 		glyph_index++;
 	}
@@ -180,8 +174,8 @@ void	draw_important_characters(t_env *env)
 	float	cell_height;
 	
 	cols = 16;
-	cell_width = 600.0f;
-	cell_height = 1000.0f;
+	cell_width = abs(env->font->head->x_min) + env->font->head->x_max;
+	cell_height = abs(env->font->head->y_min) + env->font->head->y_max;
 	
 	i = 0;
 	while (important[i])
@@ -192,12 +186,9 @@ void	draw_important_characters(t_env *env)
 		t_vec2 pos = new_vec2(col * cell_width, row * cell_height);
 		
 		// Draw highlight box
-		draw_max_bounding_box(env, pos, 0x00FF0000);  // Red for max bounding box
-		draw_glyph_bounding_box(env, glyph_index, pos, 0x0000FF00);  // Green for glyph bounding box
-
-		
-		// Draw the glyph in bright green
-		draw_glyph_outline(env, glyph_index, pos, 0x0000FF00);
+		draw_max_bounding_box(env, pos, RED);  // Red for max bounding box
+		draw_glyph_bounding_box(env, glyph_index, pos, GREEN);  // Green for glyph bounding box
+		draw_glyph_outline(env, glyph_index, pos, WHITE);
 		
 		// Draw index number for debugging
 		char str[16];
@@ -244,8 +235,7 @@ void	debug_character_mappings(t_env *env)
 int	draw_routine(t_env *env)
 {
 	t_mlx	*mlx;
-	static int	debug_done = 0;
-	static int	view_mode = 0;
+	static int	debug_done = 1;
 
 	mlx = env->mlx;
 	mlx->tick += 1;
@@ -256,38 +246,10 @@ int	draw_routine(t_env *env)
 		debug_character_mappings(env);
 		debug_done = 1;
 	}
-
-	// Toggle between views when a key is pressed (you'll need to implement this)
-	// view_mode = (env->key_pressed) ? (view_mode + 1) % 3 : view_mode;
-
-	if (view_mode == 0)
-	{
-		// Draw all glyphs in a grid with aligned cells
-		draw_glyph_grid(env, 16, abs(env->font->head->x_min) + env->font->head->x_max, abs(env->font->head->y_min) + env->font->head->y_max);  // Reduced height to make grid more square
-	}
-	else if (view_mode == 1)
-	{
-		// Draw only important characters (A-Z, a-z, 0-9)
+	if (env->view_mode == 0)
+		draw_glyph_grid(env, 16, abs(env->font->head->x_min) + env->font->head->x_max, abs(env->font->head->y_min) + env->font->head->y_max);
+	else if (env->view_mode == 1)
 		draw_important_characters(env);
-	}
-	else
-	{
-		// Draw specific test characters
-		draw_max_bounding_box(env, new_vec2(300, 300), 0x00FF0000);  // Red for max bounding box
-		draw_glyph_bounding_box(env, 1, new_vec2(300, 300), 0x0000FF00);  // Green for glyph bounding box
-		draw_glyph_outline(env, 1, new_vec2(300, 300), 0x0000FF00);
-		
-		size_t a_idx = get_glyph_index(env->font, 'A');  // Should be 239
-		draw_max_bounding_box(env, new_vec2(1100, 300), 0x00FF0000);  // Red for max bounding box
-		draw_glyph_bounding_box(env, a_idx, new_vec2(1100, 300), 0x0000FF00);  // Green for glyph bounding box
-		draw_glyph_outline(env, a_idx, new_vec2(1100, 300), 0x0000FF00);
-		
-		size_t z_idx = get_glyph_index(env->font, 'Z');  // Should be 268
-		draw_max_bounding_box(env, new_vec2(1900, 300), 0x00FF0000);  // Red for max bounding box
-		draw_glyph_bounding_box(env, z_idx, new_vec2(1900, 300), 0x0000FF00);  // Green for glyph bounding box
-		draw_glyph_outline(env, z_idx, new_vec2(1900, 300), 0x0000FF00);
-	}
-
 	mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->img.img, 0, 0);
 	return (0);
 }
