@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 17:41:23 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/05/21 20:38:47 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/05/21 22:53:26 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static ssize_t	get_glyf_offset(t_ttf_font *font, uint16_t glyf_index)
 	{
 		offsets16 = (uint16_t *)font->loca->offsets;
 		glyf_offset = offsets16[glyf_index] * 2;
-		next_glyf_offset = offsets16[glyf_index + 1] * 2;// multiply by 2 ? vraiment ?
+		next_glyf_offset = offsets16[glyf_index + 1] * 2;
 	}
 	else
 	{
@@ -61,7 +61,6 @@ static ssize_t	get_glyf_offset(t_ttf_font *font, uint16_t glyf_index)
 		glyf_offset = offsets32[glyf_index];
 		next_glyf_offset = offsets32[glyf_index + 1];
 	}
-	// Check if this is an empty glyph (zero length)
 	if (glyf_offset == next_glyf_offset)
 		return (-1);
 	return (glyf_offset);
@@ -93,62 +92,11 @@ static t_glyf_table	*parse_table_glyf(t_ttf_font *font, t_buffer *buf, uint16_t 
 	return (glyf);
 }
 
-/*
-size_t	get_glyph_index(t_ttf_font *font, size_t ch)
-{
-    t_cmap_table	*cmap = font->cmap;
-    //uint16_t		idx;
-    uint16_t		glyph_id;
-    size_t	i;
-    
-    i = 0;
-    // Search through segments to find the one containing char_code
-	while (i < cmap->seg_count)
-    {
-        if (ch <= cmap->end_code[i])
-        {
-            // Check if character is in this segment
-            if (ch >= cmap->start_code[i])
-            {
-                // Direct mapping: glyphId = (char_code + idDelta) % 65536
-                if (cmap->id_range_offset[i] == 0)
-                    return ((ch + cmap->id_delta[i]) & 0xFFFF);
-                else
-                {
-                	uint16_t offset = cmap->id_range_offset[i] / 2;
-                	uint16_t idx = offset + (ch - cmap->start_code[i]);
-                	if (idx < cmap->glyph_id_count)
-                	{
-                		glyph_id = cmap->glyph_id_array[idx];
-                		if (glyph_id != 0)
-                			return ((glyph_id + cmap->id_delta[i]) & 0xFFFF);
-                	}
-                	return (0);
-                    // Indirect mapping with glyphIdArray
-                    //idx = (cmap->id_range_offset[i] / 2) + (ch - cmap->start_code[i]);
-                    // Get the glyph ID from the array
-                    glyph_id = *(cmap->glyph_id_array + idx);
-                    // If not 0, add idDelta
-                    if (glyph_id != 0)
-                        return ((glyph_id + cmap->id_delta[i]) & 0xFFFF);
-                    // If 0, return 0 (missing glyph)
-                    return (0);
-                }
-            }
-            break ;
-        }
-        i++;
-    }
-    // Character not found, return 0 (missing glyph)
-    return (0);
-}*/
-
 size_t get_glyph_index(t_ttf_font *font, size_t ch)
 {
-    t_cmap_table *cmap;
-    //uint16_t glyph_id;
-    uint16_t idx;
-    size_t i;
+    t_cmap_table	*cmap;
+    size_t			i;
+    size_t			idx;
 
     cmap = font->cmap;
 	i = 0;
@@ -159,31 +107,14 @@ size_t get_glyph_index(t_ttf_font *font, size_t ch)
 			i++;
 			continue ;
 		}
-        // Case 1: Direct mapping (idRangeOffset is 0)
         if (cmap->id_range_offset[i] == 0)
-        {
-            idx = ch + cmap->id_delta[i];
-            if (idx < 0)
-                idx += 65536;  
-            return ((idx & 0xFFFF));
-        }
+        	idx = ch;
         else
-        {
-
-			uint32_t	glyph_offset = cmap->pos_id_range_offset + (i * 2)
-			+ cmap->id_range_offset[i] + ((ch - cmap->start_code[i]) * 2);
-
-				
-			uint16_t idx = *(uint16_t *)(font->buf->data + glyph_offset);
-			idx = be16toh(idx);
-			if (idx == 0)
-				return (0);
-			idx += cmap->id_delta[i];
-			if (idx < 0)
-				idx += 65536;
-			return (idx & 0xFFFF);
-        }
-		i++;
+			idx = be16toh(*(uint16_t *)(font->buf->data +
+					(cmap->pos_id_range_offset + (i * 2) +
+					 cmap->id_range_offset[i] +
+					 ((ch - cmap->start_code[i]) * 2))));
+		return (idx + cmap->id_delta[i]);
     }
 	return (0);
 }
@@ -193,7 +124,6 @@ int	parse_table_glyfs(t_ttf_font *font, t_buffer *buf)
 {
 	t_glyf_table	**glyfs;
 	size_t			i;
-	//size_t			glyf_i;
 
 	glyfs = ft_calloc(sizeof(t_glyf_table *), font->maxp->num_glyphs);
 	if (!glyfs)
@@ -201,7 +131,6 @@ int	parse_table_glyfs(t_ttf_font *font, t_buffer *buf)
 	i = 0;
 	while (i < font->maxp->num_glyphs)
 	{
-		//glyf_i = get_glyph_index(font, i);
 		glyfs[i] = parse_table_glyf(font, buf, i);
 		if (DEBUG && glyfs[i] && (i < DEBUG_NUM))
 			debug_table_glyf(*(glyfs[i]), i);
