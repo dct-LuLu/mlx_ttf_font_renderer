@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 10:14:51 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/05/22 15:05:38 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/05/22 21:35:00 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@
 # define ROUND_XY_TO_GRID 0x0004 // round offsets to grid
 # define HAS_SCALE 0x0008 // single scale value present
 # define MORE_COMPONENTS 0x0020 //more components follow
-# define XY_SCALE 0x0040 //separate x/y scales present
-# define MATRIX_2X2 0x0080 //full 2x2 transformation matrix
+# define HAS_XY_SCALE 0x0040 //separate x/y scales present
+# define HAS_2X2_MATRIX 0x0080 //full 2x2 transformation matrix
 # define HAS_INSTRUCTIONS 0x0100 //instructions follow components
 # define USE_METRICS 0x0200 //use this component's metrics
 # define OVERLAP_COMPOUND 0x0400 //components overlap

@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 17:41:23 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/05/22 14:27:39 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/05/22 22:36:13 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ static void	debug_table_glyf(t_glyf_table glyf, size_t i)
 	debug_glyf_header(*(glyf.header));
 	printf("\t\tpoint_count: %u\n", glyf.point_count);
 	if (glyf.header->number_of_contours != -1)
-		printf("\t\tend_pts[0]: %u\n", glyf.end_pts[0]);
+		debug_glyf_component(*glyf.component);
+	//printf("\t\tend_pts[0]: %u\n", glyf.end_pts[0]);
 	printf("\t}\n");
 }
 
