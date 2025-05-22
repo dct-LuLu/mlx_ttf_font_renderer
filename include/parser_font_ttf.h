@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 10:18:00 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/05/22 14:26:43 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/05/22 22:25:38 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 # endif //DEBUG
 
 # ifndef DEBUG_NUM
-#  define DEBUG_NUM 5
+#  define DEBUG_NUM 3000
 # endif //DEBUG_NUM
 
 typedef struct s_ttf_font
@@ -62,6 +62,7 @@ int			parse_glyf_header(t_glyf_table *glyf, t_buffer *buf);
 int			parse_simple_glyf(t_glyf_table *glyf, t_buffer *buf);
 int			parse_composite_glyf(t_glyf_table *glyf, t_buffer *buf);
 void		debug_glyf_header(t_glyf_header header);
+void		debug_glyf_component(t_glyf_component comp);
 
 size_t		get_glyph_index(t_ttf_font *font, size_t ch);
 

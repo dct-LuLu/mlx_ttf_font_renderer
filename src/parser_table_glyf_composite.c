@@ -6,12 +6,31 @@
 /*   By: jaubry-- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 13:19:11 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/05/22 14:31:08 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/05/22 22:25:24 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser_font_ttf.h"
 #include "libft.h"
+
+void		debug_glyf_component(t_glyf_component comp)
+{
+	printf("\t\tComponent:\n\t\t{\n");
+	printf("\t\t\tglyph_index: %u\n", comp.glyph_index);
+    printf("\t\t\tflags: 0x%04X\n", comp.flags);
+    printf("\t\t\targ1: %d\n", comp.arg1);
+    printf("\t\t\targ2: %d\n", comp.arg2);
+    if (comp.flags & HAS_SCALE)
+        printf("\t\t\tscale: %f\n", comp.transform[0]);
+    else if (comp.flags & HAS_XY_SCALE)
+        printf("\t\t\txscale: %f, yscale: %f\n", 
+               comp.transform[0], comp.transform[3]);
+    else if (comp.flags & HAS_2X2_MATRIX)
+        printf("\t\t\ttransform: [%f %f; %f %f]\n",
+               comp.transform[0], comp.transform[1], 
+               comp.transform[2], comp.transform[3]);
+    printf("\t\t}\n");
+}
 
 static float	read_f2dot14(t_buffer *buf)
 {
@@ -58,30 +77,31 @@ static int	parse_component(t_glyf_component **component, t_buffer *buf)
 	}
 
 	// read transformation data if present
-	if (comp->flags & WE_HAVE_SCALE)
+	if (comp->flags & HAS_SCALE)
 	{
 		comp->transform[0] = read_f2dot14(buf);
 		comp->transform[3] = comp->transform[0];
 	}
-	else if (comp->flags & XY_SCALE)
+	else if (comp->flags & HAS_XY_SCALE)
 	{
 		comp->transform[0] = read_f2dot14(buf);
 		comp->transform[3] = read_f2dot14(buf);
 	}
-	else if (comp->flags & WE_HAVE_2X2)
+	else if (comp->flags & HAS_2X2_MATRIX)
 	{
 		comp->transform[0] = read_f2dot14(buf);
 		comp->transform[1] = read_f2dot14(buf);
 		comp->transform[2] = read_f2dot14(buf);
 		comp->transform[3] = read_f2dot14(buf);
 	}
+
 	return (0);
 }
 
 int	parse_composite_glyf(t_glyf_table *glyf, t_buffer *buf)
 {
-	t_glyf_componnet	**next_ptr = &glyf->components;
-	uint16_t			flags = 0;
+	t_glyf_component	**next_ptr = &glyf->component;
+	uint16_t			flags = MORE_COMPONENTS;
 
 	while (flags & MORE_COMPONENTS)
 	{
@@ -91,7 +111,7 @@ int	parse_composite_glyf(t_glyf_table *glyf, t_buffer *buf)
 		next_ptr = &((*next_ptr)->next);
 	}
 
-	if (flags & WE_HAVE_INSTRUCTIONS)
+	if (flags & HAS_INSTRUCTIONS)
 	{
 		read_bytes(buf, &glyf->instruction_length, 2);
 		glyf->instruction_length = be16toh(glyf->instruction_length);
