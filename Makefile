@@ -6,7 +6,7 @@
 #    By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/11 10:16:04 by jaubry--          #+#    #+#              #
-#    Updated: 2025/05/21 08:50:53 by jaubry--         ###   ########.fr        #
+#    Updated: 2025/05/22 14:28:47 by jaubry--         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -56,7 +56,8 @@ SRCS		= main.c parser_font_ttf.c \
 			  parser_table_hhea.c \
 			  parser_table_hmtx.c \
 			  parser_table_loca.c \
-			  parser_table_glyf.c parser_table_glyf_header.c parser_table_glyf_utils.c \
+			  parser_table_glyf.c parser_table_glyf_header.c \
+			  parser_table_glyf_simple.c parser_table_glyf_composite.c parser_table_glyf_utils.c \
 			  tag_utils.c \
 			  init_utils.c free_utils.c \
 			  file_utils.c \

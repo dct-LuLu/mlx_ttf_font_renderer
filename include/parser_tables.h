@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 10:14:51 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/05/22 00:23:36 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/05/22 15:05:38 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,19 @@
 # define Y_IS_SAME 0x20
 
 # define SKIP_INSTRUCTION_BYTES 2
+
+# define ARG1_ARG2_ARE_WORDS 0x0001 // arguments are 16bit instead of 8bit
+# define ARGS_ARE_XY_VALUES 0x0002 // arguments are offsets not point
+# define ROUND_XY_TO_GRID 0x0004 // round offsets to grid
+# define HAS_SCALE 0x0008 // single scale value present
+# define MORE_COMPONENTS 0x0020 //more components follow
+# define XY_SCALE 0x0040 //separate x/y scales present
+# define MATRIX_2X2 0x0080 //full 2x2 transformation matrix
+# define HAS_INSTRUCTIONS 0x0100 //instructions follow components
+# define USE_METRICS 0x0200 //use this component's metrics
+# define OVERLAP_COMPOUND 0x0400 //components overlap
+# define SCALED_COMPONENT_OFFSET 0x0800 // scale offset values
+# define UNSCALED_COMPONENT_OFFSET 0x1000 // don't scale offset values
 
 # pragma pack(push, 1)
 
@@ -92,15 +105,28 @@ typedef struct s_glyf_header
 	int16_t	y_max;
 }			t_glyf_header;
 
+typedef struct s_glyf_component
+{
+	uint16_t				flags;
+	uint16_t				glyph_index;
+	int16_t					arg1;
+	int16_t					arg2;
+	float					transform[4]; //xscale, scale01, scale10, yscale
+	struct s_glyf_component	*next;
+}							t_glyf_component;
+
 typedef struct s_glyf_table
 {
-	t_glyf_header	*header;
-	uint16_t		*end_pts;
-	uint8_t			*flags;
-	int16_t			*x_coordinates;
-	int16_t			*y_coordinates;
-	uint16_t		point_count;
-}					t_glyf_table;
+	t_glyf_header		*header;
+	uint16_t			*end_pts;
+	uint8_t				*flags;
+	int16_t				*x_coordinates;
+	int16_t				*y_coordinates;
+	uint16_t			point_count;
+	t_glyf_component	*component; // for composite glyphs
+	uint16_t			instruction_length;
+	uint8_t				*instructions;
+}						t_glyf_table;
 
 # pragma pack(pop)
 
