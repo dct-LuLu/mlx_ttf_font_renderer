@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 15:31:36 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/05/15 17:02:15 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/05/22 00:21:03 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,30 +70,22 @@ static void	endian_swap_subtable_entry(t_subtable_entry *subtable_entry)
 	Function that reads throught all entries to get mandatory entries
 	for font rendering
 */
-int	read_subtable_entries(int fd, t_ttf_font *font)
+int	read_subtable_entries(t_ttf_font *font)
 {
 	enum e_entry_tag	entry_tag;
-	int					read_ret;
-	int					entry_len;
+	size_t				entry_nb;
 	size_t				i;
-	size_t				j;
 
 	i = 0;
-	j = 0;
-	entry_len = sizeof(t_subtable_entry);
-	while ((i < font->ot->num_tables) && (j < MANDATORY_TAG_NB))//peut etre besoin de lire plus
+	entry_nb = 0;
+	while ((i < font->ot->num_tables) && (entry_nb < MANDATORY_TAG_NB))
 	{
-		read_ret = read(fd, font->entries[j], entry_len);
-		if (read_ret < 0)
-			return (error(errno, NULL));
-		if (read_ret < entry_len)
-			return (error(ERR_CORRUPTED_FONT, "subtable_entry[%d] read size: %d",
-					read_ret));
-		endian_swap_subtable_entry(font->entries[j]);
-		entry_tag = get_entry_tag_type(*(font->entries[j]));
-		check_entries(font->entries[j], entry_tag, i);
+		read_bytes(font->buf, font->entries[entry_nb], sizeof(t_subtable_entry));
+		endian_swap_subtable_entry(font->entries[entry_nb]);
+		entry_tag = get_entry_tag_type(*(font->entries[entry_nb]));
+		check_entries(font->entries[entry_nb], entry_tag, i);
 		if (entry_tag)
-			j++;
+			entry_nb++;
 		i++;
 	}
 	return (check_entries(NULL, 0, 0));

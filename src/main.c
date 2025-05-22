@@ -6,7 +6,7 @@
 /*   By: jaubry-- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 10:17:42 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/05/17 00:06:17 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/05/22 01:06:39 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,17 +30,20 @@ int	main(int argc, char **argv)
 {
 	t_env	*env;
 
-	env = ft_calloc(sizeof(t_env), 1);
-	if (!env)
-		return (1);
 	if (argc == 2)
 	{
 		if (!is_ttf_ext(argv[1]))
 			return (error(ERR_FILE_EXT, ": '%s'", argv[1]));
-		env->font = read_ttf(argv[1]);
-		if (!env->font)
+		env = ft_calloc(sizeof(t_env), 1);
+		if (!env)
 			return (1);
-		renderer_mainloop(env);
+		if (init_ttf_struct(&env->font))
+			free_env(env);
+		if (!read_ttf(env->font, argv[1]))
+			renderer_mainloop(env);
+		free_env(env);
 	}
-	return (error(ERR_ARG_NUM, ": %d", argc - 1));
+	else
+		return (error(ERR_ARG_NUM, ": %d", argc - 1));
+	return (0);
 }

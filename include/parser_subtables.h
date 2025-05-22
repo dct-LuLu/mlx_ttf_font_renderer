@@ -6,7 +6,7 @@
 /*   By: jaubry-- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 10:07:38 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/05/15 17:09:29 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/05/22 00:23:07 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 # define MANDATORY_TAG_NB 7
 # define MANDATORY_TAG_BIT_MASK 0b11111110 // 254 in decimal
 # define MANDATORY_TAG_SUM 28
+
+# define SKIP_INSTRUCTION_BYTES 2
 
 typedef enum e_entry_tag
 {

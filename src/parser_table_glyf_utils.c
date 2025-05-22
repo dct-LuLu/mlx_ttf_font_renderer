@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 20:29:39 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/05/21 22:55:12 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/05/22 01:35:06 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,8 @@ int	parse_glyf(t_glyf_table *glyf, t_buffer *buf)
 	uint16_t	last_point;
 	int16_t		i;
 	
-	// Read end points` of contours
+	if (glyf->header->number_of_contours == 0)
+		return (0);
 	glyf->end_pts = ft_calloc(glyf->header->number_of_contours, sizeof(uint16_t));
 	if (!glyf->end_pts)
 		return (1);
@@ -134,19 +135,12 @@ int	parse_glyf(t_glyf_table *glyf, t_buffer *buf)
 		glyf->end_pts[i] = be16toh(glyf->end_pts[i]);
 		i++;
 	}
-	// endian swap ?
-	// Get the last point index (determines total points)
 	last_point = glyf->end_pts[glyf->header->number_of_contours - 1];
 	glyf->point_count = last_point + 1;
-	
-	// Skip instruction bytes
-	read_bytes(buf, &instruction_length, 2);
+	read_bytes(buf, &instruction_length, SKIP_INSTRUCTION_BYTES);
 	instruction_length = be16toh(instruction_length);
 	buf->pos += instruction_length;
 	if (parse_glyf_flags(glyf, buf))
 		return (1);
-	//endian_swap_table_glyf(glyf);
-	if (parse_glyf_coordinates(glyf, buf))
-		return (1);
-	return (0);
+	return (parse_glyf_coordinates(glyf, buf));
 }

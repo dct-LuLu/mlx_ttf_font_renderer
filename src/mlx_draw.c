@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 12:39:37 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/05/21 14:48:52 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/05/22 02:28:10 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,44 +168,36 @@ void	draw_glyph_grid(t_env *env, int grid_cols, float cell_width,
 void	draw_important_characters(t_env *env)
 {
 	char	important[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-	int	i;
-	int	cols;
+	size_t	i;
+	int		cols;
 	float	cell_width;
 	float	cell_height;
 	
 	cols = 16;
 	cell_width = abs(env->font->head->x_min) + env->font->head->x_max;
 	cell_height = abs(env->font->head->y_min) + env->font->head->y_max;
-	
+
 	i = 0;
 	while (important[i])
 	{
-		size_t glyph_index = get_glyph_index(env->font, important[i]);
+		//size_t glyph_index = get_glyph_index(env->font, i);
 		int row = i / cols;
 		int col = i % cols;
 		t_vec2 pos = new_vec2(col * cell_width, row * cell_height);
-		
-		// Draw highlight box
-		draw_max_bounding_box(env, pos, RED);  // Red for max bounding box
-		draw_glyph_bounding_box(env, glyph_index, pos, GREEN);  // Green for glyph bounding box
-		draw_glyph_outline(env, glyph_index, pos, WHITE);
+		size_t	idx = get_glyph_index(env->font, important[i]);	
+		draw_max_bounding_box(env, pos, RED);
+		draw_glyph_bounding_box(env, idx, pos, GREEN);
+		draw_glyph_outline(env, idx, pos, WHITE);
 		
 		// Draw index number for debugging
 		char str[16];
-		snprintf(str, 16, "%zu", glyph_index);
-		// A pseudo function to display text (you'll need to implement this)
-		// display_debug_text(env, str, new_vec2(pos.x, pos.y + cell_height - 50));
-		
+		snprintf(str, 16, "%zu", idx);
 		i++;
 	}
 }
 
-/**
- * @brief Debug character mapping
- */
 void	debug_character_mappings(t_env *env)
 {
-	// Test key character mappings for A-Z and a-z
 	int	base_chars[] = {'A', 'Z', 'a', 'z', '0', '9', 0};
 	int	i;
 
@@ -218,7 +210,6 @@ void	debug_character_mappings(t_env *env)
 		i++;
 	}
 
-	// Check first 128 mappings
 	for (int ch = 0; ch < 128; ch++)
 	{
 		size_t idx = get_glyph_index(env->font, ch);
@@ -229,9 +220,6 @@ void	debug_character_mappings(t_env *env)
 	}
 }
 
-/**
- * @brief Main drawing routine
- */
 int	draw_routine(t_env *env)
 {
 	t_mlx	*mlx;
@@ -253,86 +241,3 @@ int	draw_routine(t_env *env)
 	mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->img.img, 0, 0);
 	return (0);
 }
-
-/*
-void rasterize_glyph(t_env *env, size_t ch, t_vec2 pos, int color)
-{
-	t_glyf_table	*glyph;
-	int16_t			c;
-	int				i;
-
-	glyph = env->font->glyfs[ch];
-	if (!glyph)
-		return ;
-    int start_pt = 0;
-    c = 0;
-    while (c < glyph->header->number_of_contours)
-    {
-        int end_pt = glyph->end_pts[c];
-        i = start_pt;
-        while (i <= end_pt)
-        {
-            int next_i = (i == end_pt) ? start_pt : i + 1;
-            t_vec2 a = new_vec2(glyph->x_coordinates[i], glyph->y_coordinates[i]);
-    		t_vec2 b = new_vec2(glyph->x_coordinates[next_i], glyph->y_coordinates[next_i]);
-            //    glyph->flags[i] & 0x01  // On-curve flag
-            ft_mlx_line_put(&env->mlx->img, process_pos(env, a, pos), process_pos(env, b, pos), color);
-            i++;
-        }
-        start_pt = end_pt + 1;
-        c++;
-    }
-}
-
-static void	draw_bounds(t_env *env, size_t ch, t_vec2 pos, int color)
-{
-	t_glyf_table	*glyf;
-	t_vec2			lb;
-	t_vec2			rb;
-	t_vec2			lt;
-	t_vec2			rt;
-
-	t_head_table	*head = env->font->head;
-	lb = process_pos(env, new_vec2(head->x_min, head->y_min), pos);
-	rt = process_pos(env, new_vec2(head->x_max, head->y_max), pos);
-	rb = process_pos(env, new_vec2(head->x_max, head->y_min), pos);
-	lt = process_pos(env, new_vec2(head->x_min, head->y_max), pos);
-	ft_mlx_line_put(&env->mlx->img, lb, rb, color);
-	ft_mlx_line_put(&env->mlx->img, lb, lt, color);
-	ft_mlx_line_put(&env->mlx->img, rt, rb, color);
-	ft_mlx_line_put(&env->mlx->img, rt, lt, color);
-	glyf = env->font->glyfs[ch];
-	if (!glyf)
-		return ;
-	lb = process_pos(env, new_vec2(glyf->header->x_min, glyf->header->y_min), pos);
-	rt = process_pos(env, new_vec2(glyf->header->x_max, glyf->header->y_max), pos);
-	rb = process_pos(env, new_vec2(glyf->header->x_max, glyf->header->y_min), pos);
-	lt = process_pos(env, new_vec2(glyf->header->x_min, glyf->header->y_max), pos);
-	color -= 1200;
-	ft_mlx_line_put(&env->mlx->img, lb, rb, color);
-	ft_mlx_line_put(&env->mlx->img, lb, lt, color);
-	ft_mlx_line_put(&env->mlx->img, rt, rb, color);
-	ft_mlx_line_put(&env->mlx->img, rt, lt, color);
-
-}
-
-int	draw_routine(t_env *env)
-{
-	t_mlx	*mlx;
-	size_t	i;
-
-	mlx = env->mlx;
-	mlx->tick += 1;
-	ft_mlx_batch_put(&mlx->img, mlx->origin, mlx->size, BACKGROUND);
-	i = 0;
-	//rasterize_glyph(env, 'a', new_vec2(WIDTH / 2, HEIGHT / 2), 0x0000FF19);
-	while (i < env->font->maxp->num_glyphs)
-	{
-		draw_bounds(env, i, new_vec2(((i + 1) % 25) * 600, (i / 25) * 1200), 0x00FF1447);
-		rasterize_glyph(env, i, new_vec2(((i + 1) % 25) * 600, (i / 25) * 1200), 0x0000FF19);
-		i++;
-	}
-	mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->img.img, 0, 0);
-	return (0);
-}
-*/

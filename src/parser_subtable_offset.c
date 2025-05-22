@@ -6,12 +6,13 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 15:29:45 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/05/15 15:54:18 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/05/22 00:07:39 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser_font_ttf.h"
 #include "libft.h"
+#include "file_utils.h"
 
 
 static void	debug_offset_subtable(t_offset_subtable offset_subtable)
@@ -43,18 +44,9 @@ static void	endian_swap_offset_subtable(t_offset_subtable *ot)
 /*
 	Function that reads the offset_subtable of the font
 */
-int	read_subtable_offset(int fd, t_ttf_font *font)
+int	read_subtable_offset(t_ttf_font *font)
 {
-	int	ot_len;
-	int	read_ret;
-
-	ot_len = sizeof(t_offset_subtable);
-	read_ret = read(fd, font->ot, ot_len);
-	if (read_ret < 0)
-		return (error(errno, NULL));
-	if (read_ret < ot_len)
-		return (error(ERR_CORRUPTED_FONT,
-				"offset_subtable read size: %d", read_ret));
+	read_bytes(font->buf, font->ot, sizeof(t_offset_subtable));
 	endian_swap_offset_subtable(font->ot);
 	if (DEBUG)
 		debug_offset_subtable(*(font->ot));
