@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 10:18:00 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/05/21 23:39:22 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/05/22 02:24:10 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,11 +43,10 @@ typedef struct s_ttf_font
 
 int			init_ttf_struct(t_ttf_font **font);
 
-t_ttf_font	*read_ttf(const char *path);
-void		free_ttf(t_ttf_font *font);
+int			read_ttf(t_ttf_font *font, const char *path);
 
-int			read_subtable_offset(int fd, t_ttf_font *font);
-int			read_subtable_entries(int fd, t_ttf_font *font);
+int			read_subtable_offset(t_ttf_font *font);
+int			read_subtable_entries(t_ttf_font *font);
 
 ssize_t		get_table_offset(t_ttf_font *font, enum e_entry_tag);
 

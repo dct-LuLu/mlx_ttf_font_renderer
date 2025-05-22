@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 23:07:22 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/05/21 11:16:02 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/05/22 00:56:40 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,4 +36,6 @@ int		draw_routine(t_env *env);
 
 int		on_keypress(int keysym, t_env *env);
 int		mouse_handler(int mousecode, int x, int y, t_env *env);
+
+void	free_env(t_env *env);
 #endif //FONT_RENDERER_H

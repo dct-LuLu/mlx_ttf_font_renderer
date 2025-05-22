@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 10:14:51 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/05/21 23:44:00 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/05/22 00:23:36 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@
 # define Y_SHORT 0x04
 # define Y_IS_POSITIVE 0x20
 # define Y_IS_SAME 0x20
+
+# define SKIP_INSTRUCTION_BYTES 2
 
 # pragma pack(push, 1)
 

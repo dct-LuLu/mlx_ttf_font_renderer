@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 17:41:23 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/05/21 22:53:26 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/05/22 02:27:59 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ static void	debug_table_glyf(t_glyf_table glyf, size_t i)
 	printf("\tGlyph %zu '%c':\n\t{\n", i, (char)i);
 	debug_glyf_header(*(glyf.header));
 	printf("\t\tpoint_count: %u\n", glyf.point_count);
-	printf("\t\tend_pts[0]: %u\n", glyf.end_pts[0]);
+	if (glyf.header->number_of_contours != -1)
+		printf("\t\tend_pts[0]: %u\n", glyf.end_pts[0]);
 	printf("\t}\n");
 }
 
@@ -66,30 +67,38 @@ static ssize_t	get_glyf_offset(t_ttf_font *font, uint16_t glyf_index)
 	return (glyf_offset);
 }
 
-static t_glyf_table	*parse_table_glyf(t_ttf_font *font, t_buffer *buf, uint16_t glyf_index)
+static int	parse_table_glyf(t_glyf_table **glyf, t_ttf_font *font, t_buffer *buf, uint16_t glyf_index)
 {
 	const ssize_t	glyfs_table_offset = get_table_offset(font, GLYF_TAG);
 	const ssize_t	glyf_offset = get_glyf_offset(font, glyf_index);
-	t_glyf_table	*glyf;
+	static int	debug_nb = 0;
 
 	if (glyfs_table_offset == -1)
-		return (error(ERR_GET_OFFSET, ": glyf"), NULL);
+		return (error(ERR_GET_OFFSET, ": glyf"));
 	if (glyf_offset == -1)
-		return (NULL);
-	glyf = ft_calloc(sizeof(t_glyf_table), 1);
-	if (!glyf)
-		return (error(errno, "t_glyf_table"), NULL);
+		return (-1);
+	*glyf = ft_calloc(sizeof(t_glyf_table), 1);
+	if (!*glyf)
+		return (error(errno, "t_glyf_table"));
 	buf->pos = glyfs_table_offset + glyf_offset;
-	if (parse_glyf_header(glyf, buf))
-		return (NULL);
-	if (glyf->header->number_of_contours >= 0)
+	if (parse_glyf_header(*glyf, buf))
+		return (1);
+	if ((*glyf)->header->number_of_contours >= 0)
 	{
-		if (parse_glyf(glyf, buf))
-			return (NULL);
+		if (parse_glyf(*glyf, buf))
+			return (1);
+	}
+	else if ((*glyf)->header->number_of_contours == -1)
+	{
+		if (debug_nb < DEBUG_NUM)
+		{
+			debug_nb++;
+			printf("composite glyph !\n");
+		}
 	}
 	else
-		return (NULL);
-	return (glyf);
+		return (1);
+	return (0);
 }
 
 size_t get_glyph_index(t_ttf_font *font, size_t ch)
@@ -122,20 +131,21 @@ size_t get_glyph_index(t_ttf_font *font, size_t ch)
 
 int	parse_table_glyfs(t_ttf_font *font, t_buffer *buf)
 {
-	t_glyf_table	**glyfs;
-	size_t			i;
+	int	i;
+	int	ret;
 
-	glyfs = ft_calloc(sizeof(t_glyf_table *), font->maxp->num_glyphs);
-	if (!glyfs)
+	font->glyfs = ft_calloc(sizeof(t_glyf_table *), font->maxp->num_glyphs);
+	if (!font->glyfs)
 		return (error(errno, "t_glyf_table *"));
 	i = 0;
-	while (i < font->maxp->num_glyphs)
+	while (i < font->maxp->num_glyphs - 1)
 	{
-		glyfs[i] = parse_table_glyf(font, buf, i);
-		if (DEBUG && glyfs[i] && (i < DEBUG_NUM))
-			debug_table_glyf(*(glyfs[i]), i);
+		ret = parse_table_glyf(&font->glyfs[i], font, buf, i);
+		if ((ret == 0) && DEBUG && font->glyfs[i] && (i < DEBUG_NUM))
+			debug_table_glyf(*(font->glyfs[i]), i);
+		if (ret > 0)
+			return (ret);
 		i++;
 	}
-	font->glyfs = glyfs;
 	return (0);
 }
