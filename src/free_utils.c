@@ -6,7 +6,7 @@
 /*   By: jaubry-- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 10:02:56 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/05/22 01:05:40 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/05/26 12:51:02 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,15 @@ static void	free_table_loca(t_ttf_font *font)
 	free(font->loca);
 }
 
+static void	free_composite_glyf(t_glyf_component *comp)
+{
+	if (comp)
+	{
+		free_composite_glyf(comp->next);
+		free(comp);
+	}
+}
+
 static void	free_table_glyfs(t_ttf_font *font)
 {
 	size_t	i;
@@ -73,7 +82,11 @@ static void	free_table_glyfs(t_ttf_font *font)
 		if (font->glyfs[i])
 		{
 			if (font->glyfs[i]->header)
+			{
+				if (font->glyfs[i]->header->number_of_contours == -1)
+					free_composite_glyf(font->glyfs[i]->component);
 				free(font->glyfs[i]->header);
+			}
 			if (font->glyfs[i]->end_pts)
 				free(font->glyfs[i]->end_pts);
 			if (font->glyfs[i]->flags)
@@ -82,6 +95,8 @@ static void	free_table_glyfs(t_ttf_font *font)
 				free(font->glyfs[i]->x_coordinates);
 			if (font->glyfs[i]->y_coordinates)
 				free(font->glyfs[i]->y_coordinates);
+			if (font->glyfs[i]->instructions)
+				free(font->glyfs[i]->instructions);
 			free(font->glyfs[i]);
 		}
 		i++;
