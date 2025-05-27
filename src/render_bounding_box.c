@@ -6,7 +6,7 @@
 /*   By: jaubry-- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 13:45:29 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/05/26 15:07:05 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/05/27 23:02:27 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,14 @@ static void get_transformed_bounds(t_glyf_header *header, t_glyf_component *comp
     while (i < 4)
     {
         transformed = apply_transform(corners[i], comp);
-        if (transformed.x < min->x) min->x = transformed.x;
-        if (transformed.y < min->y) min->y = transformed.y;
-        if (transformed.x > max->x) max->x = transformed.x;
-        if (transformed.y > max->y) max->y = transformed.y;
+        if (transformed.x < min->x)
+        	min->x = transformed.x;
+        if (transformed.y < min->y)
+        	min->y = transformed.y;
+        if (transformed.x > max->x)
+        	max->x = transformed.x;
+        if (transformed.y > max->y)
+        	max->y = transformed.y;
         i++;
     }
 }
@@ -71,39 +75,6 @@ void draw_transformed_bounding_box(t_env *env, t_glyf_header *header, t_vec2 pos
     ft_mlx_line_put(&env->mlx->img, rt, rb, color);
     ft_mlx_line_put(&env->mlx->img, rt, lt, color);
 }
-
-/**
- * @brief Draw the glyph-specific bounding box
- */
-/*
-void	draw_glyph_bounding_box(t_env *env, size_t glyph_index,
-						t_vec2 pos, int color)
-{
-	t_glyf_table	*glyph;
-	t_vec2			lb;
-	t_vec2			rb;
-	t_vec2			lt;
-	t_vec2			rt;
-
-	glyph = env->font->glyfs[glyph_index];
-	if (!glyph)
-		return ;
-
-	lb = transform_coordinate(env, new_vec2(glyph->header->x_min,
-						glyph->header->y_min), pos);
-	rt = transform_coordinate(env, new_vec2(glyph->header->x_max,
-						glyph->header->y_max), pos);
-	rb = transform_coordinate(env, new_vec2(glyph->header->x_max,
-						glyph->header->y_min), pos);
-	lt = transform_coordinate(env, new_vec2(glyph->header->x_min,
-						glyph->header->y_max), pos);
-
-	ft_mlx_line_put(&env->mlx->img, lb, rb, color);
-	ft_mlx_line_put(&env->mlx->img, lb, lt, color);
-	ft_mlx_line_put(&env->mlx->img, rt, rb, color);
-	ft_mlx_line_put(&env->mlx->img, rt, lt, color);
-}
-*/
 
 /**
  * @brief Draw the font-wide max bounding box
