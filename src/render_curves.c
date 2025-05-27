@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 16:41:38 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/05/27 16:41:47 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/05/27 23:57:46 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,3 +121,41 @@ void	draw_curve_from_on_curve(t_env *env, t_glyf_table *glyph,
 	}
 }
 
+int	has_on_curve_points(t_glyf_table *glyph, int start_idx, int end_idx)
+{
+	int	curr_idx;
+
+	curr_idx = start_idx;
+	while (curr_idx <= end_idx)
+	{
+		if (glyph->flags[curr_idx] & ON_CURVE)
+			return (1);
+		curr_idx++;
+	}
+	return (0);
+}
+
+void	draw_all_off_curve_contour(t_env *env, t_glyf_table *glyph,
+			t_curve_params *params)
+{
+	int	curr_idx;
+	t_vec2	start_pt;
+	t_vec2	control_pt;
+	t_vec2	end_pt;
+
+	curr_idx = params->contour_start;
+	while (curr_idx <= params->contour_end)
+	{
+		control_pt = get_transformed_point(glyph, curr_idx, params->transform);
+		start_pt = create_implied_point(
+			get_transformed_point(glyph, 
+				(curr_idx == params->contour_start) ? params->contour_end : curr_idx - 1,
+				params->transform), control_pt);
+		end_pt = create_implied_point(control_pt,
+			get_transformed_point(glyph,
+				(curr_idx == params->contour_end) ? params->contour_start : curr_idx + 1,
+				params->transform));
+		draw_curve_segment(env, start_pt, control_pt, end_pt, params);
+		curr_idx++;
+	}
+}

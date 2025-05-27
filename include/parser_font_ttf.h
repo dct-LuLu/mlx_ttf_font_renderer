@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 10:18:00 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/05/26 13:08:51 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/05/27 23:27:34 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 # endif //DEBUG
 
 # ifndef DEBUG_NUM
-#  define DEBUG_NUM 5
+#  define DEBUG_NUM 18
 # endif //DEBUG_NUM
 
 typedef struct s_ttf_font

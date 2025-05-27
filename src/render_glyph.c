@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 16:51:42 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/05/27 23:10:36 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/05/27 23:58:29 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ static void	process_contour_point(t_env *env, t_glyf_table *glyph,
 		draw_curve_from_on_curve(env, glyph, curr_idx, params);
 }
 
+
 /**
  * @brief Draw a single contour with optional transformation
  */
@@ -82,6 +83,11 @@ static void	draw_contour(t_env *env, t_glyf_table *glyph, int contour_idx,
 	start_idx = (contour_idx == 0) ? 0 : glyph->end_pts[contour_idx - 1] + 1;
 	end_idx = glyph->end_pts[contour_idx];
 	params = init_curve_params(pos, color, start_idx, end_idx, transform);
+	if (!has_on_curve_points(glyph, start_idx, end_idx))
+	{
+		draw_all_off_curve_contour(env, glyph, &params);
+		return ;
+	}
 	curr_idx = start_idx;
 	while (curr_idx <= end_idx)
 	{

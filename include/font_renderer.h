@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 23:07:22 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/05/27 16:43:02 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/05/27 23:58:15 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,8 @@ void	draw_curve_sequence(t_env *env, t_glyf_table *glyph, int start_idx,
 void	draw_transformed_bounding_box(t_env *env, t_glyf_header *header, t_vec2 pos, int color, t_glyf_component *comp);
 void	draw_max_bounding_box(t_env *env, t_vec2 pos, int color);
 
+int	has_on_curve_points(t_glyf_table *glyph, int start_idx, int end_idx);
+void	draw_all_off_curve_contour(t_env *env, t_glyf_table *glyph, t_curve_params *params);
 
 void	free_env(t_env *env);
 #endif //FONT_RENDERER_H
