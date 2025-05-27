@@ -6,7 +6,7 @@
 /*   By: jaubry-- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 13:48:09 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/05/27 17:00:34 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/05/27 23:22:08 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,6 @@ t_vec2 get_component_position(t_vec2 base_pos, t_glyf_component *comp)
     if (comp->flags & SCALED_COMPONENT_OFFSET)
         offset = apply_transform(offset, comp);
     comp_pos.x += offset.x;
-    comp_pos.y += offset.y;
+    comp_pos.y += -offset.y;
     return (comp_pos);
 }
