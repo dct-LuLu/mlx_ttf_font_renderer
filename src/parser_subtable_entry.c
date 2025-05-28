@@ -6,13 +6,12 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 15:31:36 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/05/22 00:21:03 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/05/28 02:23:35 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser_font_ttf.h"
-
 #include "libft.h"
+#include "parser_font_ttf.h"
 
 static void	debug_subtable_entry(t_subtable_entry subtable_entry, size_t i)
 {
@@ -42,8 +41,8 @@ static int	check_entries(t_subtable_entry *subtable_entry,
 	if ((subtable_entry == NULL) && (entry_tag == 0))
 	{
 		if ((mask != MANDATORY_TAG_BIT_MASK) || (sum != MANDATORY_TAG_SUM))
-			return (error(ERR_TABLE_ENTRIES, "bit mask: %d\ttag sum: %d",
-					mask, sum));
+			return (error(ERR_TABLE_ENTRIES, "bit mask: %d\ttag sum: %d", mask,
+					sum));
 		return (0);
 	}
 	if (entry_tag)
@@ -80,7 +79,8 @@ int	read_subtable_entries(t_ttf_font *font)
 	entry_nb = 0;
 	while ((i < font->ot->num_tables) && (entry_nb < MANDATORY_TAG_NB))
 	{
-		read_bytes(font->buf, font->entries[entry_nb], sizeof(t_subtable_entry));
+		read_bytes(font->buf, font->entries[entry_nb],
+			sizeof(t_subtable_entry));
 		endian_swap_subtable_entry(font->entries[entry_nb]);
 		entry_tag = get_entry_tag_type(*(font->entries[entry_nb]));
 		check_entries(font->entries[entry_nb], entry_tag, i);

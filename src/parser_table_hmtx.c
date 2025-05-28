@@ -6,14 +6,13 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 16:02:23 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/05/15 17:05:25 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/05/28 02:24:41 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser_font_ttf.h"
-#include "libft.h"
 #include "file_utils.h"
-
+#include "libft.h"
+#include "parser_font_ttf.h"
 
 static void	debug_table_hmtx(t_hmtx_table hmtx)
 {
@@ -26,8 +25,7 @@ static void	debug_table_hmtx(t_hmtx_table hmtx)
 	while ((i < DEBUG_NUM) && (i < hmtx.num_lhmtx))
 	{
 		printf("\t\t[%zu] advance_width: %u,\tlsb: %d\n", i,
-				hmtx.lhmtx[i].advance_width,
-				hmtx.lhmtx[i].lsb);
+			hmtx.lhmtx[i].advance_width, hmtx.lhmtx[i].lsb);
 		i++;
 	}
 	printf("\t}\n");
@@ -46,24 +44,24 @@ static void	debug_table_hmtx(t_hmtx_table hmtx)
 
 static void	endian_swap_table_hmtx(t_hmtx_table *hmtx)
 {
-	size_t		i;
+	size_t	i;
 
-    i = 0;
-    while (i < hmtx->num_lhmtx)
-    {
-        hmtx->lhmtx[i].advance_width = be16toh(hmtx->lhmtx[i].advance_width);
-        hmtx->lhmtx[i].lsb = be16toh(hmtx->lhmtx[i].lsb);
-        i++;
-    }
-    if (hmtx->lsbs)
-    {
-        i = 0;
-        while(i < hmtx->num_lsbs)
-        {
-            hmtx->lsbs[i] = be16toh(hmtx->lsbs[i]);
-            i++;
-        }
-    }
+	i = 0;
+	while (i < hmtx->num_lhmtx)
+	{
+		hmtx->lhmtx[i].advance_width = be16toh(hmtx->lhmtx[i].advance_width);
+		hmtx->lhmtx[i].lsb = be16toh(hmtx->lhmtx[i].lsb);
+		i++;
+	}
+	if (hmtx->lsbs)
+	{
+		i = 0;
+		while (i < hmtx->num_lsbs)
+		{
+			hmtx->lsbs[i] = be16toh(hmtx->lsbs[i]);
+			i++;
+		}
+	}
 }
 
 int	parse_table_hmtx(t_ttf_font *font, t_buffer *buf)
@@ -73,7 +71,6 @@ int	parse_table_hmtx(t_ttf_font *font, t_buffer *buf)
 
 	if (hmtx_offset == -1)
 		return (error(ERR_GET_OFFSET, ": hmtx"));
-    
 	hmtx = ft_calloc(sizeof(t_hmtx_table), 1);
 	if (!hmtx)
 		return (error(errno, "t_hmtx_table"));

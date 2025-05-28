@@ -6,19 +6,19 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 20:29:39 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/05/22 14:29:33 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/05/28 02:23:52 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser_font_ttf.h"
 #include "error_handler.h"
 #include "file_utils.h"
 #include "libft.h"
+#include "parser_font_ttf.h"
 
 static int	parse_glyf_flags(t_glyf_table *glyf, t_buffer *buf)
 {
 	size_t	i;
-	uint8_t flag;
+	uint8_t	flag;
 	uint8_t	repeat_count;
 
 	glyf->flags = ft_calloc(glyf->point_count, sizeof(uint8_t));
@@ -122,7 +122,8 @@ int	parse_simple_glyf(t_glyf_table *glyf, t_buffer *buf)
 	uint16_t	last_point;
 	int16_t		i;
 
-	glyf->end_pts = ft_calloc(glyf->header->number_of_contours, sizeof(uint16_t));
+	glyf->end_pts = ft_calloc(glyf->header->number_of_contours,
+			sizeof(uint16_t));
 	if (!glyf->end_pts)
 		return (1);
 	read_bytes(buf, glyf->end_pts, glyf->header->number_of_contours * 2);
@@ -136,7 +137,7 @@ int	parse_simple_glyf(t_glyf_table *glyf, t_buffer *buf)
 	glyf->point_count = last_point + 1;
 	read_bytes(buf, &glyf->instruction_length, SKIP_INSTRUCTION_BYTES);
 	glyf->instruction_length = be16toh(glyf->instruction_length);
-	if (glyf->instruction_length > 0) //vrm necessaire de check la taille ...?
+	if (glyf->instruction_length > 0) // vrm necessaire de check la taille ...?
 	{
 		glyf->instructions = ft_calloc(glyf->instruction_length, 1);
 		if (!glyf->instructions)

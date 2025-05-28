@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   img_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaubry-- <jaubry--@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 12:11:45 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/05/16 23:41:17 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/05/28 02:22:58 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@ t_img	init_img(void *mlx, int width, int height)
 	img.img = mlx_new_image(mlx, width, height);
 	if (!img.img)
 		return (img);
-	img.addr = mlx_get_data_addr(img.img, &img.byte_depth,
-			&img.line_len, &img.endian);
+	img.addr = mlx_get_data_addr(img.img, &img.byte_depth, &img.line_len,
+			&img.endian);
 	img.byte_depth /= 8;
 	img.width = width;
 	img.height = height;

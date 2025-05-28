@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render_curves.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaubry-- <jaubry--@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 16:41:38 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/05/27 23:57:46 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/05/28 02:24:51 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static int	get_next_contour_idx(int curr_idx, int start_idx, int end_idx)
  * @brief Get transformed point from glyph coordinates
  */
 static t_vec2	get_transformed_point(t_glyf_table *glyph, int point_idx,
-					t_glyf_component *transform)
+		t_glyf_component *transform)
 {
 	t_vec2	point_pt;
 
@@ -51,7 +51,7 @@ static t_vec2	create_implied_point(t_vec2 control1_pt, t_vec2 control2_pt)
  * @brief Draw single quadratic curve segment
  */
 static void	draw_curve_segment(t_env *env, t_vec2 start_pt, t_vec2 control_pt,
-				t_vec2 end_pt, t_curve_params *params)
+		t_vec2 end_pt, t_curve_params *params)
 {
 	t_vec2	screen_start;
 	t_vec2	screen_control;
@@ -60,15 +60,15 @@ static void	draw_curve_segment(t_env *env, t_vec2 start_pt, t_vec2 control_pt,
 	screen_start = transform_coordinate(env, start_pt, params->pos);
 	screen_control = transform_coordinate(env, control_pt, params->pos);
 	screen_end = transform_coordinate(env, end_pt, params->pos);
-	ft_mlx_draw_quadratic_curve(&env->mlx->img, screen_start,
-		screen_control, screen_end, params->color);
+	ft_mlx_draw_quadratic_curve(&env->mlx->img, screen_start, screen_control,
+		screen_end, params->color);
 }
 
 /**
  * @brief Determine end point for curve (on-curve or implied)
  */
 static t_vec2	get_curve_end_point(t_glyf_table *glyph, t_vec2 control_pt,
-				int next_idx, t_glyf_component *transform)
+		int next_idx, t_glyf_component *transform)
 {
 	t_vec2	next_control_pt;
 
@@ -82,15 +82,15 @@ static t_vec2	get_curve_end_point(t_glyf_table *glyph, t_vec2 control_pt,
  * @brief Process single curve iteration in sequence
  */
 static int	process_curve_iteration(t_glyf_table *glyph, t_curve_state *state,
-				t_curve_params *params, t_env *env)
+		t_curve_params *params, t_env *env)
 {
 	t_vec2	control_pt;
 	t_vec2	end_pt;
 
 	control_pt = get_transformed_point(glyph, state->curr_idx,
 			params->transform);
-	state->next_idx = get_next_contour_idx(state->curr_idx,
-			state->start_idx, state->end_idx);
+	state->next_idx = get_next_contour_idx(state->curr_idx, state->start_idx,
+			state->end_idx);
 	end_pt = get_curve_end_point(glyph, control_pt, state->next_idx,
 			params->transform);
 	draw_curve_segment(env, state->start_pt, control_pt, end_pt, params);
@@ -102,8 +102,8 @@ static int	process_curve_iteration(t_glyf_table *glyph, t_curve_state *state,
 /**
  * @brief Draw curve sequence starting from an on-curve point
  */
-void	draw_curve_from_on_curve(t_env *env, t_glyf_table *glyph,
-			int start_idx, t_curve_params *params)
+void	draw_curve_from_on_curve(t_env *env, t_glyf_table *glyph, int start_idx,
+		t_curve_params *params)
 {
 	t_curve_state	state;
 
@@ -112,8 +112,8 @@ void	draw_curve_from_on_curve(t_env *env, t_glyf_table *glyph,
 	state.end_idx = params->contour_end;
 	state.start_pt = get_transformed_point(glyph, state.curr_idx,
 			params->transform);
-	state.curr_idx = get_next_contour_idx(state.curr_idx,
-			state.start_idx, state.end_idx);
+	state.curr_idx = get_next_contour_idx(state.curr_idx, state.start_idx,
+			state.end_idx);
 	while (!(glyph->flags[state.curr_idx] & ON_CURVE))
 	{
 		if (process_curve_iteration(glyph, &state, params, env))
@@ -136,9 +136,9 @@ int	has_on_curve_points(t_glyf_table *glyph, int start_idx, int end_idx)
 }
 
 void	draw_all_off_curve_contour(t_env *env, t_glyf_table *glyph,
-			t_curve_params *params)
+		t_curve_params *params)
 {
-	int	curr_idx;
+	int		curr_idx;
 	t_vec2	start_pt;
 	t_vec2	control_pt;
 	t_vec2	end_pt;
@@ -147,14 +147,12 @@ void	draw_all_off_curve_contour(t_env *env, t_glyf_table *glyph,
 	while (curr_idx <= params->contour_end)
 	{
 		control_pt = get_transformed_point(glyph, curr_idx, params->transform);
-		start_pt = create_implied_point(
-			get_transformed_point(glyph, 
-				(curr_idx == params->contour_start) ? params->contour_end : curr_idx - 1,
-				params->transform), control_pt);
-		end_pt = create_implied_point(control_pt,
-			get_transformed_point(glyph,
-				(curr_idx == params->contour_end) ? params->contour_start : curr_idx + 1,
-				params->transform));
+		start_pt = create_implied_point(get_transformed_point(glyph,
+					(curr_idx == params->contour_start) ? params->contour_end : curr_idx
+					- 1, params->transform), control_pt);
+		end_pt = create_implied_point(control_pt, get_transformed_point(glyph,
+					(curr_idx == params->contour_end) ? params->contour_start : curr_idx
+					+ 1, params->transform));
 		draw_curve_segment(env, start_pt, control_pt, end_pt, params);
 		curr_idx++;
 	}

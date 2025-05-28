@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   free_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaubry-- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 10:02:56 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/05/26 12:51:02 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/05/28 02:22:49 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
 #include "font_renderer.h"
+#include <stdlib.h>
 
 static void	free_subtables(t_ttf_font *font)
 {
@@ -113,7 +113,7 @@ static void	free_tables(t_ttf_font *font)
 	if (font->hhea)
 		free(font->hhea);
 	if (font->hmtx)
-		free_table_hmtx(font);		
+		free_table_hmtx(font);
 	if (font->loca)
 		free_table_loca(font);
 	if (font->glyfs)

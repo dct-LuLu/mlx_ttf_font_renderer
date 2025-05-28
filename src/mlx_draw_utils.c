@@ -6,12 +6,12 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 01:06:14 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/05/18 15:50:16 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/05/28 02:23:16 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <math.h>
 #include "mlx_utils.h"
+#include <math.h>
 
 void	ft_mlx_batch_put(t_img *img, t_vec2 pos, t_vec2 size, int color)
 {
@@ -46,8 +46,8 @@ void	ft_mlx_pixel_put(t_img *img, t_vec2 pos, int color)
 	int				offset;
 	unsigned int	*pixel;
 
-	if ((pos.x >= 0) && (pos.x < img->width) \
-	&& (pos.y >= 0) && (pos.y < img->height))
+	if ((pos.x >= 0) && (pos.x < img->width) && (pos.y >= 0)
+		&& (pos.y < img->height))
 	{
 		offset = ((pos.y * img->line_len) + (pos.x * img->byte_depth));
 		pixel = (unsigned int *)(img->addr + offset);
@@ -89,8 +89,8 @@ void	ft_mlx_line_put(t_img *img, t_vec2 a, t_vec2 b, int color)
 	line = get_line_data(a, b);
 	while (true)
 	{
-		if ((a.x >= 0) && (a.x <= img->width)
-			&& (a.y >= 0) && (a.y <= img->height))
+		if ((a.x >= 0) && (a.x <= img->width) && (a.y >= 0)
+			&& (a.y <= img->height))
 			ft_mlx_pixel_put(img, a, color);
 		if ((a.x == b.x) && (a.y == b.y))
 			break ;

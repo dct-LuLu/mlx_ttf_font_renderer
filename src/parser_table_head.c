@@ -6,14 +6,13 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 14:36:42 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/05/15 15:54:18 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/05/28 02:24:36 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser_font_ttf.h"
-#include "libft.h"
 #include "file_utils.h"
-
+#include "libft.h"
+#include "parser_font_ttf.h"
 
 static void	debug_table_head(t_head_table head)
 {

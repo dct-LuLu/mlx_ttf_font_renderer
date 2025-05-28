@@ -6,26 +6,27 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 10:18:00 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/05/27 23:27:34 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/05/28 06:35:36 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PARSER_FONT_TTF_H
 # define PARSER_FONT_TTF_H
-# include <stdlib.h>
-# include <stdint.h>
-# include <stdbool.h>
 # include "error_handler.h"
 # include "parser_subtables.h"
 # include "parser_tables.h"
+# include <stdbool.h>
+# include <stdint.h>
+# include <stdlib.h>
 
 # ifndef DEBUG
 #  define DEBUG 0
-# endif //DEBUG
+# endif // DEBUG
 
 # ifndef DEBUG_NUM
 #  define DEBUG_NUM 18
-# endif //DEBUG_NUM
+# endif // DEBUG_NUM
+
 
 typedef struct s_ttf_font
 {
@@ -41,29 +42,31 @@ typedef struct s_ttf_font
 	t_buffer			*buf;
 }						t_ttf_font;
 
-int			init_ttf_struct(t_ttf_font **font);
+typedef int	(*t_parse_func)(t_ttf_font *, t_buffer *);
 
-int			read_ttf(t_ttf_font *font, const char *path);
+int						init_ttf_struct(t_ttf_font **font);
 
-int			read_subtable_offset(t_ttf_font *font);
-int			read_subtable_entries(t_ttf_font *font);
+int						read_ttf(t_ttf_font *font, const char *path);
 
-ssize_t		get_table_offset(t_ttf_font *font, enum e_entry_tag);
+int						read_subtable_offset(t_ttf_font *font);
+int						read_subtable_entries(t_ttf_font *font);
 
-int			parse_table_head(t_ttf_font *font, t_buffer *buf);
-int			parse_table_cmap(t_ttf_font *font, t_buffer *buf);
-int			parse_table_maxp(t_ttf_font *font, t_buffer *buf);
-int			parse_table_hhea(t_ttf_font *font, t_buffer *buf);
-int			parse_table_hmtx(t_ttf_font *font, t_buffer *buf);
-int			parse_table_loca(t_ttf_font *font, t_buffer *buf);
+ssize_t					get_table_offset(t_ttf_font *font, t_entry_tag tag);
 
-int			parse_table_glyfs(t_ttf_font *font, t_buffer *buf);
-int			parse_glyf_header(t_glyf_table *glyf, t_buffer *buf);
-int			parse_simple_glyf(t_glyf_table *glyf, t_buffer *buf);
-int			parse_composite_glyf(t_glyf_table *glyf, t_buffer *buf);
-void		debug_glyf_header(t_glyf_header header);
-void		debug_glyf_component(t_glyf_component comp);
+int						parse_table_head(t_ttf_font *font, t_buffer *buf);
+int						parse_table_cmap(t_ttf_font *font, t_buffer *buf);
+int						parse_table_maxp(t_ttf_font *font, t_buffer *buf);
+int						parse_table_hhea(t_ttf_font *font, t_buffer *buf);
+int						parse_table_hmtx(t_ttf_font *font, t_buffer *buf);
+int						parse_table_loca(t_ttf_font *font, t_buffer *buf);
 
-size_t		get_glyph_index(t_ttf_font *font, size_t ch);
+int						parse_table_glyfs(t_ttf_font *font, t_buffer *buf);
+int						parse_glyf_header(t_glyf_table *glyf, t_buffer *buf);
+int						parse_simple_glyf(t_glyf_table *glyf, t_buffer *buf);
+int						parse_composite_glyf(t_glyf_table *glyf, t_buffer *buf);
+void					debug_glyf_header(t_glyf_header header);
+void					debug_glyf_component(t_glyf_component comp);
+
+size_t					get_glyph_index(t_ttf_font *font, size_t ch);
 
 #endif // PARSER_FONT_TTF_H

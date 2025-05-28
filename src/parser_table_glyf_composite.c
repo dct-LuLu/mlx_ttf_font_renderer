@@ -3,33 +3,32 @@
 /*                                                        :::      ::::::::   */
 /*   parser_table_glyf_composite.c                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaubry-- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 13:19:11 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/05/27 16:59:12 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/05/28 04:19:23 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser_font_ttf.h"
 #include "libft.h"
+#include "parser_font_ttf.h"
 
-void		debug_glyf_component(t_glyf_component comp)
+void	debug_glyf_component(t_glyf_component comp)
 {
 	printf("\t\tComponent:\n\t\t{\n");
 	printf("\t\t\tglyph_index: %u\n", comp.glyph_index);
-    printf("\t\t\tflags: 0x%04X\n", comp.flags);
-    printf("\t\t\targ1: %d\n", comp.arg1);
-    printf("\t\t\targ2: %d\n", comp.arg2);
-    if (comp.flags & HAS_SCALE)
-        printf("\t\t\tscale: %f\n", comp.transform[0]);
-    else if (comp.flags & HAS_XY_SCALE)
-        printf("\t\t\txscale: %f, yscale: %f\n", 
-               comp.transform[0], comp.transform[3]);
-    else if (comp.flags & HAS_2X2_MATRIX)
-        printf("\t\t\ttransform: [%f %f; %f %f]\n",
-               comp.transform[0], comp.transform[1], 
-               comp.transform[2], comp.transform[3]);
-    printf("\t\t}\n");
+	printf("\t\t\tflags: 0x%04X\n", comp.flags);
+	printf("\t\t\targ1: %d\n", comp.arg1);
+	printf("\t\t\targ2: %d\n", comp.arg2);
+	if (comp.flags & HAS_SCALE)
+		printf("\t\t\tscale: %f\n", comp.transform[0]);
+	else if (comp.flags & HAS_XY_SCALE)
+		printf("\t\t\txscale: %f, yscale: %f\n", comp.transform[0],
+			comp.transform[3]);
+	else if (comp.flags & HAS_2X2_MATRIX)
+		printf("\t\t\ttransform: [%f %f; %f %f]\n", comp.transform[0],
+			comp.transform[1], comp.transform[2], comp.transform[3]);
+	printf("\t\t}\n");
 }
 
 static float	read_f2dot14(t_buffer *buf)
@@ -43,36 +42,33 @@ static float	read_f2dot14(t_buffer *buf)
 
 static int	parse_component(t_glyf_component **comp, t_buffer *buf)
 {
+	int16_t	args16[2];
+	int8_t	args8[2];
+
 	*comp = ft_calloc(1, sizeof(t_glyf_component));
 	if (!*comp)
 		return (error(errno, "t_glyf_component"));
 	// init transform matrix to identify;
 	(*comp)->transform[0] = 1.0f;
 	(*comp)->transform[3] = 1.0f;
-
 	// read flags and idx
 	read_bytes(buf, &(*comp)->flags, 2);
 	(*comp)->flags = be16toh((*comp)->flags);
-
 	read_bytes(buf, &(*comp)->glyph_index, 2);
 	(*comp)->glyph_index = be16toh((*comp)->glyph_index);
-
 	// Read arguments based on flags
 	if ((*comp)->flags & ARG1_ARG2_ARE_WORDS)
 	{
-		int16_t	args[2];
-		read_bytes(buf, args, 4);
-		(*comp)->arg1 = be16toh(args[0]);
-		(*comp)->arg2 = be16toh(args[1]);
+		read_bytes(buf, args16, 4);
+		(*comp)->arg1 = be16toh(args16[0]);
+		(*comp)->arg2 = be16toh(args16[1]);
 	}
 	else
 	{
-		int8_t	args[2];
-		read_bytes(buf, args, 2);
-		(*comp)->arg1 = args[0];
-		(*comp)->arg2 = args[1];
+		read_bytes(buf, args8, 2);
+		(*comp)->arg1 = args8[0];
+		(*comp)->arg2 = args8[1];
 	}
-
 	// read transformation data if present
 	if ((*comp)->flags & HAS_SCALE)
 	{
@@ -96,9 +92,11 @@ static int	parse_component(t_glyf_component **comp, t_buffer *buf)
 
 int	parse_composite_glyf(t_glyf_table *glyf, t_buffer *buf)
 {
-	t_glyf_component	**next_ptr = &glyf->component;
-	uint16_t			flags = MORE_COMPONENTS;
+	t_glyf_component	**next_ptr;
+	uint16_t			flags;
 
+	next_ptr = &glyf->component;
+	flags = MORE_COMPONENTS;
 	while (flags & MORE_COMPONENTS)
 	{
 		if (parse_component(next_ptr, buf))

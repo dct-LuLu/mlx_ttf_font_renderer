@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   tag_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaubry-- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 14:53:35 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/05/15 18:13:14 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/05/28 02:25:00 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser_font_ttf.h"
 #include "libft.h"
+#include "parser_font_ttf.h"
 
 enum e_entry_tag	get_entry_tag_type(t_subtable_entry entry)
 {
