@@ -6,14 +6,14 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 09:27:08 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/05/18 15:04:33 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/05/28 04:26:39 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <string.h>
-#include <stdarg.h>
-#include "libft.h"
 #include "error_handler.h"
+#include "libft.h"
+#include <stdarg.h>
+#include <string.h>
 
 static const char	*get_err_msg(enum e_error err)
 {
@@ -24,7 +24,7 @@ static const char	*get_err_msg(enum e_error err)
 	else if (err == ERR_CORRUPTED_FONT)
 		return (ERR_MSG_CORRUPTED_FONT);
 	else if (err == ERR_offset_subtable)
-		return (ERR_MSG_offset_subtable);
+		return (ERR_MSG_OFFSET_SUBTABLE);
 	else if (err == ERR_FONT_TYPE)
 		return (ERR_MSG_FONT_TYPE);
 	else if (err == ERR_READ_FILE)

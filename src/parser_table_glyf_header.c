@@ -3,18 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   parser_table_glyf_header.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaubry-- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 19:50:12 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/05/16 22:17:42 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/05/28 02:23:49 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser_font_ttf.h"
-#include "file_utils.h"
 #include "error_handler.h"
-
+#include "file_utils.h"
 #include "libft.h"
+#include "parser_font_ttf.h"
 
 void	debug_glyf_header(t_glyf_header header)
 {

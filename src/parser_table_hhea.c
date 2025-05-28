@@ -3,29 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   parser_table_hhea.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaubry-- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 16:43:31 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/05/15 16:56:43 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/05/28 02:24:38 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser_font_ttf.h"
-#include "libft.h"
 #include "file_utils.h"
+#include "libft.h"
+#include "parser_font_ttf.h"
 
-
-static void debug_table_hhea(t_hhea_table hhea)
+static void	debug_table_hhea(t_hhea_table hhea)
 {
-    printf("HHEA Table:\n{\n");
-    printf("\tnum_lhmtx: %u\n", hhea.num_lhmtx);
-    printf("}\n\n");
+	printf("HHEA Table:\n{\n");
+	printf("\tnum_lhmtx: %u\n", hhea.num_lhmtx);
+	printf("}\n\n");
 }
 
-int parse_table_hhea(t_ttf_font *font, t_buffer *buf)
+int	parse_table_hhea(t_ttf_font *font, t_buffer *buf)
 {
-	const ssize_t hhea_offset = get_table_offset(font, HHEA_TAG);
-	t_hhea_table *hhea;
+	const ssize_t	hhea_offset = get_table_offset(font, HHEA_TAG);
+	t_hhea_table	*hhea;
 
 	if (hhea_offset == -1)
 		return (error(ERR_GET_OFFSET, ": hhea"));

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaubry-- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 10:03:36 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/05/22 00:10:59 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/05/28 02:23:04 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static int	init_subtables(t_ttf_font *font)
 	font->ot = ft_calloc(sizeof(t_offset_subtable), 1);
 	if (!font->ot)
 		return (error(errno, "t_offset_subtable"));
-	font->entries = ft_calloc(sizeof(t_subtable_entry*), MANDATORY_TAG_NB);
+	font->entries = ft_calloc(sizeof(t_subtable_entry *), MANDATORY_TAG_NB);
 	if (!font->entries)
 		return (error(errno, "*t_subtable_entry"));
 	i = 0;

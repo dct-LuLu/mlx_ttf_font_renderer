@@ -6,14 +6,13 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 10:40:32 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/05/21 21:54:13 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/05/28 06:43:23 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser_font_ttf.h"
-#include "libft.h"
 #include "file_utils.h"
-
+#include "libft.h"
+#include "parser_font_ttf.h"
 
 static void	debug_table_cmap(t_cmap_table cmap)
 {
@@ -21,12 +20,15 @@ static void	debug_table_cmap(t_cmap_table cmap)
 
 	printf("CMAP Table:\n{\n");
 	printf("\tformat: %u\n", cmap.format);
-	printf("\tseg_count: %u\tseg_count_x2: %u\n", cmap.seg_count, cmap.seg_count_x2);
+	printf("\tseg_count: %u\tseg_count_x2: %u\n", cmap.seg_count,
+		cmap.seg_count_x2);
 	i = 0;
-	printf("\tSEG:\tend_code, \tstart_code, \tid_delta, \t\tid_range_offset:\n\t{\n");
+	printf("\tSEG:\tend_code, \tstart_code, \tid_delta,\
+		\t\tid_range_offset:\n\t{\n");
 	while (i < cmap.seg_count && i < DEBUG_NUM)
 	{
-		printf("\t\t%u\t\t%u\t\t%d\t\t\t%u\n", cmap.end_code[i], cmap.start_code[i], cmap.id_delta[i], cmap.id_range_offset[i]);
+		printf("\t\t%u\t\t%u\t\t%d\t\t\t%u\n", cmap.end_code[i],
+			cmap.start_code[i], cmap.id_delta[i], cmap.id_range_offset[i]);
 		i++;
 	}
 	printf("\t}\n");
@@ -81,13 +83,13 @@ static int	parse_table_cmap_seg(t_cmap_table *cmap, t_buffer *buf)
 	cmap->id_range_offset = ft_calloc(cmap->seg_count, sizeof(uint16_t));
 	if (!cmap->id_range_offset)
 		return (1);
-	//cmap->id_range_offset_ptr = (void *)(buf->data + buf->pos);
 	cmap->pos_id_range_offset = buf->pos;
 	read_bytes(buf, cmap->id_range_offset, cmap->seg_count_x2);
 	return (0);
 }
 
-static int	parse_table_cmap_id_array(t_cmap_table *cmap, t_buffer *buf, uint16_t length)
+static int	parse_table_cmap_id_array(t_cmap_table *cmap, t_buffer *buf,
+		uint16_t length)
 {
 	size_t	header_and_arrays_size;
 	size_t	remaining_bytes;
@@ -108,35 +110,29 @@ static int	parse_table_cmap_id_array(t_cmap_table *cmap, t_buffer *buf, uint16_t
 int	pre_parse_table_cmap(t_buffer *buf, const ssize_t cmap_offset)
 {
 	uint16_t	num_tables;
-	uint16_t	platform_id;
-	uint16_t	encoding_id;
-	uint32_t	subtable_offset;
-	uint32_t	format4_offset;
-	size_t		i;
+	uint16_t	id[2];
+	uint32_t	offsets[2];
 
-	format4_offset = 0;
+	offsets[0] = 0;
 	buf->pos = cmap_offset + 2;
 	read_bytes(buf, &num_tables, 2);
-	i = 0;
-	while (i < num_tables)
+	while (num_tables > 0)
 	{
-		read_bytes(buf, &platform_id, 2);
-		platform_id = be16toh(platform_id);
-		read_bytes(buf, &encoding_id, 2);
-		encoding_id = be16toh(encoding_id);
-		read_bytes(buf, &subtable_offset, 4);
-		subtable_offset = be32toh(subtable_offset);
-		if (((platform_id == 3) && (encoding_id == 1))
-			|| ((platform_id == 0) && (encoding_id == 3)))
+		read_bytes(buf, id, 4);
+		id[0] = be16toh(id[0]);
+		id[1] = be16toh(id[1]);
+		read_bytes(buf, &offsets[1], 4);
+		offsets[1] = be32toh(offsets[1]);
+		if (((id[0] == 3) && (id[1] == 1)) || ((id[0] == 0) && (id[1] == 3)))
 		{
-			format4_offset = cmap_offset + subtable_offset;
+			offsets[0] = cmap_offset + offsets[1];
 			break ;
 		}
-		i++;
+		num_tables--;
 	}
-	if (format4_offset == 0)
+	if (offsets[0] == 0)
 		return (1);
-	buf->pos = format4_offset;
+	buf->pos = offsets[0];
 	return (0);
 }
 
@@ -165,10 +161,10 @@ int	parse_table_cmap(t_ttf_font *font, t_buffer *buf)
 	cmap->seg_count = cmap->seg_count_x2 >> 1;
 	buf->pos += 6;
 	if (parse_table_cmap_seg(cmap, buf))
-		return (1); // free table cmap
+		return (1);
 	buf->pos += 2;
 	if (parse_table_cmap_id_array(cmap, buf, length))
-		return (1); // free table cmap
+		return (1);
 	endian_swap_table_cmap(cmap);
 	if (DEBUG)
 		debug_table_cmap(*cmap);

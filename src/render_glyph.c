@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render_glyph.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaubry-- <jaubry--@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 16:51:42 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/05/27 23:58:29 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/05/28 02:24:55 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 /**
  * @brief Initialize curve parameters structure
  */
-static t_curve_params	init_curve_params(t_vec2 pos, int color,
-					int start_idx, int end_idx, t_glyf_component *transform)
+static t_curve_params	init_curve_params(t_vec2 pos, int color, int start_idx,
+		int end_idx, t_glyf_component *transform)
 {
 	t_curve_params	params;
 
@@ -31,8 +31,8 @@ static t_curve_params	init_curve_params(t_vec2 pos, int color,
 /**
  * @brief Draw straight line between two on-curve points
  */
-static void	draw_straight_segment(t_env *env, t_glyf_table *glyph,
-				int curr_idx, int next_idx, t_curve_params *params)
+static void	draw_straight_segment(t_env *env, t_glyf_table *glyph, int curr_idx,
+		int next_idx, t_curve_params *params)
 {
 	t_vec2	curr_pt;
 	t_vec2	next_pt;
@@ -53,31 +53,30 @@ static void	draw_straight_segment(t_env *env, t_glyf_table *glyph,
 /**
  * @brief Process single point in contour
  */
-static void	process_contour_point(t_env *env, t_glyf_table *glyph,
-				int curr_idx, t_curve_params *params)
+static void	process_contour_point(t_env *env, t_glyf_table *glyph, int curr_idx,
+		t_curve_params *params)
 {
 	int	next_idx;
 
 	if (!(glyph->flags[curr_idx] & ON_CURVE))
 		return ;
-	next_idx = (curr_idx == params->contour_end) ?
-		params->contour_start : curr_idx + 1;
+	next_idx = (curr_idx == params->contour_end) ? params->contour_start : curr_idx
+		+ 1;
 	if (glyph->flags[next_idx] & ON_CURVE)
 		draw_straight_segment(env, glyph, curr_idx, next_idx, params);
 	else
 		draw_curve_from_on_curve(env, glyph, curr_idx, params);
 }
 
-
 /**
  * @brief Draw a single contour with optional transformation
  */
 static void	draw_contour(t_env *env, t_glyf_table *glyph, int contour_idx,
-			t_vec2 pos, int color, t_glyf_component *transform)
+		t_vec2 pos, int color, t_glyf_component *transform)
 {
-	int		curr_idx;
-	int		start_idx;
-	int		end_idx;
+	int				curr_idx;
+	int				start_idx;
+	int				end_idx;
 	t_curve_params	params;
 
 	start_idx = (contour_idx == 0) ? 0 : glyph->end_pts[contour_idx - 1] + 1;
@@ -100,7 +99,7 @@ static void	draw_contour(t_env *env, t_glyf_table *glyph, int contour_idx,
  * @brief Draw a simple glyph with optional transformation
  */
 static void	draw_simple_glyph(t_env *env, t_glyf_table *glyph, t_vec2 pos,
-				int color, t_glyf_component *transform)
+		int color, t_glyf_component *transform)
 {
 	int	contour_idx;
 
@@ -121,19 +120,19 @@ static void	draw_simple_glyph(t_env *env, t_glyf_table *glyph, t_vec2 pos,
  * @brief Draw a composite glyph by rendering all components
  */
 static void	draw_composite_glyph(t_env *env, t_glyf_table *glyph, t_vec2 pos,
-				int color)
+		int color)
 {
 	t_glyf_component	*comp;
 	t_glyf_table		*comp_glyph;
-	t_vec2			comp_pos;
+	t_vec2				comp_pos;
 
 	if (!glyph || !glyph->component)
 		return ;
 	comp = glyph->component;
 	while (comp)
 	{
-		if (comp->glyph_index >= env->font->maxp->num_glyphs ||
-			!env->font->glyfs[comp->glyph_index])
+		if (comp->glyph_index >= env->font->maxp->num_glyphs
+			|| !env->font->glyfs[comp->glyph_index])
 		{
 			comp = comp->next;
 			continue ;

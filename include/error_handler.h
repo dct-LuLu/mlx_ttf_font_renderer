@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 09:10:13 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/05/14 14:57:26 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/05/28 04:26:39 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,14 @@
 # include <errno.h>
 
 # define ERR_MSG_ARG_NUM "Wrong argument number"
-# define ERR_MSG_FILE_EXT "Wrong file extension.\nOnly .ttf files are supported currently"
-# define ERR_MSG_CORRUPTED_FONT "Can't read file's offset table, file may bee corrupted"
-# define ERR_MSG_offset_subtable "Invalid font offset table values, file may be corrupted"
-# define ERR_MSG_FONT_TYPE "Invalid snft version, font isn't in a TTF format or file may be corrupted"
+# define ERR_MSG_FILE_EXT "Wrong file extension.\nOnly .ttf files are\
+supported currently"
+# define ERR_MSG_CORRUPTED_FONT "Can't read file's offset table,\
+file may bee corrupted"
+# define ERR_MSG_OFFSET_SUBTABLE "Invalid font offset table values,\
+file may be corrupted"
+# define ERR_MSG_FONT_TYPE "Invalid snft version,\
+font isn't in a TTF format or file may be corrupted"
 # define ERR_MSG_READ_FILE "Error while buffering file"
 # define ERR_MSG_GET_OFFSET "Could not fetch table offset"
 
@@ -38,4 +42,4 @@ typedef enum e_error
 
 int	error(enum e_error err, const char *format, ...);
 
-#endif //ERROR_HANDLER_H
+#endif // ERROR_HANDLER_H

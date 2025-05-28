@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 22:13:23 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/05/18 15:58:32 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/05/28 02:23:29 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static t_mlx	*init_mlx(void)
 	if (!mlx->img.img)
 		return (kill_mlx(mlx), NULL);
 	mlx->ret = 0;
-	mlx->origin = new_vec2(0,0);
+	mlx->origin = new_vec2(0, 0);
 	mlx->size = new_vec2(WIDTH, HEIGHT);
 	return (mlx);
 }

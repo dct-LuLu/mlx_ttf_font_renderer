@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 01:04:16 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/05/18 15:50:59 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/05/28 02:25:58 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@ typedef struct s_vec2
 {
 	int	x;
 	int	y;
-}	t_vec2;
+}		t_vec2;
 
 t_vec2	new_vec2(int x, int y);
 
-#endif //VEC2_H
+#endif // VEC2_H

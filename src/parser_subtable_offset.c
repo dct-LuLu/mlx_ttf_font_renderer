@@ -6,25 +6,22 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 15:29:45 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/05/22 00:07:39 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/05/28 05:53:32 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser_font_ttf.h"
-#include "libft.h"
 #include "file_utils.h"
+#include "libft.h"
+#include "parser_font_ttf.h"
 
-
-static void	debug_offset_subtable(t_offset_subtable offset_subtable)
+static void	debug_offset_subtable(t_offset_subtable ot)
 {
-	//static char const *test[5] = {""}
-
 	ft_printf("Offset Subtable:\n{\n");
-	printf("\tsfnt_version: 0x%08X\n", offset_subtable.sfnt_version);
-	ft_printf("\tnum_tables: %u\n", offset_subtable.num_tables);
-	ft_printf("\tsearch_range: %u\n", offset_subtable.search_range);
-	ft_printf("\tentry_selector: %u\n", offset_subtable.entry_selector);
-	ft_printf("\trange_shift: %u\n", offset_subtable.range_shift);
+	printf("\tsfnt_version: 0x%08X\n", ot.sfnt_version);
+	ft_printf("\tnum_tables: %u\n", ot.num_tables);
+	ft_printf("\tsearch_range: %u\n", ot.search_range);
+	ft_printf("\tentry_selector: %u\n", ot.entry_selector);
+	ft_printf("\trange_shift: %u\n", ot.range_shift);
 	ft_printf("}\n\n");
 }
 

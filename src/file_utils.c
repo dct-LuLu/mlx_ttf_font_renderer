@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   file_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaubry-- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 13:35:00 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/05/15 10:28:51 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/05/28 02:22:44 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-#include <fcntl.h>
-#include "libft.h"
-#include "file_utils.h"
 #include "error_handler.h"
+#include "file_utils.h"
+#include "libft.h"
+#include <fcntl.h>
+#include <stdlib.h>
 
 static int	file_len(const char *path, size_t *total)
 {
@@ -53,10 +53,12 @@ int	load_file(const char *path, t_buffer **buf)
 		return (error(errno, ": load_file data"));
 	fd = open(path, O_RDONLY);
 	if (fd == -1)
-		return (close(fd), error(errno, ": load_file %s", path));//close and errno
+		return (close(fd), error(errno, ": load_file %s", path));
+			// close and errno
 	ret = read(fd, (*buf)->data, (*buf)->size);
 	if ((size_t)ret != (*buf)->size)
-		return (close(fd), error(ERR_READ_FILE, ": load_file %s %d %d", path, ret, (*buf)->size));
+		return (close(fd), error(ERR_READ_FILE, ": load_file %s %d %d", path,
+				ret, (*buf)->size));
 	return (0);
 }
 

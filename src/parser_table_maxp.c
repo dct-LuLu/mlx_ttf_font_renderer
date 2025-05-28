@@ -3,17 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   parser_table_maxp.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaubry-- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 15:53:48 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/05/15 15:58:21 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/05/28 02:24:46 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser_font_ttf.h"
-#include "libft.h"
 #include "file_utils.h"
-
+#include "libft.h"
+#include "parser_font_ttf.h"
 
 static void	debug_table_maxp(t_maxp_table maxp)
 {

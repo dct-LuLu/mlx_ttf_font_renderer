@@ -6,15 +6,13 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 17:41:23 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/05/26 12:36:41 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/05/28 02:24:33 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser_font_ttf.h"
-#include "libft.h"
 #include "file_utils.h"
-
-
+#include "libft.h"
+#include "parser_font_ttf.h"
 
 static void	debug_table_glyf(t_glyf_table glyf, size_t i)
 {
@@ -23,7 +21,7 @@ static void	debug_table_glyf(t_glyf_table glyf, size_t i)
 	printf("\t\tpoint_count: %u\n", glyf.point_count);
 	if (glyf.header->number_of_contours == -1)
 		debug_glyf_component(*(glyf.component));
-	//printf("\t\tend_pts[0]: %u\n", glyf.end_pts[0]);
+	// printf("\t\tend_pts[0]: %u\n", glyf.end_pts[0]);
 	printf("\t}\n");
 }
 
@@ -51,7 +49,8 @@ static ssize_t	get_glyf_offset(t_ttf_font *font, uint16_t glyf_index)
 	return (glyf_offset);
 }
 
-static int	parse_table_glyf(t_glyf_table **glyf, t_ttf_font *font, t_buffer *buf, uint16_t glyf_index)
+static int	parse_table_glyf(t_glyf_table **glyf, t_ttf_font *font,
+		t_buffer *buf, uint16_t glyf_index)
 {
 	const ssize_t	glyfs_table_offset = get_table_offset(font, GLYF_TAG);
 	const ssize_t	glyf_offset = get_glyf_offset(font, glyf_index);
