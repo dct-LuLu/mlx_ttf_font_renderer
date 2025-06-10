@@ -66,6 +66,7 @@ int						draw_routine(t_env *env);
 int						on_keypress(int keysym, t_env *env);
 int						mouse_handler(int mousecode, int x, int y, t_env *env);
 
+t_vec2	new_screen_pt(t_contour *contour, int x, int y);
 t_vec2					transform_coordinate(t_env *env, t_vec2 glyph_pos,
 							t_vec2 base_pos);
 t_vec2					apply_transform(t_vec2 point, t_glyf_component *comp);

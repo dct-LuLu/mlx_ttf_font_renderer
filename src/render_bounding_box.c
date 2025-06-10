@@ -13,48 +13,32 @@
 #include "font_renderer.h"
 
 /*
-t_vec2	new_screen_pt(t_params *params, int x, int y, t_glyf_component *comp)
-{
-	t_vec2	pt;
-	t_vec2	transformed;
-	t_vec2	screen;
-	
-	pt = new_vec2(x, y);
-	if (comp)
-	transformed = apply_transform(pt, comp);
-	screen = transform_coordinate(params->env, transformed, params->pos);
-	return (screen);
-}
+	Draw the glyph max bounding box
 */
-
 void	draw_transformed_bounding_box(t_contour *contour, int scolor)
 {
 	t_vec2			corners[4];
-	t_env			*env;
 	t_glyf_header	*header;
-	t_vec2			pos;
 	int				color;
 
-	env = contour->env;
 	header = contour->glyf->header;
-	pos = contour->pos;
 	if (scolor == -1)
 		color = contour->color;
 	else
 		color = scolor;
-	corners[0] = transform_coordinate(env, apply_transform(new_vec2(header->x_min, header->y_min), contour->transform), pos);
-	corners[1] = transform_coordinate(env, apply_transform(new_vec2(header->x_max, header->y_max), contour->transform), pos);
-	corners[2] = transform_coordinate(env, apply_transform(new_vec2(header->x_max, header->y_min), contour->transform), pos);
-	corners[3] = transform_coordinate(env, apply_transform(new_vec2(header->x_min, header->y_max), contour->transform), pos);
-	ft_mlx_line_put(&env->mlx->img, corners[0], corners[2], color);
-	ft_mlx_line_put(&env->mlx->img, corners[0], corners[3], color);
-	ft_mlx_line_put(&env->mlx->img, corners[1], corners[2], color);
-	ft_mlx_line_put(&env->mlx->img, corners[1], corners[3], color);
+	corners[0] = new_screen_pt(contour, header->x_min, header->y_min);
+	corners[1] = new_screen_pt(contour, header->x_max, header->y_max);
+	corners[2] = new_screen_pt(contour, header->x_max, header->y_min);
+	corners[3] = new_screen_pt(contour, header->x_min, header->y_max);
+	ft_mlx_line_put(&contour->env->mlx->img, corners[0], corners[2], color);
+	ft_mlx_line_put(&contour->env->mlx->img, corners[0], corners[3], color);
+	ft_mlx_line_put(&contour->env->mlx->img, corners[1], corners[2], color);
+	ft_mlx_line_put(&contour->env->mlx->img, corners[1], corners[3], color);
 }
 
-/**
- * @brief Draw the font-wide max bounding box
- */
+/*
+	Draw the font-wide max bounding box
+*/
 void	draw_max_bounding_box(t_contour *contour, int color)
 {
 	t_vec2			corners[4];

@@ -43,6 +43,18 @@ t_vec2	apply_transform(t_vec2 point, t_glyf_component *comp)
 	return (result);
 }
 
+t_vec2	new_screen_pt(t_contour *contour, int x, int y)
+{
+	t_vec2	pt;
+	t_vec2	transformed;
+	t_vec2	screen;
+	
+	pt = new_vec2(x, y);
+	transformed = apply_transform(pt, contour->transform);
+	screen = transform_coordinate(contour->env, transformed, contour->pos);
+	return (screen);
+}
+
 /**
  * @brief Calculate component position with offsets and scaling
  */
