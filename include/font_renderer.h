@@ -24,15 +24,6 @@
 
 # define ON_CURVE 0x01
 
-typedef struct s_contour
-{
-	t_glyf_table		*glyf;
-	int					idx;
-	t_vec2				pos;
-	int					color;
-	t_glyf_component	*transform;//?
-	t_env				*env;
-}						t_contour;
 
 typedef struct s_curve_params
 {
@@ -59,14 +50,16 @@ typedef struct s_env
 	int					view_mode;
 }						t_env;
 
-typedef struct s_glyf_params
+typedef struct s_contour
 {
+	t_glyf_table		*glyf;
+	int					glyf_idx;
+	int					idx;
 	t_vec2				pos;
 	int					color;
-	t_glyf_table		*glyf;
-	size_t				glyf_idx;
+	t_glyf_component	*transform;//?
 	t_env				*env;
-}						t_glyf_params;
+}						t_contour;
 
 void					*renderer_mainloop(t_env *env);
 int						draw_routine(t_env *env);
@@ -81,8 +74,7 @@ t_vec2					get_component_position(t_vec2 base_pos,
 
 void					draw_glyph_outline(t_contour *contour);
 
-void					draw_curve_from_on_curve(t_env *env,
-							t_glyf_table *glyph, int start_idx,
+void					draw_curve_from_on_curve(t_contour *contour, int start_idx,
 							t_curve_params *params);
 
 void					draw_curve_sequence(t_env *env, t_glyf_table *glyph,
@@ -95,7 +87,7 @@ void					draw_max_bounding_box(t_contour *contour, int color);
 
 int						has_on_curve_points(t_glyf_table *glyph, int start_idx,
 							int end_idx);
-void					draw_all_off_curve_contour(t_contour *contour t_curve_params *params);
+void					draw_all_off_curve_contour(t_contour *contour, t_curve_params *params);
 
 void					free_env(t_env *env);
 #endif // FONT_RENDERER_H

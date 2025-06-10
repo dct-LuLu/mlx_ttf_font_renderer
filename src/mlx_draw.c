@@ -18,55 +18,55 @@
 void	draw_glyph_grid(t_env *env, int grid_cols, float cell_width,
 		float cell_height)
 {
-	size_t	glyph_index;
-	t_vec2	cell_pos;
-	int		row;
-	int		col;
+	t_contour	contour;
+	int			row;
+	int			col;
 
-	glyph_index = 0;
-	while (glyph_index < env->font->maxp->num_glyphs)
+	ft_bzero(&contour, sizeof(t_contour));
+	contour.env = env;
+	contour.color = WHITE;
+	while (contour.glyf_idx < env->font->maxp->num_glyphs)
 	{
-		row = glyph_index / grid_cols;
-		col = glyph_index % grid_cols;
-		// Fixed cell position - always at top-left corner
-		cell_pos = new_vec2(col * cell_width, row * cell_height);
-		// Draw both bounding boxes
+		row = contour.glyf_idx / grid_cols;
+		col = contour.glyf_idx % grid_cols;
+		contour.pos = new_vec2(col * cell_width, row * cell_height);
 		if (DEBUG)
-			draw_max_bounding_box(env, cell_pos, RED);
-				// Red for max bounding box
-		draw_glyph_outline(env, glyph_index, cell_pos, WHITE);
-		glyph_index++;
+			draw_max_bounding_box(&contour, RED);
+		draw_glyph_outline(&contour);
+		contour.glyf_idx++;
 	}
 }
 
 void	draw_important_characters(t_env *env)
 {
-	char	important[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-	size_t	i;
-	int		cols;
-	float	cell_width;
-	float	cell_height;
-	int		row;
-	int		col;
-	t_vec2	pos;
-	size_t	idx;
-		char str[16];
+	char		important[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+	t_contour	contour;
+	size_t		i;
+	int			cols;
+	float		cell_width;
+	float		cell_height;
+	int			row;
+	int			col;
+	char		str[16];
 
 	cols = 16;
 	cell_width = abs(env->font->head->x_min) + env->font->head->x_max;
 	cell_height = abs(env->font->head->y_min) + env->font->head->y_max;
 	i = 0;
+	ft_bzero(&contour, sizeof(t_contour));
+	contour.env = env;
+	contour.color = WHITE;
 	while (important[i])
 	{
 		// size_t glyph_index = get_glyph_index(env->font, i);
 		row = i / cols;
 		col = i % cols;
-		pos = new_vec2(col * cell_width, row * cell_height);
-		idx = get_glyph_index(env->font, important[i]);
-		draw_max_bounding_box(env, pos, RED);
-		draw_glyph_outline(env, idx, pos, WHITE);
+		contour.pos = new_vec2(col * cell_width, row * cell_height);
+		contour.glyf_idx = get_glyph_index(env->font, important[i]);
+		draw_max_bounding_box(&contour, RED);
+		draw_glyph_outline(&contour);
 		// Draw index number for debugging
-		snprintf(str, 16, "%zu", idx);
+		snprintf(str, 16, "%zu", (size_t)contour.glyf_idx);
 		i++;
 	}
 }
