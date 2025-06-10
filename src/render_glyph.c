@@ -30,20 +30,13 @@ static t_curve_params	init_curve_params(int start_idx, int end_idx)
 static void	draw_straight_segment(t_contour *contour, int curr_idx,
 		int next_idx)
 {
-	t_vec2	curr_pt;
-	t_vec2	next_pt;
-	t_vec2	screen_curr;
-	t_vec2	screen_next;
+	t_vec2	pt[2];
 
-	curr_pt = new_vec2(contour->glyf->x_coordinates[curr_idx],
-			contour->glyf->y_coordinates[curr_idx]);
-	next_pt = new_vec2(contour->glyf->x_coordinates[next_idx],
-			contour->glyf->y_coordinates[next_idx]);
-	curr_pt = apply_transform(curr_pt, contour->transform);
-	next_pt = apply_transform(next_pt, contour->transform);
-	screen_curr = transform_coordinate(contour->env, curr_pt, contour->pos);
-	screen_next = transform_coordinate(contour->env, next_pt, contour->pos);
-	ft_mlx_line_put(&contour->env->mlx->img, screen_curr, screen_next, contour->color);
+	pt[0] = new_screen_pt(contour, contour->glyf->x_coordinates[curr_idx],
+		contour->glyf->y_coordinates[curr_idx]);
+	pt[1] = new_screen_pt(contour, contour->glyf->x_coordinates[next_idx],
+		contour->glyf->y_coordinates[next_idx]);
+	ft_mlx_line_put(&contour->env->mlx->img, pt[0], pt[1], contour->color);
 }
 
 /**
