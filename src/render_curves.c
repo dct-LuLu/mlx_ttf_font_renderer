@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 16:41:38 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/05/28 02:24:51 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/06/10 20:58:11 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,8 +135,7 @@ int	has_on_curve_points(t_glyf_table *glyph, int start_idx, int end_idx)
 	return (0);
 }
 
-void	draw_all_off_curve_contour(t_env *env, t_glyf_table *glyph,
-		t_curve_params *params)
+void	draw_all_off_curve_contour(t_contour *contour, t_curve_params *params)
 {
 	int		curr_idx;
 	t_vec2	start_pt;
@@ -146,14 +145,14 @@ void	draw_all_off_curve_contour(t_env *env, t_glyf_table *glyph,
 	curr_idx = params->contour_start;
 	while (curr_idx <= params->contour_end)
 	{
-		control_pt = get_transformed_point(glyph, curr_idx, params->transform);
-		start_pt = create_implied_point(get_transformed_point(glyph,
+		control_pt = get_transformed_point(contour->glyf, curr_idx, contour->transform);
+		start_pt = create_implied_point(get_transformed_point(contour->glyf,
 					(curr_idx == params->contour_start) ? params->contour_end : curr_idx
-					- 1, params->transform), control_pt);
-		end_pt = create_implied_point(control_pt, get_transformed_point(glyph,
+					- 1, contour->transform), control_pt);
+		end_pt = create_implied_point(control_pt, get_transformed_point(contour->glyf,
 					(curr_idx == params->contour_end) ? params->contour_start : curr_idx
-					+ 1, params->transform));
-		draw_curve_segment(env, start_pt, control_pt, end_pt, params);
+					+ 1, contour->transform));
+		draw_curve_segment(contour->env, start_pt, control_pt, end_pt, params);
 		curr_idx++;
 	}
 }
