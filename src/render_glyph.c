@@ -15,8 +15,7 @@
 /**
  * @brief Initialize curve parameters structure
  */
-static t_curve_params	init_curve_params(t_contour *contour, int start_idx,
-		int end_idx)
+static t_curve_params	init_curve_params(int start_idx, int end_idx)
 {
 	t_curve_params	params;
 
@@ -29,7 +28,7 @@ static t_curve_params	init_curve_params(t_contour *contour, int start_idx,
  * @brief Draw straight line between two on-curve points
  */
 static void	draw_straight_segment(t_contour *contour, int curr_idx,
-		int next_idx, t_curve_params *params)
+		int next_idx)
 {
 	t_vec2	curr_pt;
 	t_vec2	next_pt;
@@ -61,9 +60,9 @@ static void	process_contour_point(t_contour *contour, int curr_idx,
 	if (curr_idx != params->contour_end)
 		next_idx = curr_idx + 1;
 	if (contour->glyf->flags[next_idx] & ON_CURVE)
-		draw_straight_segment(contour, curr_idx, next_idx, params);
+		draw_straight_segment(contour, curr_idx, next_idx);
 	else
-		draw_curve_from_on_curve(contour->env, contour->glyf, curr_idx, params);
+		draw_curve_from_on_curve(contour, curr_idx, params);
 }
 
 /**
@@ -80,7 +79,7 @@ static void	draw_contour(t_contour *contour)
 	if (contour->idx != 0)
 		start_idx = contour->glyf->end_pts[contour->idx - 1] + 1;
 	end_idx = contour->glyf->end_pts[contour->idx];
-	params = init_curve_params(contour, start_idx, end_idx);
+	params = init_curve_params(start_idx, end_idx);
 	if (!has_on_curve_points(contour->glyf, start_idx, end_idx))
 	{
 		draw_all_off_curve_contour(contour, &params);
@@ -117,20 +116,22 @@ static void	draw_simple_glyph(t_contour *contour)
 static void	draw_composite_glyph(t_contour *contour)
 {
 	t_glyf_component	*comp;
+	t_contour			comp_contour;
 
 	if (!contour->glyf || !contour->glyf->component)
 		return ;
 	comp = contour->glyf->component;
+	ft_memcpy(&comp_contour, contour, sizeof(t_contour));
 	while (comp)
 	{
 		if (!(comp->glyph_index >= contour->env->font->maxp->num_glyphs
 			|| !contour->env->font->glyfs[comp->glyph_index]))
 		{
-			contour->glyf = contour->env->font->glyfs[comp->glyph_index];
-			contour->pos = get_component_position(contour->pos, comp);
-			contour->transform = comp;
-			if (contour->glyf->header->number_of_contours >= 0)
-				draw_simple_glyph(contour);
+			comp_contour.glyf = contour->env->font->glyfs[comp->glyph_index];
+			comp_contour.pos = get_component_position(contour->pos, comp);
+			comp_contour.transform = comp;
+			if (comp_contour.glyf->header->number_of_contours >= 0)
+				draw_simple_glyph(&comp_contour);
 		}
 		comp = comp->next;
 	}
@@ -143,11 +144,13 @@ void	draw_glyph_outline(t_contour *contour)
 {
 	t_glyf_table	*glyph;
 
-	if (contour->idx >= contour->env->font->maxp->num_glyphs)
+	if (contour->glyf_idx >= contour->env->font->maxp->num_glyphs)
 		return ;
-	glyph = contour->env->font->glyfs[contour->idx];
+	glyph = contour->env->font->glyfs[contour->glyf_idx];
 	if (!glyph)
 		return ;
+	contour->glyf = glyph;
+	printf("glyf:%p, idx:%d, pos:%d %d, color:%d, transform:%p, env:%p\n", contour->glyf, contour->idx, contour->pos.x, contour->pos.y, contour->color, contour->transform, contour->env);
 	if (DEBUG)
 		draw_transformed_bounding_box(contour, GREEN);
 	if (glyph->header->number_of_contours == -1)

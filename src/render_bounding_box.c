@@ -42,10 +42,10 @@ void	draw_transformed_bounding_box(t_contour *contour, int scolor)
 		color = contour->color;
 	else
 		color = scolor;
-	corners[0] = transform_coordinate(env, new_vec2(header->x_min, header->y_min), pos);
-	corners[1] = transform_coordinate(env, new_vec2(header->x_max, header->y_max), pos);
-	corners[2] = transform_coordinate(env, new_vec2(header->x_max, header->y_min), pos);
-	corners[3] = transform_coordinate(env, new_vec2(header->x_min, header->y_max), pos);
+	corners[0] = transform_coordinate(env, apply_transform(new_vec2(header->x_min, header->y_min), contour->transform), pos);
+	corners[1] = transform_coordinate(env, apply_transform(new_vec2(header->x_max, header->y_max), contour->transform), pos);
+	corners[2] = transform_coordinate(env, apply_transform(new_vec2(header->x_max, header->y_min), contour->transform), pos);
+	corners[3] = transform_coordinate(env, apply_transform(new_vec2(header->x_min, header->y_max), contour->transform), pos);
 	ft_mlx_line_put(&env->mlx->img, corners[0], corners[2], color);
 	ft_mlx_line_put(&env->mlx->img, corners[0], corners[3], color);
 	ft_mlx_line_put(&env->mlx->img, corners[1], corners[2], color);
@@ -61,7 +61,6 @@ void	draw_max_bounding_box(t_contour *contour, int color)
 	t_env			*env;
 	t_head_table	*head;
 	t_vec2			pos;
-	int				color;
 
 	env = contour->env;
 	head = env->font->head;
