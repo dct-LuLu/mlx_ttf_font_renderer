@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 23:07:22 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/06/11 18:00:56 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/06/11 23:33:32 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,26 @@ typedef struct s_contour
 	t_glyf_component	*transform;//? sure
 	t_env				*env;
 }						t_contour;
+
+typedef struct s_edge
+{
+	int				ymin;
+	int				ymax;
+	float			x_current;
+	float			dx;
+	int				winding;
+	struct s_edge	*next;
+}						t_edge;
+
+typedef struct s_fill_context
+{
+	t_glyf_table		*glyf;
+	t_edge				*aet;
+	int					scanline_y;
+	int					fill_color;
+	t_vec2				position;
+	t_glyf_component	*transform;
+}						t_fill_context;
 
 void	*renderer_mainloop(t_env *env);
 int		draw_routine(t_env *env);

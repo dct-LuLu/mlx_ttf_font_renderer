@@ -6,14 +6,13 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 16:20:40 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/06/11 17:57:54 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/06/12 00:29:58 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "font_renderer.h"
 
 t_vec2	transform_coordinate(t_env *env, t_vec2 glyph_pos, t_vec2 base_pos);
-t_vec2	apply_transform(t_vec2 point, t_glyf_component *comp);
 
 /**
  * @brief Get next index in contour with wrap-around

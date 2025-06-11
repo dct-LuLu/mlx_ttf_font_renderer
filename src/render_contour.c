@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 16:26:33 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/06/11 18:00:50 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/06/12 00:01:58 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ static void	draw_straight_segment(t_contour *contour, int curr_idx,
 {
 	t_vec2	pt[2];
 
+	pt[0] = new_vec2(0, 0);
+	pt[1] = new_vec2(0, 0);
 	pt[0] = new_screen_pt(contour, contour->glyf->x_coordinates[curr_idx],
 			contour->glyf->y_coordinates[curr_idx]);
 	pt[1] = new_screen_pt(contour, contour->glyf->x_coordinates[next_idx],
