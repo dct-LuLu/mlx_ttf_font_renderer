@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 09:27:08 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/05/28 04:26:39 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/06/11 16:17:18 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static const char	*get_err_msg(enum e_error err)
 		return (ERR_MSG_FILE_EXT);
 	else if (err == ERR_CORRUPTED_FONT)
 		return (ERR_MSG_CORRUPTED_FONT);
-	else if (err == ERR_offset_subtable)
+	else if (err == ERR_OFFSET_SUBTABLE)
 		return (ERR_MSG_OFFSET_SUBTABLE);
 	else if (err == ERR_FONT_TYPE)
 		return (ERR_MSG_FONT_TYPE);

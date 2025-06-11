@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 13:48:09 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/05/28 02:24:57 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/06/11 18:03:19 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,28 +48,9 @@ t_vec2	new_screen_pt(t_contour *contour, int x, int y)
 	t_vec2	pt;
 	t_vec2	transformed;
 	t_vec2	screen;
-	
+
 	pt = new_vec2(x, y);
 	transformed = apply_transform(pt, contour->transform);
 	screen = transform_coordinate(contour->env, transformed, contour->pos);
 	return (screen);
-}
-
-/**
- * @brief Calculate component position with offsets and scaling
- */
-t_vec2	get_component_position(t_vec2 base_pos, t_glyf_component *comp)
-{
-	t_vec2	comp_pos;
-	t_vec2	offset;
-
-	comp_pos = base_pos;
-	if (!comp || !(comp->flags & ARGS_ARE_XY_VALUES))
-		return (comp_pos);
-	offset = new_vec2(comp->arg1, comp->arg2);
-	if (comp->flags & SCALED_COMPONENT_OFFSET)
-		offset = apply_transform(offset, comp);
-	comp_pos.x += offset.x;
-	comp_pos.y += -offset.y;
-	return (comp_pos);
 }

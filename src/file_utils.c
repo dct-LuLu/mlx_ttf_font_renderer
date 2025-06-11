@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 13:35:00 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/05/28 02:22:44 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/06/11 13:52:17 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,10 @@ int	load_file(const char *path, t_buffer **buf)
 		return (error(errno, ": load_file data"));
 	fd = open(path, O_RDONLY);
 	if (fd == -1)
-		return (close(fd), error(errno, ": load_file %s", path));
-			// close and errno
+	{
+		ret = errno;
+		return (close(fd), error(ret, ": load_file %s", path));
+	}
 	ret = read(fd, (*buf)->data, (*buf)->size);
 	if ((size_t)ret != (*buf)->size)
 		return (close(fd), error(ERR_READ_FILE, ": load_file %s %d %d", path,

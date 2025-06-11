@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 16:02:23 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/05/28 02:24:41 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/06/11 11:35:08 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,19 @@ static void	endian_swap_table_hmtx(t_hmtx_table *hmtx)
 	}
 }
 
+static int	fill_lsb_table(t_ttf_font *font, t_hmtx_table *hmtx, t_buffer *buf)
+{
+	hmtx->num_lsbs = font->maxp->num_glyphs - hmtx->num_lhmtx;
+	if (hmtx->num_lsbs > 0)
+	{
+		hmtx->lsbs = ft_calloc(sizeof(int16_t), hmtx->num_lsbs);
+		if (!hmtx->lsbs)
+			return (1);
+		read_bytes(buf, hmtx->lsbs, hmtx->num_lsbs * sizeof(int16_t));
+	}
+	return (0);
+}
+
 int	parse_table_hmtx(t_ttf_font *font, t_buffer *buf)
 {
 	const ssize_t	hmtx_offset = get_table_offset(font, HMTX_TAG);
@@ -80,14 +93,8 @@ int	parse_table_hmtx(t_ttf_font *font, t_buffer *buf)
 		return (error(errno, "hmtx->h_metrics"));
 	buf->pos = hmtx_offset;
 	read_bytes(buf, hmtx->lhmtx, hmtx->num_lhmtx * sizeof(t_lhmtx));
-	hmtx->num_lsbs = font->maxp->num_glyphs - hmtx->num_lhmtx;
-	if (hmtx->num_lsbs > 0)
-	{
-		hmtx->lsbs = ft_calloc(sizeof(int16_t), hmtx->num_lsbs);
-		if (!hmtx->lsbs)
-			return (error(errno, "hmtx->left_side_bearing"));
-		read_bytes(buf, hmtx->lsbs, hmtx->num_lsbs * sizeof(int16_t));
-	}
+	if (fill_lsb_table(font, hmtx, buf) != 0)
+		return (error(errno, "hmtx->left_side_bearing"));
 	endian_swap_table_hmtx(hmtx);
 	if (DEBUG)
 		debug_table_hmtx(*hmtx);

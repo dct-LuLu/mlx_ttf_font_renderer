@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 15:29:45 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/05/28 05:53:32 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/06/11 16:19:30 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ static void	endian_swap_offset_subtable(t_offset_subtable *ot)
 	ot->search_range = be16toh(ot->search_range);
 	ot->entry_selector = be16toh(ot->entry_selector);
 	ot->range_shift = be16toh(ot->range_shift);
-	// verify values snft, and possible tables
 }
 
 /*
@@ -47,5 +46,8 @@ int	read_subtable_offset(t_ttf_font *font)
 	endian_swap_offset_subtable(font->ot);
 	if (DEBUG)
 		debug_offset_subtable(*(font->ot));
+	if (font->ot->sfnt_version != VALID_SFNT_VER)
+		return (error(ERR_FONT_TYPE, "current sfnt version: %d",
+				font->ot->sfnt_version));
 	return (0);
 }

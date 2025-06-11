@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 20:29:39 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/05/28 02:23:52 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/06/11 13:24:58 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ static int	parse_glyf_flags(t_glyf_table *glyf, t_buffer *buf)
 	i = 0;
 	while (i < glyf->point_count)
 	{
-		repeat_count = 1;
 		read_bytes(buf, &flag, 1);
 		glyf->flags[i] = flag;
 		if (flag & REPEAT_FLAG)
@@ -46,8 +45,7 @@ static int	parse_glyf_flags(t_glyf_table *glyf, t_buffer *buf)
 
 static void	parse_glyf_x_coordinates(t_glyf_table *glyf, t_buffer *buf)
 {
-	int16_t	delta16;
-	uint8_t	delta8;
+	int16_t	delta[2];
 	int16_t	x;
 	size_t	i;
 
@@ -57,17 +55,17 @@ static void	parse_glyf_x_coordinates(t_glyf_table *glyf, t_buffer *buf)
 	{
 		if (glyf->flags[i] & X_SHORT)
 		{
-			read_bytes(buf, &delta8, 1);
+			read_bytes(buf, &delta[1], 1);
 			if (glyf->flags[i] & X_IS_POSITIVE)
-				x += delta8;
+				x += delta[1];
 			else
-				x -= delta8;
+				x -= delta[1];
 		}
 		else if (!(glyf->flags[i] & X_IS_SAME))
 		{
-			read_bytes(buf, &delta16, 2);
-			delta16 = be16toh(delta16);
-			x += delta16;
+			read_bytes(buf, &delta[0], 2);
+			delta[0] = be16toh(delta[0]);
+			x += delta[0];
 		}
 		glyf->x_coordinates[i] = x;
 		i++;
@@ -76,8 +74,7 @@ static void	parse_glyf_x_coordinates(t_glyf_table *glyf, t_buffer *buf)
 
 static void	parse_glyf_y_coordinates(t_glyf_table *glyf, t_buffer *buf)
 {
-	int16_t	delta16;
-	uint8_t	delta8;
+	int16_t	delta[2];
 	int16_t	y;
 	size_t	i;
 
@@ -87,17 +84,17 @@ static void	parse_glyf_y_coordinates(t_glyf_table *glyf, t_buffer *buf)
 	{
 		if (glyf->flags[i] & Y_SHORT)
 		{
-			read_bytes(buf, &delta8, 1);
+			read_bytes(buf, &delta[1], 1);
 			if (glyf->flags[i] & Y_IS_POSITIVE)
-				y += delta8;
+				y += delta[1];
 			else
-				y -= delta8;
+				y -= delta[1];
 		}
 		else if (!(glyf->flags[i] & Y_IS_SAME))
 		{
-			read_bytes(buf, &delta16, 2);
-			delta16 = be16toh(delta16);
-			y += delta16;
+			read_bytes(buf, &delta[0], 2);
+			delta[0] = be16toh(delta[0]);
+			y += delta[0];
 		}
 		glyf->y_coordinates[i] = y;
 		i++;
@@ -137,13 +134,10 @@ int	parse_simple_glyf(t_glyf_table *glyf, t_buffer *buf)
 	glyf->point_count = last_point + 1;
 	read_bytes(buf, &glyf->instruction_length, SKIP_INSTRUCTION_BYTES);
 	glyf->instruction_length = be16toh(glyf->instruction_length);
-	if (glyf->instruction_length > 0) // vrm necessaire de check la taille ...?
-	{
-		glyf->instructions = ft_calloc(glyf->instruction_length, 1);
-		if (!glyf->instructions)
-			return (error(errno, "glyf instructions"));
-		read_bytes(buf, glyf->instructions, glyf->instruction_length);
-	}
+	glyf->instructions = ft_calloc(glyf->instruction_length, 1);
+	if (!glyf->instructions)
+		return (error(errno, "glyf instructions"));
+	read_bytes(buf, glyf->instructions, glyf->instruction_length);
 	if (parse_glyf_flags(glyf, buf))
 		return (1);
 	return (parse_glyf_coordinates(glyf, buf));

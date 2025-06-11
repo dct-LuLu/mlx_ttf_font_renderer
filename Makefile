@@ -6,7 +6,7 @@
 #    By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/11 10:16:04 by jaubry--          #+#    #+#              #
-#    Updated: 2025/05/26 16:02:45 by jaubry--         ###   ########.fr        #
+#    Updated: 2025/06/11 16:27:16 by jaubry--         ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -51,16 +51,18 @@ vpath %.d $(DEPDIR) $(LIBFTDIR)/$(DEPDIR)
 SRCS		= main.c parser_font_ttf.c \
 			  parser_subtable_offset.c parser_subtable_entry.c \
 			  parser_table_head.c \
-			  parser_table_cmap.c \
+			  parser_table_cmap.c parser_table_cmap_utils.c \
 			  parser_table_maxp.c \
 			  parser_table_hhea.c \
 			  parser_table_hmtx.c \
 			  parser_table_loca.c \
 			  parser_table_glyf.c parser_table_glyf_header.c \
 			  parser_table_glyf_simple.c parser_table_glyf_composite.c parser_table_glyf_utils.c \
-			  render_bounding_box.c render_glyph.c render_utils.c render_curves.c \
+			  render_bounding_box.c render_glyph.c render_contour.c render_utils.c \
+			  render_curves.c render_curves_utils.c \
 			  tag_utils.c \
-			  init_utils.c free_utils.c \
+			  init_utils.c \
+			  free_utils1.c free_utils2.c free_utils3.c \
 			  file_utils.c \
 			  error_handler.c \
 			  img_utils.c mlx_draw.c mlx_draw_utils.c mlx_font_renderer.c mlx_draw_curves.c \
