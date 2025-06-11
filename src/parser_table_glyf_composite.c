@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 13:19:11 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/05/28 04:19:23 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/06/11 13:32:23 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,27 @@ static float	read_f2dot14(t_buffer *buf)
 	return ((float)value / 16384.0f);
 }
 
+static void	continue_parse_component(t_glyf_component *comp, t_buffer *buf)
+{
+	if (comp->flags & HAS_SCALE)
+	{
+		comp->transform[0] = read_f2dot14(buf);
+		comp->transform[3] = comp->transform[0];
+	}
+	else if (comp->flags & HAS_XY_SCALE)
+	{
+		comp->transform[0] = read_f2dot14(buf);
+		comp->transform[3] = read_f2dot14(buf);
+	}
+	else if (comp->flags & HAS_2X2_MATRIX)
+	{
+		comp->transform[0] = read_f2dot14(buf);
+		comp->transform[1] = read_f2dot14(buf);
+		comp->transform[2] = read_f2dot14(buf);
+		comp->transform[3] = read_f2dot14(buf);
+	}
+}
+
 static int	parse_component(t_glyf_component **comp, t_buffer *buf)
 {
 	int16_t	args16[2];
@@ -48,15 +69,12 @@ static int	parse_component(t_glyf_component **comp, t_buffer *buf)
 	*comp = ft_calloc(1, sizeof(t_glyf_component));
 	if (!*comp)
 		return (error(errno, "t_glyf_component"));
-	// init transform matrix to identify;
 	(*comp)->transform[0] = 1.0f;
 	(*comp)->transform[3] = 1.0f;
-	// read flags and idx
 	read_bytes(buf, &(*comp)->flags, 2);
 	(*comp)->flags = be16toh((*comp)->flags);
 	read_bytes(buf, &(*comp)->glyph_index, 2);
 	(*comp)->glyph_index = be16toh((*comp)->glyph_index);
-	// Read arguments based on flags
 	if ((*comp)->flags & ARG1_ARG2_ARE_WORDS)
 	{
 		read_bytes(buf, args16, 4);
@@ -69,25 +87,7 @@ static int	parse_component(t_glyf_component **comp, t_buffer *buf)
 		(*comp)->arg1 = args8[0];
 		(*comp)->arg2 = args8[1];
 	}
-	// read transformation data if present
-	if ((*comp)->flags & HAS_SCALE)
-	{
-		(*comp)->transform[0] = read_f2dot14(buf);
-		(*comp)->transform[3] = (*comp)->transform[0];
-	}
-	else if ((*comp)->flags & HAS_XY_SCALE)
-	{
-		(*comp)->transform[0] = read_f2dot14(buf);
-		(*comp)->transform[3] = read_f2dot14(buf);
-	}
-	else if ((*comp)->flags & HAS_2X2_MATRIX)
-	{
-		(*comp)->transform[0] = read_f2dot14(buf);
-		(*comp)->transform[1] = read_f2dot14(buf);
-		(*comp)->transform[2] = read_f2dot14(buf);
-		(*comp)->transform[3] = read_f2dot14(buf);
-	}
-	return (0);
+	return (continue_parse_component(*comp, buf), 0);
 }
 
 int	parse_composite_glyf(t_glyf_table *glyf, t_buffer *buf)
@@ -116,7 +116,5 @@ int	parse_composite_glyf(t_glyf_table *glyf, t_buffer *buf)
 			read_bytes(buf, glyf->instructions, glyf->instruction_length);
 		}
 	}
-	if (!glyf->component)
-		printf("#################why\n");
 	return (0);
 }

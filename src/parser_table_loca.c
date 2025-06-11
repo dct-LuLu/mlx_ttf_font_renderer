@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 17:47:15 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/05/28 04:17:21 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/06/11 14:37:37 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static void	endian_swap_table_loca(t_loca_table *loca, uint16_t num_glyphs)
 	uint32_t	*offsets32;
 	size_t		i;
 
-	if (loca->format == 0) // 16-bit offsets
+	if (loca->format == 0)
 	{
 		offsets16 = (uint16_t *)loca->offsets;
 		i = 0;
@@ -53,7 +53,7 @@ static void	endian_swap_table_loca(t_loca_table *loca, uint16_t num_glyphs)
 			i++;
 		}
 	}
-	else // 32-bit offsets
+	else
 	{
 		offsets32 = (uint32_t *)loca->offsets;
 		i = 0;
@@ -65,33 +65,41 @@ static void	endian_swap_table_loca(t_loca_table *loca, uint16_t num_glyphs)
 	}
 }
 
+static int	continue_parse_table_loca(t_ttf_font *font,
+		t_buffer *buf, const ssize_t loca_offset)
+{
+	const uint32_t	num_offsets = font->maxp->num_glyphs + 1;
+
+	font->loca->format = font->head->index_to_loc_format;
+	buf->pos = loca_offset;
+	if (font->loca->format == 0)
+		font->loca->offsets = ft_calloc(num_offsets, sizeof(uint16_t));
+	else
+		font->loca->offsets = ft_calloc(num_offsets, sizeof(uint32_t));
+	if (!font->loca->offsets)
+		return (error(errno, "loca offsets allocation"));
+	if (font->loca->format == 0)
+		read_bytes(buf, font->loca->offsets, num_offsets * sizeof(uint16_t));
+	else
+		read_bytes(buf, font->loca->offsets, num_offsets * sizeof(uint32_t));
+	endian_swap_table_loca(font->loca, font->maxp->num_glyphs);
+	return (0);
+}
+
 int	parse_table_loca(t_ttf_font *font, t_buffer *buf)
 {
 	const ssize_t	loca_offset = get_table_offset(font, LOCA_TAG);
-	const uint16_t	num_glyphs = font->maxp->num_glyphs;
-	const uint32_t	num_offsets = num_glyphs + 1;
-	t_loca_table	*loca;
+	int				ret;
 
 	if (loca_offset == -1)
 		return (error(ERR_GET_OFFSET, ": loca"));
-	loca = ft_calloc(sizeof(t_loca_table), 1);
-	if (!loca)
+	font->loca = ft_calloc(sizeof(t_loca_table), 1);
+	if (!font->loca)
 		return (error(errno, "t_loca_table"));
-	loca->format = font->head->index_to_loc_format;
-	buf->pos = loca_offset;
-	if (loca->format == 0)
-		loca->offsets = ft_calloc(num_offsets, sizeof(uint16_t));
-	else
-		loca->offsets = ft_calloc(num_offsets, sizeof(uint32_t));
-	if (!loca->offsets)
-		return (error(errno, "loca offsets allocation"));
-	if (loca->format == 0)
-		read_bytes(buf, loca->offsets, num_offsets * sizeof(uint16_t));
-	else
-		read_bytes(buf, loca->offsets, num_offsets * sizeof(uint32_t));
-	endian_swap_table_loca(loca, num_glyphs);
+	ret = continue_parse_table_loca(font, buf, loca_offset);
+	if (ret)
+		return (ret);
 	if (DEBUG)
-		debug_table_loca(*loca, num_glyphs);
-	font->loca = loca;
+		debug_table_loca(*font->loca, font->maxp->num_glyphs);
 	return (0);
 }

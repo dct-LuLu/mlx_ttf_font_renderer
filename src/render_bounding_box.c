@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 13:45:29 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/06/10 20:49:35 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/06/11 11:52:01 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,10 @@ void	draw_max_bounding_box(t_contour *contour, int color)
 	env = contour->env;
 	head = env->font->head;
 	pos = contour->pos;
-	corners[0] = transform_coordinate(env, new_vec2(head->x_min, head->y_min), pos);
-	corners[1] = transform_coordinate(env, new_vec2(head->x_max, head->y_max), pos);
-	corners[2] = transform_coordinate(env, new_vec2(head->x_max, head->y_min), pos);
-	corners[3] = transform_coordinate(env, new_vec2(head->x_min, head->y_max), pos);
+	corners[0] = new_screen_pt(contour, head->x_min, head->y_min);
+	corners[1] = new_screen_pt(contour, head->x_max, head->y_max);
+	corners[2] = new_screen_pt(contour, head->x_max, head->y_min);
+	corners[3] = new_screen_pt(contour, head->x_min, head->y_max);
 	ft_mlx_line_put(&env->mlx->img, corners[0], corners[2], color);
 	ft_mlx_line_put(&env->mlx->img, corners[0], corners[3], color);
 	ft_mlx_line_put(&env->mlx->img, corners[1], corners[2], color);

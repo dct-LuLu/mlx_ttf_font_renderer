@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 09:10:13 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/05/28 04:26:39 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/06/11 16:17:09 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ typedef enum e_error
 	ERR_ARG_NUM,
 	ERR_FILE_EXT,
 	ERR_CORRUPTED_FONT,
-	ERR_offset_subtable,
+	ERR_OFFSET_SUBTABLE,
 	ERR_FONT_TYPE,
 	ERR_TABLE_ENTRIES,
 	ERR_READ_FILE,

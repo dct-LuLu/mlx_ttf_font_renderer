@@ -6,15 +6,34 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 12:39:37 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/05/28 02:23:26 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/06/11 17:59:46 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "font_renderer.h"
 
+void	draw_glyph_outline(t_contour *contour);
+
 /**
  * @brief Draw a grid of all available glyphs
  */
+
+static void	draw_char(t_env *env, char c, t_vec2 pos, int color)
+{
+	t_contour	contour;
+
+	ft_bzero(&contour, sizeof(t_contour));
+	contour.env = env;
+	contour.color = color;
+	contour.pos = pos;
+	contour.glyf_idx = get_glyph_index(env->font, c);
+	if (contour.glyf_idx >= env->font->maxp->num_glyphs)
+		return ;
+	if (DEBUG)
+		draw_max_bounding_box(&contour, RED);
+	draw_glyph_outline(&contour);
+}
+
 void	draw_glyph_grid(t_env *env, int grid_cols, float cell_width,
 		float cell_height)
 {
@@ -39,44 +58,32 @@ void	draw_glyph_grid(t_env *env, int grid_cols, float cell_width,
 
 void	draw_important_characters(t_env *env)
 {
-	char		important[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-	t_contour	contour;
+	const char	important[62] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ\
+abcdefghijklmnopqrstuvwxyz0123456789";
 	size_t		i;
 	int			cols;
 	float		cell_width;
 	float		cell_height;
-	int			row;
-	int			col;
-	char		str[16];
 
 	cols = 16;
 	cell_width = abs(env->font->head->x_min) + env->font->head->x_max;
 	cell_height = abs(env->font->head->y_min) + env->font->head->y_max;
 	i = 0;
-	ft_bzero(&contour, sizeof(t_contour));
-	contour.env = env;
-	contour.color = WHITE;
 	while (important[i])
 	{
-		// size_t glyph_index = get_glyph_index(env->font, i);
-		row = i / cols;
-		col = i % cols;
-		contour.pos = new_vec2(col * cell_width, row * cell_height);
-		contour.glyf_idx = get_glyph_index(env->font, important[i]);
-		draw_max_bounding_box(&contour, RED);
-		draw_glyph_outline(&contour);
-		// Draw index number for debugging
-		snprintf(str, 16, "%zu", (size_t)contour.glyf_idx);
+		draw_char(env, important[i],
+			new_vec2((i % cols) * cell_width, (i / cols) * cell_height), WHITE);
 		i++;
 	}
 }
 
 void	debug_character_mappings(t_env *env)
 {
-	int		base_chars[] = {'A', 'Z', 'a', 'z', '0', '9', 0};
-	int		i;
-	size_t	glyph_index;
-	size_t	idx;
+	const char	base_chars[6] = "AZaz09";
+	size_t		glyph_index;
+	size_t		idx;
+	int			i;
+	int			ch;
 
 	i = 0;
 	while (base_chars[i] != 0)
@@ -86,13 +93,15 @@ void	debug_character_mappings(t_env *env)
 			base_chars[i], glyph_index);
 		i++;
 	}
-	for (int ch = 0; ch < 128; ch++)
+	ch = 0;
+	while (ch < 128)
 	{
 		idx = get_glyph_index(env->font, ch);
 		if (idx > 0)
 		{
 			printf("ASCII %d (0x%02X) -> glyph index %zu\n", ch, ch, idx);
 		}
+		ch++;
 	}
 }
 
