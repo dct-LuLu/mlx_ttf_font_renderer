@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 20:29:39 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/06/11 13:24:58 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/06/12 19:59:49 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,15 +51,15 @@ static void	parse_glyf_x_coordinates(t_glyf_table *glyf, t_buffer *buf)
 
 	x = 0;
 	i = 0;
+	delta[1] = (uint16_t)0;
 	while (i < glyf->point_count)
 	{
 		if (glyf->flags[i] & X_SHORT)
 		{
 			read_bytes(buf, &delta[1], 1);
+			x -= delta[1];
 			if (glyf->flags[i] & X_IS_POSITIVE)
-				x += delta[1];
-			else
-				x -= delta[1];
+				x += delta[1] * 2;
 		}
 		else if (!(glyf->flags[i] & X_IS_SAME))
 		{
@@ -80,15 +80,15 @@ static void	parse_glyf_y_coordinates(t_glyf_table *glyf, t_buffer *buf)
 
 	y = 0;
 	i = 0;
+	delta[1] = (uint16_t)0;
 	while (i < glyf->point_count)
 	{
 		if (glyf->flags[i] & Y_SHORT)
 		{
 			read_bytes(buf, &delta[1], 1);
+			y -= delta[1];
 			if (glyf->flags[i] & Y_IS_POSITIVE)
-				y += delta[1];
-			else
-				y -= delta[1];
+				y += delta[1] * 2;
 		}
 		else if (!(glyf->flags[i] & Y_IS_SAME))
 		{

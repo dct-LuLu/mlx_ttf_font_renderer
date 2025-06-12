@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 12:39:37 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/06/12 00:24:14 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/06/12 16:00:38 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void	draw_glyph_grid(t_env *env, int grid_cols, float cell_width,
 
 void	draw_important_characters(t_env *env)
 {
-	const char	important[62] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ\
+	const char	important[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ\
 abcdefghijklmnopqrstuvwxyz0123456789";
 	size_t		i;
 	int			cols;
@@ -118,11 +118,11 @@ int	draw_routine(t_env *env)
 		debug_character_mappings(env);
 		debug_done = 1;
 	}
-	if (env->view_mode == 0)
+	if (env->view_mode == 1)
 		draw_glyph_grid(env, 16, abs(env->font->head->x_min)
 			+ env->font->head->x_max, abs(env->font->head->y_min)
 			+ env->font->head->y_max);
-	else if (env->view_mode == 1)
+	else if (env->view_mode == 0)
 		draw_important_characters(env);
 	mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->img.img, 0, 0);
 	return (0);
