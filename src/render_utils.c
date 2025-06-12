@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 13:48:09 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/06/12 00:19:40 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/06/12 18:42:50 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,16 @@ t_vec2	transform_coordinate(t_env *env, t_vec2 glyph_pos, t_vec2 base_pos)
 	float	x;
 	float	y;
 
+	if (env->font->head->units_per_em == 0)
+		return (new_vec2(0, 0));
 	scale = 500.0f / (float)env->font->head->units_per_em;
 	x = glyph_pos.x + base_pos.x + env->x;
 	y = -glyph_pos.y + base_pos.y + env->y;
 	x *= scale;
 	y *= scale;
-	return (new_vec2(x / env->zoom, y / env->zoom));
+	if (env->zoom == 0)
+		return (new_vec2((int)x, (int)y));
+	return (new_vec2((int)(x / env->zoom), (int)(y / env->zoom)));
 }
 
 /**
