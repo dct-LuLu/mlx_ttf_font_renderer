@@ -6,15 +6,21 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 21:52:49 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/06/13 21:39:05 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/06/14 01:38:57 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "font_renderer.h"
 
-void	fill_scanline_process(t_contour *contour, t_fill_data *fill);
-int	get_contour_winding_direction(t_contour *contour,
-	t_curve_params params);
+void	fill_scanline_process(
+			t_fill_data *fill);
+int		get_contour_winding_direction(t_contour *contour,
+			t_curve_params params);
+void	process_all_off_curve_contour(t_fill_data *fill,
+			t_contour *contour, t_curve_params *params);
+void	cleanup_fill_data(t_fill_data *fill);
+void	process_fill_contour_point(t_fill_data *fill,
+			t_contour *contour, t_curve_params *params);
 
 /*
 	Initialize fill data using glyph's bounding box
@@ -40,6 +46,8 @@ static t_fill_data	init_fill_data(t_contour *contour)
 	fill.height = fill.y_max - fill.y_min + 1;
 	fill.edge_table = ft_calloc(sizeof(t_edge *), fill.height);
 	fill.active_edges = NULL;
+	fill.env = contour->env;
+	fill.color = contour->color;
 	return (fill);
 }
 
@@ -64,27 +72,23 @@ static void	process_single_contour(t_contour *contour, t_fill_data *fill,
 		int contour_idx)
 {
 	t_curve_params	params;
-	int				curr_idx;
-	int				contour_direction;
 
 	params.contour_start = 0;
 	if (contour_idx != 0)
 		params.contour_start = contour->glyf->end_pts[contour_idx - 1] + 1;
 	params.contour_end = contour->glyf->end_pts[contour_idx];
-	contour_direction = get_contour_winding_direction(contour, params);
+	params.contour_direction = get_contour_winding_direction(contour, params);
 	if (contour_has_on_curve(contour, params))
 	{
-		curr_idx = params.contour_start;
-		while (curr_idx <= params.contour_end)
+		params.contour_idx = params.contour_start;
+		while (params.contour_idx <= params.contour_end)
 		{
-			process_fill_contour_point(fill, contour, curr_idx, &params,
-				contour_direction);
-			curr_idx++;
+			process_fill_contour_point(fill, contour, &params);
+			params.contour_idx++;
 		}
 	}
 	else
-		process_all_off_curve_contour(fill, contour, &params,
-			contour_direction);
+		process_all_off_curve_contour(fill, contour, &params);
 }
 
 /*
@@ -104,6 +108,6 @@ void	fill_glyph(t_contour *contour)
 		process_single_contour(contour, &fill, contour_idx);
 		contour_idx++;
 	}
-	fill_scanline_process(contour, &fill);
+	fill_scanline_process(&fill);
 	cleanup_fill_data(&fill);
 }

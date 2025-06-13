@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 16:20:40 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/06/13 00:02:26 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/06/14 01:49:35 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,47 +40,50 @@ t_vec2	get_transformed_point(t_glyf_table *glyph, int point_idx,
 /**
  * @brief Create implied on-curve point between two off-curve points
  */
-t_vec2	create_implied_point(t_vec2 control1_pt, t_vec2 control2_pt)
+t_vec2	create_implied_point(t_vec2 ctrl1_pt, t_vec2 ctrl2_pt)
 {
 	t_vec2	implied_pt;
 
-	implied_pt.x = (control1_pt.x + control2_pt.x) / 2;
-	implied_pt.y = (control1_pt.y + control2_pt.y) / 2;
+	implied_pt.x = (ctrl1_pt.x + ctrl2_pt.x) / 2;
+	implied_pt.y = (ctrl1_pt.y + ctrl2_pt.y) / 2;
 	return (implied_pt);
 }
 
 /**
- * @brief Draw single quadratic curve segment using a start control 
+ * @brief Draw single quadratic curve segment using a start ctrl 
  * and end point.
  */
 void	draw_curve_segment(t_contour *contour, t_vec2 start_pt,
-		t_vec2 control_pt, t_vec2 end_pt)
+		t_vec2 ctrl_pt, t_vec2 end_pt)
 {
 	t_vec2	screen[3];
 
 	screen[0] = transform_coordinate(contour->env, start_pt, contour->pos);
-	screen[1] = transform_coordinate(contour->env, control_pt, contour->pos);
+	screen[1] = transform_coordinate(contour->env, ctrl_pt, contour->pos);
 	screen[2] = transform_coordinate(contour->env, end_pt, contour->pos);
 	ft_mlx_draw_quadratic_curve(&contour->env->mlx->img, screen,
 		contour->color);
 	if (DEBUG)
 	{
-		ft_mlx_circle_put(&contour->env->mlx->img, screen[0], (3 / (float)contour->env->zoom), RED);
-		ft_mlx_circle_put(&contour->env->mlx->img, screen[1], (4 / (float)contour->env->zoom), YELLOW);
-		ft_mlx_circle_put(&contour->env->mlx->img, screen[2], (3 / (float)contour->env->zoom), RED);
+		ft_mlx_circle_put(&contour->env->mlx->img, screen[0],
+			(3 / (float)contour->env->zoom), RED);
+		ft_mlx_circle_put(&contour->env->mlx->img, screen[1],
+			(4 / (float)contour->env->zoom), YELLOW);
+		ft_mlx_circle_put(&contour->env->mlx->img, screen[2],
+			(3 / (float)contour->env->zoom), RED);
 	}
 }
 
 /**
  * @brief Determine end point for curve (on-curve or implied)
  */
-t_vec2	get_curve_end_point(t_glyf_table *glyph, t_vec2 control_pt,
+t_vec2	get_curve_end_point(t_glyf_table *glyph, t_vec2 ctrl_pt,
 		int next_idx, t_glyf_component *transform)
 {
-	t_vec2	next_control_pt;
+	t_vec2	next_ctrl_pt;
 
 	if (glyph->flags[next_idx] & ON_CURVE)
 		return (get_transformed_point(glyph, next_idx, transform));
-	next_control_pt = get_transformed_point(glyph, next_idx, transform);
-	return (create_implied_point(control_pt, next_control_pt));
+	next_ctrl_pt = get_transformed_point(glyph, next_idx, transform);
+	return (create_implied_point(ctrl_pt, next_ctrl_pt));
 }

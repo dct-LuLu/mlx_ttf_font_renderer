@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 21:37:58 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/06/13 22:34:07 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/06/14 01:37:41 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,23 +83,28 @@ static bool	is_curve_flat(t_vec2 p0, t_vec2 p1, t_vec2 p2, int depth)
 }
 
 /*
-** Recursive curve subdivision with maximum depth limit and degenerate detection
+	Recursive curve subdivision with maximum depth limit and degenerate detection
 */
-void	add_curve_fill(t_fill_data *fill, t_contour *contour, t_curve_params params, int contour_direction, int depth)
+void	add_curve_fill(t_fill_data *fill, t_contour *contour,
+		t_curve_params params, int depth)
 {
 	t_vec2	subdivided[5];
 
-	if ((depth > 12) || (is_degenerate_curve(params.start_pt, params.control_pt, params.end_pt)))
-		return (add_edge(fill, params.start_pt, params.end_pt, contour_direction));
-	if (is_curve_flat(params.start_pt, params.control_pt, params.end_pt, depth))
-		return (add_edge(fill, params.start_pt, params.end_pt, contour_direction));
-	subdivide_quadratic_curve(params.start_pt, params.control_pt, params.end_pt, subdivided);
+	if ((depth > 12) || (is_degenerate_curve(params.start_pt, params.ctrl_pt,
+				params.end_pt)))
+		return (add_edge(fill, params.start_pt, params.end_pt,
+				params.contour_direction));
+	if (is_curve_flat(params.start_pt, params.ctrl_pt, params.end_pt, depth))
+		return (add_edge(fill, params.start_pt, params.end_pt,
+				params.contour_direction));
+	subdivide_quadratic_curve(params.start_pt, params.ctrl_pt, params.end_pt,
+		subdivided);
 	params.start_pt = subdivided[0];
-	params.control_pt = subdivided[1];
+	params.ctrl_pt = subdivided[1];
 	params.end_pt = subdivided[2];
-	add_curve_fill(fill, contour, params, contour_direction, depth + 1);
+	add_curve_fill(fill, contour, params, depth + 1);
 	params.start_pt = subdivided[2];
-	params.control_pt = subdivided[3];
+	params.ctrl_pt = subdivided[3];
 	params.end_pt = subdivided[4];
-	add_curve_fill(fill, contour, params, contour_direction, depth + 1);
+	add_curve_fill(fill, contour, params, depth + 1);
 }
