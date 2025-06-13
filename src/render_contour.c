@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 16:26:33 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/06/13 00:02:17 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/06/14 01:50:22 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,16 +36,18 @@ static void	draw_straight_segment(t_contour *contour, int curr_idx,
 		int next_idx)
 {
 	t_vec2	pt[2];
-	
+
 	pt[0] = new_screen_pt(contour, contour->glyf->x_coordinates[curr_idx],
-		contour->glyf->y_coordinates[curr_idx]);
+			contour->glyf->y_coordinates[curr_idx]);
 	pt[1] = new_screen_pt(contour, contour->glyf->x_coordinates[next_idx],
-		contour->glyf->y_coordinates[next_idx]);
+			contour->glyf->y_coordinates[next_idx]);
 	ft_mlx_line_put(&contour->env->mlx->img, pt[0], pt[1], contour->color);
 	if (DEBUG)
 	{
-		ft_mlx_circle_put(&contour->env->mlx->img, pt[0], (7 / (float)contour->env->zoom), GREEN);
-		ft_mlx_circle_put(&contour->env->mlx->img, pt[1], (7 / (float)contour->env->zoom), GREEN);
+		ft_mlx_circle_put(&contour->env->mlx->img, pt[0],
+			(7 / (float)contour->env->zoom), GREEN);
+		ft_mlx_circle_put(&contour->env->mlx->img, pt[1],
+			(7 / (float)contour->env->zoom), GREEN);
 	}
 }
 

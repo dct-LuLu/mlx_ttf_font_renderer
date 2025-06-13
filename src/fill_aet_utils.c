@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 21:52:42 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/06/13 19:29:33 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/06/14 00:38:19 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,13 @@
 /*
 	Move edges from edge table to active edge table
 */
-void	move_edges_to_active(t_fill_data *fill, int y)
+void	move_edges_to_active(t_fill_data *fill)
 {
 	t_edge	*edge;
 	t_edge	*next;
 	int		bucket_idx;
 
-	bucket_idx = y - fill->y_min;
+	bucket_idx = fill->y - fill->y_min;
 	if ((bucket_idx < 0) || (bucket_idx >= fill->height))
 		return ;
 	edge = fill->edge_table[bucket_idx];

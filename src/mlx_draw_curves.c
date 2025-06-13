@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 15:19:25 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/06/13 18:42:19 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/06/14 00:10:58 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,14 @@ static t_vec2	quadratic_bezier_point(t_vec2 p0, t_vec2 p1, t_vec2 p2, float t)
 static float	calculate_curve_length(t_vec2 p0, t_vec2 p1, t_vec2 p2)
 {
 	float	chord_length;
-	float	control_length;
+	float	ctrl_length;
 
 	chord_length = sqrt((p2.x - p0.x) * (p2.x - p0.x) + (p2.y - p0.y) * (p2.y
 				- p0.y));
-	control_length = sqrt((p1.x - p0.x) * (p1.x - p0.x) + (p1.y - p0.y) * (p1.y
+	ctrl_length = sqrt((p1.x - p0.x) * (p1.x - p0.x) + (p1.y - p0.y) * (p1.y
 				- p0.y)) + sqrt((p2.x - p1.x) * (p2.x - p1.x) + (p2.y - p1.y)
 			* (p2.y - p1.y));
-	return ((chord_length + control_length) * 0.5f);
+	return ((chord_length + ctrl_length) * 0.5f);
 }
 
 void	ft_mlx_draw_quadratic_curve(t_img *img, t_vec2 *pts, int color)

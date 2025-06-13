@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 21:52:54 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/06/13 22:07:41 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/06/13 23:44:15 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static void	cleanup_edges(t_edge *edge)
 */
 void	cleanup_fill_data(t_fill_data *fill)
 {
-	int		i;
+	int	i;
 
 	if (fill->edge_table)
 	{

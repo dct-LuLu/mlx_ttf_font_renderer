@@ -6,13 +6,14 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 16:51:42 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/06/13 19:15:59 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/06/14 01:49:55 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "font_renderer.h"
 
 void	draw_contour(t_contour *contour);
+void	fill_glyph(t_contour *contour);
 
 /**
  * @brief Draw a simple glyph with optional transformation
@@ -25,14 +26,13 @@ static void	draw_simple_glyph(t_contour *contour)
 	fill_glyph(contour);
 	if (DEBUG)
 	{
-
 		contour->idx = 0;
 		while (contour->idx < contour->glyf->header->number_of_contours)
 		{
 			contour->color = RED;
 			draw_contour(contour);
 			contour->idx++;
-		}	
+		}
 		draw_transformed_bounding_box(contour, YELLOW);
 	}
 }
