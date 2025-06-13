@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 16:51:42 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/06/12 00:02:20 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/06/13 19:15:59 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,24 +14,27 @@
 
 void	draw_contour(t_contour *contour);
 
-void fill_simple_glyph(t_env *env, t_glyf_table *glyph, t_vec2 pos, 
-                      int color, t_glyf_component *transform);
 /**
  * @brief Draw a simple glyph with optional transformation
  */
 static void	draw_simple_glyph(t_contour *contour)
 {
-	if (!contour->glyf || contour->glyf->header->number_of_contours <= 0)
+	if (!contour->glyf || (contour->glyf->header->number_of_contours <= 0))
 		return ;
-	contour->idx = 0;
-	while (contour->idx < contour->glyf->header->number_of_contours)
-	{
-		draw_contour(contour);
-		//fill_simple_glyph(contour->env, contour->glyf, contour->pos, RED, NULL);
-		contour->idx++;
-	}
+	contour->color = WHITE;
+	fill_glyph(contour);
 	if (DEBUG)
+	{
+
+		contour->idx = 0;
+		while (contour->idx < contour->glyf->header->number_of_contours)
+		{
+			contour->color = RED;
+			draw_contour(contour);
+			contour->idx++;
+		}	
 		draw_transformed_bounding_box(contour, YELLOW);
+	}
 }
 
 /**
