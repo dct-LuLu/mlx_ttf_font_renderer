@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mlx_draw_utils2.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaubry-- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 21:10:43 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/06/11 21:18:10 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/06/12 23:00:15 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,3 +38,25 @@ void ft_mlx_horizontal_line(t_img *img, int x1, int x2, int y, int color)
     }
 }
 
+void	ft_mlx_circle_put(t_img *img, t_vec2 center, int radius, int color)
+{
+	int	x;
+	int	y;
+	int	distance;
+
+	y = -radius;
+	while (y <= radius)
+	{
+		x = -radius;
+		while (x <= radius)
+		{
+			distance = (x * x) + (y * y);
+			if (distance <= (radius * radius))
+			{
+				ft_mlx_pixel_put(img, new_vec2(center.x + x, center.y + y), color);
+			}
+			x++;
+		}
+		y++;
+	}
+}

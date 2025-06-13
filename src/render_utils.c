@@ -6,11 +6,13 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 13:48:09 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/06/12 18:42:50 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/06/12 23:03:49 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "font_renderer.h"
+
+
 
 /**
  * @brief Convert font coordinates to screen coordinates

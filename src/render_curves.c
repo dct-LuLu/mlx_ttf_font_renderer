@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 16:41:38 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/06/11 16:25:19 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/06/12 21:30:50 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 int		get_next_contour_idx(int curr_idx, int start_idx, int end_idx);
 t_vec2	get_transformed_point(t_glyf_table *glyph, int point_idx,
 			t_glyf_component *transform);
-t_vec2	create_implied_point(t_vec2 control1_pt, t_vec2 control2_pt);
 void	draw_curve_segment(t_contour *contour, t_vec2 start_pt,
 			t_vec2 control_pt, t_vec2 end_pt);
 t_vec2	get_curve_end_point(t_glyf_table *glyph, t_vec2 control_pt,

@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 12:09:17 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/06/11 21:14:10 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/06/12 23:02:54 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ void				ft_mlx_batch_put(t_img *data, t_vec2 pos, t_vec2 size,
 void				ft_mlx_draw_quadratic_curve(t_img *img, t_vec2 *pts,
 						int color);
 void ft_mlx_horizontal_line(t_img *img, int x1, int x2, int y, int color);
+void	ft_mlx_circle_put(t_img *img, t_vec2 center, int radius, int color);
 
 int					kill_mlx(t_mlx *mlx);
 void				kill_img(void *mlx, t_img *img);

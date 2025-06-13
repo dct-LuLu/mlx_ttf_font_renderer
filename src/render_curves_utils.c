@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 16:20:40 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/06/12 00:29:58 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/06/13 00:02:26 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,12 @@ void	draw_curve_segment(t_contour *contour, t_vec2 start_pt,
 	screen[2] = transform_coordinate(contour->env, end_pt, contour->pos);
 	ft_mlx_draw_quadratic_curve(&contour->env->mlx->img, screen,
 		contour->color);
+	if (DEBUG)
+	{
+		ft_mlx_circle_put(&contour->env->mlx->img, screen[0], (3 / (float)contour->env->zoom), RED);
+		ft_mlx_circle_put(&contour->env->mlx->img, screen[1], (4 / (float)contour->env->zoom), YELLOW);
+		ft_mlx_circle_put(&contour->env->mlx->img, screen[2], (3 / (float)contour->env->zoom), RED);
+	}
 }
 
 /**
