@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 13:45:29 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/06/11 11:52:01 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/06/14 22:43:57 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,11 +44,11 @@ void	draw_max_bounding_box(t_contour *contour, int color)
 	t_vec2			corners[4];
 	t_env			*env;
 	t_head_table	*head;
-	t_vec2			pos;
+	//t_vec2			pos;
 
 	env = contour->env;
 	head = env->font->head;
-	pos = contour->pos;
+	//pos = contour->pos;
 	corners[0] = new_screen_pt(contour, head->x_min, head->y_min);
 	corners[1] = new_screen_pt(contour, head->x_max, head->y_max);
 	corners[2] = new_screen_pt(contour, head->x_max, head->y_min);

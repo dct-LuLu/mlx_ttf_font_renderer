@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 12:39:37 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/06/14 01:55:43 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/06/14 22:44:41 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ abcdefghijklmnopqrstuvwxyz0123456789";
 
 void	debug_character_mappings(t_env *env)
 {
-	const char	base_chars[6] = "AZaz09";
+	const char	base_chars[] = "AZaz09";
 	size_t		glyph_index;
 	size_t		idx;
 	int			i;
