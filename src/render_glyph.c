@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 16:51:42 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/06/14 01:49:55 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/06/15 21:23:54 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,19 +20,22 @@ void	fill_glyph(t_contour *contour);
  */
 static void	draw_simple_glyph(t_contour *contour)
 {
+	int	color;
+
 	if (!contour->glyf || (contour->glyf->header->number_of_contours <= 0))
 		return ;
-	contour->color = WHITE;
 	fill_glyph(contour);
 	if (DEBUG)
 	{
 		contour->idx = 0;
+		color = contour->color;
 		while (contour->idx < contour->glyf->header->number_of_contours)
 		{
 			contour->color = RED;
 			draw_contour(contour);
 			contour->idx++;
 		}
+		contour->color = color;
 		draw_transformed_bounding_box(contour, YELLOW);
 	}
 }
@@ -83,10 +86,10 @@ static void	draw_composite_glyph(t_contour *contour)
 	}
 }
 
-/**
- * @brief Draw any glyph (simple or composite) with automatic detection
- */
-void	draw_glyph_outline(t_contour *contour)
+/*
+	Draw any glyph (simple or composite)
+*/
+void	draw_glyph(t_contour *contour)
 {
 	t_glyf_table	*glyph;
 

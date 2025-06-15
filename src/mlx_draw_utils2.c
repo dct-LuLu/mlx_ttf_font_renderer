@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 21:10:43 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/06/15 20:19:51 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/06/15 21:40:17 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,11 @@
 
 void	ft_mlx_horizontal_line(t_img *img, int xpt[2], int y, int color)
 {
-	int	start_x;
-	int	end_x;
-	int	x;
+	int				start_x;
+	int				end_x;
+	int				width;
+	unsigned int	*pixel_row;
+	unsigned int	*end_ptr;
 
 	if ((y < 0) || (y >= img->height))
 		return ;
@@ -27,11 +29,16 @@ void	ft_mlx_horizontal_line(t_img *img, int xpt[2], int y, int color)
 		start_x = 0;
 	if (end_x >= img->width)
 		end_x = img->width - 1;
-	x = start_x;
-	while (x <= end_x)
+	width = end_x - start_x + 1;
+	if (width <= 0)
+		return ;
+	pixel_row = (unsigned int *)(img->addr + (y * img->line_len) + (start_x
+				* img->byte_depth));
+	end_ptr = pixel_row + width;
+	while (pixel_row < end_ptr)
 	{
-		ft_mlx_pixel_put(img, new_vec2(x, y), color);
-		x++;
+		*pixel_row = (unsigned int)color;
+		pixel_row++;
 	}
 }
 
