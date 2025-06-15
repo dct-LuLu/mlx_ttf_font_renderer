@@ -6,13 +6,13 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 12:39:37 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/06/14 22:44:41 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/06/15 21:52:51 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "font_renderer.h"
 
-void	draw_glyph_outline(t_contour *contour);
+void	draw_glyph(t_contour *contour);
 
 /**
  * @brief Draw a grid of all available glyphs
@@ -31,7 +31,7 @@ static void	draw_char(t_env *env, char c, t_vec2 pos, int color)
 		return ;
 	if (DEBUG)
 		draw_max_bounding_box(&contour, RED);
-	draw_glyph_outline(&contour);
+	draw_glyph(&contour);
 }
 
 void	draw_glyph_grid(t_env *env, int grid_cols, float cell_width,
@@ -51,7 +51,7 @@ void	draw_glyph_grid(t_env *env, int grid_cols, float cell_width,
 		contour.pos = new_vec2(col * cell_width, row * cell_height);
 		if (DEBUG)
 			draw_max_bounding_box(&contour, RED);
-		draw_glyph_outline(&contour);
+		draw_glyph(&contour);
 		contour.glyf_idx++;
 	}
 }
@@ -105,6 +105,19 @@ void	debug_character_mappings(t_env *env)
 	}
 }
 
+static void	draw_text_example(t_env *env)
+{
+	const char	*text = "Hello, World! 123";
+	t_vec2		pos;
+
+	pos = new_vec2(0, 0);
+	draw_string(env, text, pos, WHITE);
+	pos = new_vec2(500, 2000);
+	draw_string_centered(env, "Centered Text", pos, YELLOW);
+	pos = new_vec2(1000, 4000);
+	draw_string_right_aligned(env, "Right Aligned", pos, GREEN);
+}
+
 int	draw_routine(t_env *env)
 {
 	t_mlx		*mlx;
@@ -118,12 +131,14 @@ int	draw_routine(t_env *env)
 		debug_character_mappings(env);
 		debug_done = 1;
 	}
-	if (env->view_mode == 1)
+	if (env->view_mode == 0)
 		draw_glyph_grid(env, 16, abs(env->font->head->x_min)
 			+ env->font->head->x_max, abs(env->font->head->y_min)
 			+ env->font->head->y_max);
-	else if (env->view_mode == 0)
+	else if (env->view_mode == 1)
 		draw_important_characters(env);
+	else if (env->view_mode == 2)
+		draw_text_example(env);
 	mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->img.img, 0, 0);
 	return (0);
 }

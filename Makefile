@@ -6,7 +6,7 @@
 #    By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/11 10:16:04 by jaubry--          #+#    #+#              #
-#    Updated: 2025/06/15 20:11:35 by jaubry--         ###   ########lyon.fr    #
+#    Updated: 2025/06/15 21:50:56 by jaubry--         ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -62,6 +62,7 @@ SRCS		= main.c parser_font_ttf.c \
 			  render_curves.c render_curves_utils.c \
 			  fill_aet_utils.c fill_contour_process.c fill_scanline_process.c fill.c fill_utils.c \
 			  fill_windings_utils.c fill_curve_utils.c fill_edge_utils.c fill_edge_pool_utils.c fill_curve.c \
+			  text_alignment.c text_rendering.c \
 			  parser_tag_utils.c \
 			  init_utils.c \
 			  free_utils1.c free_utils2.c free_utils3.c \
