@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 23:07:22 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/06/15 19:38:18 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/06/15 20:20:33 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,10 @@
 # define RED 0x00FF0000
 
 # define ON_CURVE 0x01
+
+# define MAX_GLYPH_HEIGHT 2000
+# define MAX_ACTIVE_EDGES 300
+# define MAX_INTERSECTIONS 100
 
 typedef struct s_curve_params
 {
@@ -73,14 +77,24 @@ typedef struct s_edge
 	struct s_edge	*next;
 }					t_edge;
 
+typedef struct s_edge_pool
+{
+	t_edge			edges[MAX_ACTIVE_EDGES];
+	int				free_indices[MAX_ACTIVE_EDGES];
+	int				free_count;
+}					t_edge_pool;
+
 typedef struct s_fill_data
 {
-	t_edge			**edge_table;	// Array of edge lists (indexed by y)
-	int				y;
+	t_edge			*edge_table[MAX_GLYPH_HEIGHT];// Array indexed by y
+	t_edge_pool		edge_pool;
 	t_edge			*active_edges;	// Current active edges
+	float			intersections[MAX_INTERSECTIONS];
+	int				windings[MAX_INTERSECTIONS];
 	int				y_min;			// From glyph header
 	int				y_max;			// From glyph header
 	int				height;			// y_max - y_min + 1
+	int				y;
 	int				color;
 	t_env			*env;
 }					t_fill_data;

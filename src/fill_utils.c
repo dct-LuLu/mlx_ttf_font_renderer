@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 21:52:54 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/06/13 23:44:15 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/06/15 20:19:03 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,36 +25,4 @@ void	increment_x_positions(t_edge *aet)
 		current->x_current += current->inv_slope;
 		current = current->next;
 	}
-}
-
-static void	cleanup_edges(t_edge *edge)
-{
-	t_edge	*next;
-
-	while (edge)
-	{
-		next = edge->next;
-		free(edge);
-		edge = next;
-	}
-}
-
-/*
-	Frees all memory allocated for fill data
-*/
-void	cleanup_fill_data(t_fill_data *fill)
-{
-	int	i;
-
-	if (fill->edge_table)
-	{
-		i = 0;
-		while (i < fill->height)
-		{
-			cleanup_edges(fill->edge_table[i]);
-			i++;
-		}
-		free(fill->edge_table);
-	}
-	cleanup_edges(fill->active_edges);
 }
