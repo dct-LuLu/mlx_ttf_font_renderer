@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 20:10:17 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/06/13 22:14:16 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/06/15 19:32:26 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,34 +87,4 @@ int	fill_intersections_windings(t_edge *active_edges, float **intersections,
 		current = current->next;
 	}
 	return (intersection_count);
-}
-
-/*
-	Determine if contour is clockwise (outer) or counter-clockwise (inner)
-	Returns 1 for clockwise (outer), -1 for counter-clockwise (inner)
-	And computes the signed area using hte shoelace formula
-*/
-int	get_contour_winding_direction(t_contour *contour, t_curve_params params)
-{
-	float	signed_area;
-	int		curr_idx;
-	int		next_idx;
-	t_vec2	p1;
-	t_vec2	p2;
-
-	signed_area = 0.0f;
-	curr_idx = params.contour_start;
-	while (curr_idx <= params.contour_end)
-	{
-		next_idx = curr_idx + 1;
-		if (curr_idx == params.contour_end)
-			next_idx = params.contour_start;
-		p1 = new_screen_pt(contour, contour->glyf->x_coordinates[curr_idx],
-				contour->glyf->y_coordinates[curr_idx]);
-		p2 = new_screen_pt(contour, contour->glyf->x_coordinates[next_idx],
-				contour->glyf->y_coordinates[next_idx]);
-		signed_area += (p2.x - p1.x) * (p2.y + p1.y);
-		curr_idx++;
-	}
-	return (-1 + (2 * (signed_area > 0)));
 }

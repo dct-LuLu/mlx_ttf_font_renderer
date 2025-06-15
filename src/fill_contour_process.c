@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 21:53:00 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/06/14 01:37:46 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/06/15 19:30:27 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ void	process_fill_contour_point(t_fill_data *fill, t_contour *contour,
 	{
 		end_pt = new_screen_pt(contour, contour->glyf->x_coordinates[next_idx],
 				contour->glyf->y_coordinates[next_idx]);
-		add_edge(fill, start_pt, end_pt, params->contour_direction);
+		add_edge(fill, start_pt, end_pt);
 	}
 	else
 		process_curve_sequence(fill, contour, params);

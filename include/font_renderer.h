@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 23:07:22 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/06/14 01:53:15 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/06/15 19:38:18 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ typedef struct s_curve_params
 	int					contour_start;
 	int					contour_idx;
 	int					contour_end;
-	int					contour_direction;
 	t_vec2				start_pt;
 	t_vec2				ctrl_pt;
 	t_vec2				end_pt;
@@ -93,8 +92,7 @@ int		mouse_handler(int mousecode, int x, int y, t_env *env);
 
 t_vec2	create_implied_point(t_vec2 ctrl1_pt, t_vec2 ctrl2_pt);
 
-void	add_edge(t_fill_data *fill, t_vec2 p1, t_vec2 p2,
-			int contour_direction);
+void	add_edge(t_fill_data *fill, t_vec2 p1, t_vec2 p2);
 void	add_curve_fill(t_fill_data *fill, t_contour *contour,
 			t_curve_params params, int depth);
 

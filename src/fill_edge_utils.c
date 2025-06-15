@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 21:44:29 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/06/14 00:41:18 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/06/15 19:30:08 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,36 +66,34 @@ void	remove_finished_edges(t_edge **aet, int scanline_y)
 	}
 }
 
-static t_edge	*init_edge(t_vec2 p1, t_vec2 p2, int contour_direction)
+static t_edge	*init_edge(t_vec2 p1, t_vec2 p2)
 {
 	t_edge	*edge;
-	int		base_winding;
 
 	edge = malloc(sizeof(t_edge));
 	if (p1.y < p2.y)
 	{
 		edge->x_current = p1.x;
 		edge->ymax = p2.y;
-		base_winding = -1;
+		edge->winding = -1;
 	}
 	else
 	{
 		edge->x_current = p2.x;
 		edge->ymax = p1.y;
-		base_winding = 1;
+		edge->winding = 1;
 	}
-	edge->winding = base_winding * contour_direction;
 	return (edge);
 }
 
-void	add_edge(t_fill_data *fill, t_vec2 p1, t_vec2 p2, int contour_direction)
+void	add_edge(t_fill_data *fill, t_vec2 p1, t_vec2 p2)
 {
 	t_edge	*edge;
 	int		bucket_y;
 
 	if (p1.y == p2.y)
 		return ;
-	edge = init_edge(p1, p2, contour_direction);
+	edge = init_edge(p1, p2);
 	edge->inv_slope = (float)(p2.x - p1.x) / (float)(p2.y - p1.y);
 	if (p1.y < p2.y)
 		bucket_y = p1.y - fill->y_min;
