@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 21:10:43 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/06/14 01:49:00 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/06/15 19:27:33 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	ft_mlx_horizontal_line(t_img *img, int xpt[2], int y, int color)
 		end_x = img->width - 1;
 	x = start_x;
 	while (x <= end_x)
-	{
+	{// add memset?
 		ft_mlx_pixel_put(img, new_vec2(x, y), color);
 		x++;
 	}

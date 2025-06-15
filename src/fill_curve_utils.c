@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 21:37:58 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/06/14 01:37:41 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/06/15 19:31:59 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,11 +92,9 @@ void	add_curve_fill(t_fill_data *fill, t_contour *contour,
 
 	if ((depth > 12) || (is_degenerate_curve(params.start_pt, params.ctrl_pt,
 				params.end_pt)))
-		return (add_edge(fill, params.start_pt, params.end_pt,
-				params.contour_direction));
+		return (add_edge(fill, params.start_pt, params.end_pt));
 	if (is_curve_flat(params.start_pt, params.ctrl_pt, params.end_pt, depth))
-		return (add_edge(fill, params.start_pt, params.end_pt,
-				params.contour_direction));
+		return (add_edge(fill, params.start_pt, params.end_pt));
 	subdivide_quadratic_curve(params.start_pt, params.ctrl_pt, params.end_pt,
 		subdivided);
 	params.start_pt = subdivided[0];

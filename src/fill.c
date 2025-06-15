@@ -6,16 +6,13 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 21:52:49 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/06/14 01:38:57 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/06/15 19:32:48 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "font_renderer.h"
 
-void	fill_scanline_process(
-			t_fill_data *fill);
-int		get_contour_winding_direction(t_contour *contour,
-			t_curve_params params);
+void	fill_scanline_process(t_fill_data *fill);
 void	process_all_off_curve_contour(t_fill_data *fill,
 			t_contour *contour, t_curve_params *params);
 void	cleanup_fill_data(t_fill_data *fill);
@@ -77,7 +74,6 @@ static void	process_single_contour(t_contour *contour, t_fill_data *fill,
 	if (contour_idx != 0)
 		params.contour_start = contour->glyf->end_pts[contour_idx - 1] + 1;
 	params.contour_end = contour->glyf->end_pts[contour_idx];
-	params.contour_direction = get_contour_winding_direction(contour, params);
 	if (contour_has_on_curve(contour, params))
 	{
 		params.contour_idx = params.contour_start;
