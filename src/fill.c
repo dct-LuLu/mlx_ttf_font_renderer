@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 21:52:49 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/06/15 20:19:12 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/06/15 20:53:09 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ static t_fill_data	init_fill_data(t_contour *contour)
 	t_fill_data	fill;
 	int			i;
 
+	ft_bzero(&fill, sizeof(t_fill_data));
 	init_y_min_max(contour, &fill);
 	fill.height = fill.y_max - fill.y_min + 1;
 	if ((fill.height > MAX_GLYPH_HEIGHT) || (fill.height <= 0))
