@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 21:52:42 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/06/14 00:38:19 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/06/15 20:06:49 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ void	move_edges_to_active(t_fill_data *fill)
 	int		bucket_idx;
 
 	bucket_idx = fill->y - fill->y_min;
-	if ((bucket_idx < 0) || (bucket_idx >= fill->height))
+	if ((bucket_idx < 0) || (bucket_idx >= fill->height)
+		|| (bucket_idx >= MAX_GLYPH_HEIGHT))
 		return ;
 	edge = fill->edge_table[bucket_idx];
 	while (edge)
@@ -46,7 +47,7 @@ static int	swap_edges(t_edge **current, t_edge **next)
 }
 
 static int	sort_single_edge(t_edge ***active_edges, t_edge **prev,
-	t_edge **current, t_edge **next)
+		t_edge **current, t_edge **next)
 {
 	int	swapped;
 

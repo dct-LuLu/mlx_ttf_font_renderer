@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 20:10:17 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/06/15 19:32:26 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/06/15 20:19:32 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,27 +64,26 @@ static int	count_valid_intersections_vertex(t_edge *active_edges, int y)
 /*
 	Function to collect valid intersections and windings.
 */
-int	fill_intersections_windings(t_edge *active_edges, float **intersections,
-		int **windings, int y)
+int	fill_intersections_windings(t_fill_data *fill, t_edge *active_edges, int y)
 {
-	t_edge		*current;
-	int			i;
-	const int	intersection_count = count_valid_intersections_vertex(
-			active_edges, y);
+	t_edge	*current;
+	int		i;
+	int		intersection_count;
 
-	*intersections = malloc(sizeof(float) * intersection_count);
-	*windings = malloc(sizeof(int) * intersection_count);
+	intersection_count = count_valid_intersections_vertex(active_edges, y);
+	if (intersection_count > MAX_INTERSECTIONS)
+		intersection_count = MAX_INTERSECTIONS;
 	i = 0;
 	current = active_edges;
-	while (current)
+	while (current && i < intersection_count)
 	{
 		if (y < current->ymax)
 		{
-			(*intersections)[i] = current->x_current;
-			(*windings)[i] = current->winding;
+			fill->intersections[i] = current->x_current;
+			fill->windings[i] = current->winding;
 			i++;
 		}
 		current = current->next;
 	}
-	return (intersection_count);
+	return (i);
 }
