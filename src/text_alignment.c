@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 22:00:00 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/06/15 21:47:50 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/06/24 04:25:24 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 /**
  * @brief Draw string centered at position
  */
+/*
 void	draw_string_centered(t_env *env, const char *str, t_vec2 center_pos,
 			int color)
 {
@@ -26,10 +27,12 @@ void	draw_string_centered(t_env *env, const char *str, t_vec2 center_pos,
 	start_pos.y = center_pos.y;
 	draw_string(env, str, start_pos, color);
 }
+*/
 
 /**
  * @brief Draw string right-aligned at position
  */
+/*
 void	draw_string_right_aligned(t_env *env, const char *str, t_vec2 right_pos,
 			int color)
 {
@@ -41,10 +44,12 @@ void	draw_string_right_aligned(t_env *env, const char *str, t_vec2 right_pos,
 	start_pos.y = right_pos.y;
 	draw_string(env, str, start_pos, color);
 }
+*/
 
 /**
  * @brief Get character index at pixel position (for text editing)
  */
+/*
 int	get_character_index_at_position(t_env *env, const char *str,
 		t_vec2 click_pos, t_vec2 string_pos)
 {
@@ -75,3 +80,4 @@ int	get_character_index_at_position(t_env *env, const char *str,
 	}
 	return (i);
 }
+*/
