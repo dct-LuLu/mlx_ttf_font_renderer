@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 12:39:37 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/06/15 21:52:51 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/06/24 04:24:57 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,10 +112,10 @@ static void	draw_text_example(t_env *env)
 
 	pos = new_vec2(0, 0);
 	draw_string(env, text, pos, WHITE);
-	pos = new_vec2(500, 2000);
-	draw_string_centered(env, "Centered Text", pos, YELLOW);
-	pos = new_vec2(1000, 4000);
-	draw_string_right_aligned(env, "Right Aligned", pos, GREEN);
+	//pos = new_vec2(500, 2000);
+	//draw_string_centered(env, "Centered Text", pos, YELLOW);
+	//pos = new_vec2(1000, 4000);
+	//draw_string_right_aligned(env, "Right Aligned", pos, GREEN);
 }
 
 int	draw_routine(t_env *env)
