@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 22:00:00 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/06/24 04:53:03 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/06/24 04:57:56 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,20 +23,12 @@ static t_vec2 advance_pen_position(t_vec2 pen_pos, t_contour cur, t_contour next
     if (!cur.glyf || !env->font->hmtx || cur.glyf_idx < 0)
 		return (new_pos);
 
-	printf("Glyph %d: advance_width=%u, lsb=%d\n", 
-       cur.glyf_idx, 
-       env->font->hmtx->lhmtx[cur.glyf_idx].advance_width,
-       env->font->hmtx->lhmtx[cur.glyf_idx].lsb);
-    // Get advance width from hmtx table
     if (cur.glyf_idx < env->font->hmtx->num_lhmtx)
         advance_width = env->font->hmtx->lhmtx[cur.glyf_idx].advance_width;
     else
         advance_width = env->font->hmtx->lhmtx[env->font->hmtx->num_lhmtx - 1].advance_width;
 
-    // Scale advance width properly
-    int scaled_advance = (advance_width * 500 * 64) / env->font->head->units_per_em;
-    new_pos.x += scaled_advance >> 6;  // Right-shift by 6 for 26.6 fixed point
- 
+    new_pos.x += advance_width;
     return (new_pos);
 }
 
