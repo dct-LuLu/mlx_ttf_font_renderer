@@ -6,7 +6,7 @@
 #    By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/11 10:16:04 by jaubry--          #+#    #+#              #
-#    Updated: 2025/06/15 21:50:56 by jaubry--         ###   ########lyon.fr    #
+#    Updated: 2025/06/25 16:04:59 by jaubry--         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,7 +35,7 @@ MLX			= $(MLXDIR)/libmlx.a
 
 # Compiler and flags
 CC			= cc
-CFLAGS		= -Wall -Wextra -Werror $(if $(filter 1,$(DEBUG)),-g3) -D DEBUG=$(DEBUG) -D WIDTH=$(WIDTH) -D HEIGHT=$(HEIGHT) -std=gnu11
+CFLAGS		= -Ofast -Wall -Wextra -Werror $(if $(filter 1,$(DEBUG)),-g3) -D DEBUG=$(DEBUG) -D WIDTH=$(WIDTH) -D HEIGHT=$(HEIGHT) -std=gnu11
 DFLAGS		= -MMD -MP -MF $(DEPDIR)/$*.d
 IFLAGS		= -I$(INCDIR) -I$(LIBFTDIR)/include -I$(MLXDIR)
 LFLAGS		= -L$(MLXDIR) -L$(LIBFTDIR) -lXext -lX11 -lXrender -lm -lmlx -lft

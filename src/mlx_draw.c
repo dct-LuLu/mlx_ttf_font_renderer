@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 12:39:37 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/06/24 04:24:57 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/06/24 22:31:47 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,15 +107,10 @@ void	debug_character_mappings(t_env *env)
 
 static void	draw_text_example(t_env *env)
 {
-	const char	*text = "Hello, World! 123";
-	t_vec2		pos;
+	t_vec2	pos;
 
 	pos = new_vec2(0, 0);
-	draw_string(env, text, pos, WHITE);
-	//pos = new_vec2(500, 2000);
-	//draw_string_centered(env, "Centered Text", pos, YELLOW);
-	//pos = new_vec2(1000, 4000);
-	//draw_string_right_aligned(env, "Right Aligned", pos, GREEN);
+	draw_string(env, env->text, pos, WHITE);
 }
 
 int	draw_routine(t_env *env)

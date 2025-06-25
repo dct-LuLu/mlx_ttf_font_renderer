@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 23:07:22 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/06/15 21:50:06 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/06/25 17:05:06 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,16 +17,16 @@
 # include "mlx_utils.h"
 # include "parser_font_ttf.h"
 
-# define WHITE	0x00FFFFFF
-# define YELLOW	0x00FFFF00
-# define GREEN	0x0000FF00
-# define RED	0x00FF0000
+# define WHITE	0xFFFFFF
+# define YELLOW	0xFFFF00
+# define GREEN	0x00FF00
+# define RED	0xFF0000
 
 # define ON_CURVE 0x01
 
-# define MAX_GLYPH_HEIGHT	2000
-# define MAX_ACTIVE_EDGES	300
-# define MAX_INTERSECTIONS	100
+# define MAX_GLYPH_HEIGHT	20000
+# define MAX_ACTIVE_EDGES	3000
+# define MAX_INTERSECTIONS	1000
 
 typedef struct s_curve_params
 {
@@ -51,8 +51,13 @@ typedef struct s_env
 {
 	t_mlx				*mlx;
 	t_ttf_font			*font;
+	char				text[200];
+	size_t				cur_pos;
+	bool				capslock;
 	int					x;
 	int					y;
+	int					last_x;
+	int					last_y;
 	float				zoom;
 	int					view_mode;
 }						t_env;
@@ -107,18 +112,21 @@ typedef struct s_text_metrics
 	t_vec2		glyph_bbox_max;
 }				t_text_metrics;
 
+//void	draw_string_right_aligned(t_env *env, const char *str, t_vec2 right_pos,
+//	int color);
+//void	draw_string_centered(t_env *env, const char *str, t_vec2 center_pos,
+//		int color);
 
-void	draw_string_right_aligned(t_env *env, const char *str, t_vec2 right_pos,
-	int color);
-	void	draw_string_centered(t_env *env, const char *str, t_vec2 center_pos,
-		int color);
-t_text_metrics	get_glyph_metrics(t_env *env, size_t glyph_idx);
-void			draw_string(t_env *env, const char *str, t_vec2 pos, int color);
-int				measure_string_width(t_env *env, const char *str);
+//t_text_metrics	get_glyph_metrics(t_env *env, size_t glyph_idx);
+//int				measure_string_width(t_env *env, const char *str);
+void	draw_string(t_env *env, const char *str, t_vec2 pos, int color);
 
 void	*renderer_mainloop(t_env *env);
 int		draw_routine(t_env *env);
-int		on_keypress(int keysym, t_env *env);
+int		on_button_press(int mousecode, int x, int y, t_env *env);
+int	on_mwheel_drag(int x, int y, t_env *env);
+int		on_button_release(int mousecode, int x, int y, t_env *env);
+int		on_key_press(int keysym, t_env *env);
 int		mouse_handler(int mousecode, int x, int y, t_env *env);
 
 t_vec2	create_implied_point(t_vec2 ctrl1_pt, t_vec2 ctrl2_pt);
