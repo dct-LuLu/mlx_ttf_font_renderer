@@ -6,7 +6,7 @@
 /*   By: jaubry-- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 10:17:42 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/05/22 01:06:39 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/06/24 19:29:29 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ int	main(int argc, char **argv)
 		env = ft_calloc(sizeof(t_env), 1);
 		if (!env)
 			return (1);
+		ft_bzero(&env->text, sizeof(env->text));
 		if (init_ttf_struct(&env->font))
 			free_env(env);
 		if (!read_ttf(env->font, argv[1]))
