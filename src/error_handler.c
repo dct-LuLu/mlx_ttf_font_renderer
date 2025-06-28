@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 09:27:08 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/06/11 16:17:18 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/06/28 13:07:54 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ static const char	*get_err_msg(enum e_error err)
 		return (ERR_MSG_READ_FILE);
 	else if (err == ERR_GET_OFFSET)
 		return (ERR_MSG_GET_OFFSET);
+	else if (err == ERR_TIME)
+		return (ERR_MSG_TIME);
 	return (strerror(errno));
 }
 

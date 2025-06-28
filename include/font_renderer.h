@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 23:07:22 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/06/25 17:05:06 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/06/28 13:35:03 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,9 @@
 
 # define ON_CURVE 0x01
 
-# define MAX_GLYPH_HEIGHT	20000
-# define MAX_ACTIVE_EDGES	3000
-# define MAX_INTERSECTIONS	1000
+# define MAX_GLYPH_HEIGHT	2000
+# define MAX_ACTIVE_EDGES	550
+# define MAX_INTERSECTIONS	100
 
 typedef struct s_curve_params
 {
@@ -58,7 +58,7 @@ typedef struct s_env
 	int					y;
 	int					last_x;
 	int					last_y;
-	float				zoom;
+	int					zoom;
 	int					view_mode;
 }						t_env;
 
@@ -94,7 +94,7 @@ typedef struct s_fill_data
 	t_edge			*edge_table[MAX_GLYPH_HEIGHT];// Array indexed by y
 	t_edge_pool		edge_pool;
 	t_edge			*active_edges;	// Current active edges
-	float			intersections[MAX_INTERSECTIONS];
+	int				intersections[MAX_INTERSECTIONS];
 	int				windings[MAX_INTERSECTIONS];
 	int				y_min;			// From glyph header
 	int				y_max;			// From glyph header
@@ -137,6 +137,8 @@ void	add_curve_fill(t_fill_data *fill, t_contour *contour,
 
 t_vec2	new_screen_pt(t_contour *contour, int x, int y);
 t_vec2	apply_transform(t_vec2 point, t_glyf_component *comp);
+int	transform_x(t_contour *contour, int _x);
+int	transform_y(t_contour *contour, int _y);
 
 void	draw_max_bounding_box(t_contour *contour, int color);
 void	draw_transformed_bounding_box(t_contour *contour, int scolor);

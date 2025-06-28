@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 09:10:13 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/06/11 16:17:09 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/06/28 13:07:48 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ file may be corrupted"
 font isn't in a TTF format or file may be corrupted"
 # define ERR_MSG_READ_FILE "Error while buffering file"
 # define ERR_MSG_GET_OFFSET "Could not fetch table offset"
+# define ERR_MSG_TIME "Could not get current time"
 
 typedef enum e_error
 {
@@ -38,6 +39,7 @@ typedef enum e_error
 	ERR_TABLE_ENTRIES,
 	ERR_READ_FILE,
 	ERR_GET_OFFSET,
+	ERR_TIME,
 }	t_error;
 
 int	error(enum e_error err, const char *format, ...);

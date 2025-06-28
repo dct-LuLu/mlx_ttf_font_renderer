@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 16:51:42 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/06/15 21:23:54 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/06/28 12:52:44 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,19 @@ static void	draw_composite_glyph(t_contour *contour)
 	}
 }
 
+static bool	is_glyph_onscreen(t_contour *contour)
+{
+	t_vec2			corners[2];
+	t_glyf_header	*header;
+
+	header = contour->glyf->header;
+	corners[0] = new_screen_pt(contour, header->x_min, header->y_min);
+	corners[1] = new_screen_pt(contour, header->x_max, header->y_max);
+	if ((corners[0].x < 0) || (corners[1].y < 0) || (corners[1].x > WIDTH) || (corners[0].y > HEIGHT))
+		return (true);
+	return (false);
+}
+
 /*
 	Draw any glyph (simple or composite)
 */
@@ -99,6 +112,8 @@ void	draw_glyph(t_contour *contour)
 	if (!glyph)
 		return ;
 	contour->glyf = glyph;
+	if (is_glyph_onscreen(contour))
+		return ;
 	if (DEBUG)
 		draw_transformed_bounding_box(contour, GREEN);
 	if (glyph->header->number_of_contours == -1)
