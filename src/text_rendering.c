@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 22:00:00 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/06/24 21:53:17 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/06/28 12:33:40 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ static t_vec2	advance_pen_position(t_vec2 pen_pos, t_contour ctr, t_env *env)
 static t_vec2	draw_character(t_contour ctr, t_vec2 pen_pos)
 {
 	t_vec2	new_pen_pos;
-	float	scale;
 	int		xpt[2];
 	int		y;
 
@@ -45,7 +44,6 @@ static t_vec2	draw_character(t_contour ctr, t_vec2 pen_pos)
 	new_pen_pos = advance_pen_position(pen_pos, ctr, ctr.env);
 	if (DEBUG)
 	{
-		scale = 500.0f / (float)ctr.env->font->head->units_per_em;
 		xpt[0] = transform_coordinate(ctr.env, pen_pos, new_vec2(0, 0)).x;
 		xpt[1] = transform_coordinate(ctr.env, new_pen_pos, new_vec2(0, 0)).x;
 		y = transform_coordinate(ctr.env, new_vec2(pen_pos.x, -pen_pos.y), new_vec2(0, 200)).y;

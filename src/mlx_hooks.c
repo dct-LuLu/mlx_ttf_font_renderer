@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 22:32:25 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/06/25 17:52:41 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/06/26 00:03:50 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,9 +103,9 @@ int	on_button_press(int mousecode, int x, int y, t_env *env)
 		env->last_y = y;
 	}
 	if (mousecode == 5)
-		env->zoom *= 1.1;
+		env->zoom += 1;
 	else if (mousecode == 4)
-		env->zoom *= 0.9;
+		env->zoom -= 1;
 	//printf("x:%d y:%d\t%d\n", x, y, mousecode);
 	return (0);
 }

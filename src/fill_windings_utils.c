@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 20:10:17 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/06/15 20:19:32 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/06/28 12:38:31 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,12 @@
 /*
 	Sort intersections by x-coordinate while keeping windings aligned
 */
-void	sort_intersections_with_windings(float *intersections, int *windings,
+void	sort_intersections_with_windings(int *intersections, int *windings,
 		int count)
 {
 	int		i;
 	int		j;
-	float	temp_x;
+	int		temp_x;
 	int		temp_w;
 
 	i = 1;

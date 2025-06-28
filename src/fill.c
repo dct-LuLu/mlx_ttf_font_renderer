@@ -6,13 +6,13 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 21:52:49 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/06/15 21:00:26 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/06/25 21:37:59 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "font_renderer.h"
 
-void	fill_scanline_process(t_fill_data *fill);
+void	fill_scanline_process(t_fill_data *fill, t_contour *contour);
 void	process_all_off_curve_contour(t_fill_data *fill,
 			t_contour *contour, t_curve_params *params);
 void	process_fill_contour_point(t_fill_data *fill,
@@ -23,9 +23,9 @@ static void	init_y_min_max(t_contour *contour, t_fill_data *fill)
 	t_vec2		min_screen;
 	t_vec2		max_screen;
 
-	min_screen = new_screen_pt(contour, contour->glyf->header->x_min,
+	min_screen = new_vec2(contour->glyf->header->x_min,
 			contour->glyf->header->y_min);
-	max_screen = new_screen_pt(contour, contour->glyf->header->x_max,
+	max_screen = new_vec2(contour->glyf->header->x_max,
 			contour->glyf->header->y_max);
 	if (min_screen.y < max_screen.y)
 		fill->y_min = min_screen.y;
@@ -120,5 +120,5 @@ void	fill_glyph(t_contour *contour)
 		process_single_contour(contour, &fill, contour_idx);
 		contour_idx++;
 	}
-	fill_scanline_process(&fill);
+	fill_scanline_process(&fill, contour);
 }
