@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 22:32:25 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/06/26 00:03:50 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/06/28 17:04:35 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,8 @@ int	on_key_press(int keysym, t_env *env)
 		env->y -= 200;
 	else if (keysym == XK_v)
 		env->view_mode = (1 + env->view_mode) % 3;
+	else if (keysym == XK_p)
+		env->subpixel = !env->subpixel;
 	return (0);
 }
 

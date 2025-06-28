@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 12:39:37 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/06/28 13:33:01 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/06/28 22:06:23 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,7 +174,7 @@ void	show_fps(t_env *env)
 	const t_vec2 pos = new_vec2(200, 200);
 
 	ft_itoal(get_fps(), fps);
-	draw_string(env, fps, pos, RED);
+	draw_string(env, fps, pos, YELLOW);
 }
 
 int	draw_routine(t_env *env)

@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 13:48:09 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/06/28 12:49:36 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/06/28 16:23:30 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,12 @@ int	transform_y(t_contour *contour, int _y)
 	y = -_y + contour->pos.y + env->y;
 	y *= scale;
 	return (y / env->zoom);
+}
+
+// check inline
+void	subpixelize(t_vec2 *pos)
+{
+	pos->x *=3;
 }
 
 t_vec2	transform_coordinate(t_env *env, t_vec2 glyph_pos, t_vec2 base_pos)

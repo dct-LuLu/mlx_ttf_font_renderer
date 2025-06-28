@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 21:52:45 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/06/28 12:47:21 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/06/28 20:19:47 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ void		sort_intersections_with_windings(int *intersections,
 				int *windings, int count);
 int			fill_intersections_windings(t_fill_data *fill, t_edge *active_edges,
 				int y);
+void	render_subpixel_line(t_fill_data *fill, t_contour *contour, int *x);
 
 /*
 	Fill based on winding rule
@@ -48,12 +49,17 @@ static void	fill_horizontal(t_fill_data *fill, int *windings,
 			x[1] = intersections[i];//(int)(intersections[i] + 0.5f);
 			if (x[1] > x[0])
 			{
-				int	xx[2];
-				xx[0] = transform_x(contour, x[0]);
-				xx[1] = transform_x(contour, x[1]);
-				int yy = transform_y(contour, fill->y);
-				ft_mlx_horizontal_line(&fill->env->mlx->img, xx, yy,
-					fill->color);
+				if (fill->env->subpixel)
+					render_subpixel_line(fill, contour, x);
+				else
+				{
+					int	xx[2];
+					xx[0] = transform_x(contour, x[0]);
+					xx[1] = transform_x(contour, x[1]);
+					int yy = transform_y(contour, fill->y);
+					ft_mlx_horizontal_line(&fill->env->mlx->img, xx, yy,
+						fill->color);
+				}
 			}
 			x[0] = -1;
 		}

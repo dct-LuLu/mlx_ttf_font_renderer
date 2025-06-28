@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 21:53:00 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/06/25 19:59:01 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/06/28 16:43:42 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,6 @@ static void	process_curve_sequence(t_fill_data *fill, t_contour *contour,
 	int	next_idx;
 
 	curr_idx = params->contour_idx;
-	params->start_pt = new_vec2(contour->glyf->x_coordinates[curr_idx],
-			contour->glyf->y_coordinates[curr_idx]);
 	while (1)
 	{
 		next_idx = curr_idx + 1;
@@ -55,7 +53,11 @@ static void	process_curve_sequence(t_fill_data *fill, t_contour *contour,
 			break ;
 		params->ctrl_pt = new_vec2(contour->glyf->x_coordinates[next_idx],
 				contour->glyf->y_coordinates[next_idx]);
+		if (fill->env->subpixel)
+			subpixelize(&params->ctrl_pt);
 		params->end_pt = find_curve_end_point(contour, next_idx, params);
+		if (fill->env->subpixel)
+			subpixelize(&params->end_pt);
 		add_curve_fill(fill, contour, *params, 0);
 		params->start_pt = params->end_pt;
 		curr_idx = next_idx;
@@ -69,21 +71,23 @@ void	process_fill_contour_point(t_fill_data *fill, t_contour *contour,
 		t_curve_params *params)
 {
 	int		next_idx;
-	t_vec2	start_pt;
-	t_vec2	end_pt;
 
 	if (!(contour->glyf->flags[params->contour_idx] & ON_CURVE))
 		return ;
 	next_idx = params->contour_idx + 1;
 	if (params->contour_idx == params->contour_end)
 		next_idx = params->contour_start;
-	start_pt = new_vec2(contour->glyf->x_coordinates[params->contour_idx],
+	params->start_pt = new_vec2(contour->glyf->x_coordinates[params->contour_idx],
 			contour->glyf->y_coordinates[params->contour_idx]);
+	if (fill->env->subpixel)
+		subpixelize(&params->start_pt);
 	if (contour->glyf->flags[next_idx] & ON_CURVE)
 	{
-		end_pt = new_vec2(contour->glyf->x_coordinates[next_idx],
+		params->end_pt = new_vec2(contour->glyf->x_coordinates[next_idx],
 				contour->glyf->y_coordinates[next_idx]);
-		add_edge(fill, start_pt, end_pt);
+		if (fill->env->subpixel)
+			subpixelize(&params->end_pt);
+		add_edge(fill, params->start_pt, params->end_pt);
 	}
 	else
 		process_curve_sequence(fill, contour, params);
