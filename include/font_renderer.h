@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 23:07:22 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/06/28 13:35:03 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/06/28 20:27:02 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 # define ON_CURVE 0x01
 
 # define MAX_GLYPH_HEIGHT	2000
+# define MAX_GLYPH_WIDTH	2500
 # define MAX_ACTIVE_EDGES	550
 # define MAX_INTERSECTIONS	100
 
@@ -47,6 +48,25 @@ typedef struct s_curve_state
 	t_vec2				start_pt;
 }						t_curve_state;
 
+typedef struct s_subpixel_data
+{
+	float	coverage[MAX_GLYPH_WIDTH * 3];
+	float	filtered[MAX_GLYPH_WIDTH * 3];
+	int		bg_color;
+	int		gamma_to_linear[256];
+	int		linear_to_gamma[256];
+	int		display_start;
+	int		display_end;
+	int		subpixel_start;
+	int		subpixel_end;
+	int32_t		bg;
+	int32_t		fg;
+	uint32_t	diff;
+	uint8_t		rdiff;
+	uint8_t		gdiff;
+	uint8_t		bdiff;
+}   t_subpixel_data;
+
 typedef struct s_env
 {
 	t_mlx				*mlx;
@@ -54,6 +74,7 @@ typedef struct s_env
 	char				text[200];
 	size_t				cur_pos;
 	bool				capslock;
+	bool				subpixel;
 	int					x;
 	int					y;
 	int					last_x;
@@ -139,6 +160,7 @@ t_vec2	new_screen_pt(t_contour *contour, int x, int y);
 t_vec2	apply_transform(t_vec2 point, t_glyf_component *comp);
 int	transform_x(t_contour *contour, int _x);
 int	transform_y(t_contour *contour, int _y);
+void	subpixelize(t_vec2 *pos);
 
 void	draw_max_bounding_box(t_contour *contour, int color);
 void	draw_transformed_bounding_box(t_contour *contour, int scolor);
