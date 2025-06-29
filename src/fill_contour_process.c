@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 21:53:00 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/06/28 16:43:42 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/06/29 18:35:17 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ static void	process_curve_sequence(t_fill_data *fill, t_contour *contour,
 		params->end_pt = find_curve_end_point(contour, next_idx, params);
 		if (fill->env->subpixel)
 			subpixelize(&params->end_pt);
-		add_curve_fill(fill, contour, *params, 0);
+		add_curve_fill(fill, contour, *params);
 		params->start_pt = params->end_pt;
 		curr_idx = next_idx;
 	}

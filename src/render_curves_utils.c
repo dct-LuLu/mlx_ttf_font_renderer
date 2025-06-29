@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 16:20:40 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/06/28 16:55:55 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/06/29 15:56:38 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,12 +65,24 @@ void	draw_curve_segment(t_contour *contour, t_vec2 start_pt,
 		contour->color);
 	if (DEBUG)
 	{
-		ft_mlx_circle_put(&contour->env->mlx->img, screen[0],
-			(3 / (float)contour->env->zoom), RED);
-		ft_mlx_circle_put(&contour->env->mlx->img, screen[1],
-			(4 / (float)contour->env->zoom), YELLOW);
-		ft_mlx_circle_put(&contour->env->mlx->img, screen[2],
-			(3 / (float)contour->env->zoom), RED);
+		if (contour->env->zoom <= 0)
+		{
+			ft_mlx_circle_put(&contour->env->mlx->img, screen[0],
+				(4), RED);
+			ft_mlx_circle_put(&contour->env->mlx->img, screen[1],
+				(5), YELLOW);
+			ft_mlx_circle_put(&contour->env->mlx->img, screen[2],
+				(4), RED);
+		}
+		else
+		{
+			ft_mlx_circle_put(&contour->env->mlx->img, screen[0],
+				(3 / (float)contour->env->zoom), RED);
+			ft_mlx_circle_put(&contour->env->mlx->img, screen[1],
+				(4 / (float)contour->env->zoom), YELLOW);
+			ft_mlx_circle_put(&contour->env->mlx->img, screen[2],
+				(3 / (float)contour->env->zoom), RED);
+		}
 	}
 }
 

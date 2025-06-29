@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 22:13:23 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/06/25 16:58:50 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/06/29 16:09:03 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,13 @@ static t_mlx	*init_mlx(void)
 	return (mlx);
 }
 
+int	load_env_state(t_env *env, const char *filename);
 void	*renderer_mainloop(t_env *env)
 {
 	env->zoom = 10;
 	env->x = 0;
 	env->y = 0;
+	load_env_state(env, ".env_save.txt");
 	env->mlx = init_mlx();
 	if (!env->mlx)
 		return (NULL);

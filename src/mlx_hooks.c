@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 22:32:25 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/06/28 17:04:35 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/06/29 16:06:38 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,46 @@ void	edit_text(int keysym, t_env *env)
 		env->cur_pos++;
 	}
 }
+
+int	save_env_state(t_env *env, const char *filename)
+{
+	FILE	*file;
+
+	file = fopen(filename, "w");
+	if (!file)
+		return (-1);
+	fprintf(file, "%zu\n", env->cur_pos);
+	fprintf(file, "%d\n", (int)env->capslock);
+	fprintf(file, "%d\n", (int)env->subpixel);
+	fprintf(file, "%d\n", env->x);
+	fprintf(file, "%d\n", env->y);
+	fprintf(file, "%d\n", env->last_x);
+	fprintf(file, "%d\n", env->last_y);
+	fprintf(file, "%d\n", env->zoom);
+	fprintf(file, "%d\n", env->view_mode);
+	fclose(file);
+	return (0);
+}
+
+int	load_env_state(t_env *env, const char *filename)
+{
+	FILE	*file;
+	int		temp[2];
+
+	file = fopen(filename, "r");
+	if (!file)
+		return (-1);
+	if (fscanf(file, "%zu\n%d\n%d\n", &env->cur_pos, &temp[0], &temp[1]) != 3)
+		return (fclose(file), -1);
+	env->capslock = (bool)temp[0];
+	env->subpixel = (bool)temp[1];
+	if (fscanf(file, "%d\n%d\n%d\n%d\n%d\n%d\n", &env->x, &env->y,
+		&env->last_x, &env->last_y, &env->zoom, &env->view_mode) != 6)
+		return (fclose(file), -1);
+	fclose(file);
+	return (0);
+}
+
 /*
 	Function to handles ESC key to exit safely.
 */
@@ -76,13 +116,25 @@ int	on_key_press(int keysym, t_env *env)
 		env->view_mode = (1 + env->view_mode) % 3;
 	else if (keysym == XK_p)
 		env->subpixel = !env->subpixel;
+	else if (keysym == XK_s)
+		save_env_state(env, ".env_save.txt");
+	else if (keysym == XK_l)
+		load_env_state(env, ".env_save.txt");
 	return (0);
 }
 
 int	on_mwheel_drag(int x, int y, t_env *env)
 {
-	env->x += env->zoom * (x - env->last_x);
-	env->y += env->zoom * (y - env->last_y);
+	if (env->zoom <= 0)
+	{
+		env->x += (x - env->last_x) / ((-env->zoom) + 1);
+		env->y += (y - env->last_y) / ((-env->zoom) + 1);
+	}
+	else
+	{
+		env->x += env->zoom * (x - env->last_x);
+		env->y += env->zoom * (y - env->last_y);
+	}
 	if (DEBUG)
 	{
 		if ((x - env->last_x) > 0)

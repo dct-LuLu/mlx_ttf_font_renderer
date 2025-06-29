@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 21:52:49 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/06/25 21:37:59 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/06/29 16:26:31 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ static bool	contour_has_on_curve(t_contour *contour, t_curve_params params)
 			return (true);
 		curr_idx++;
 	}
+	printf("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\n");
 	return (false);
 }
 
@@ -100,7 +101,10 @@ static void	process_single_contour(t_contour *contour, t_fill_data *fill,
 		}
 	}
 	else
-		process_all_off_curve_contour(fill, contour, &params);
+	{
+		printf("ALED\n\naaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\n\n");
+		//process_all_off_curve_contour(fill, contour, &params);
+	}
 }
 
 /*

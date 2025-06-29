@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 13:48:09 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/06/28 16:23:30 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/06/29 16:17:55 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ int	transform_x(t_contour *contour, int _x)
 	scale = 500.0f / (float)env->font->head->units_per_em;
 	x = _x + contour->pos.x + env->x;
 	x *= scale;
+	if (env->zoom <= 0)
+		return (x * -env->zoom + 1);
 	return (x / env->zoom);
 }
 
@@ -43,6 +45,8 @@ int	transform_y(t_contour *contour, int _y)
 	scale = 500.0f / (float)env->font->head->units_per_em;
 	y = -_y + contour->pos.y + env->y;
 	y *= scale;
+	if (env->zoom <= 0)
+		return (y * -env->zoom + 1);
 	return (y / env->zoom);
 }
 
@@ -65,8 +69,8 @@ t_vec2	transform_coordinate(t_env *env, t_vec2 glyph_pos, t_vec2 base_pos)
 	y = -glyph_pos.y + base_pos.y + env->y;
 	x *= scale;
 	y *= scale;
-	if (env->zoom == 0)
-		return (new_vec2((int)x, (int)y));
+	if (env->zoom <= 0)
+		return (new_vec2((int)(x * -env->zoom + 1), (int)(y * -env->zoom + 1)));
 	return (new_vec2((int)(x / env->zoom), (int)(y / env->zoom)));
 }
 
@@ -87,4 +91,10 @@ t_vec2	apply_transform(t_vec2 point, t_glyf_component *comp)
 t_vec2	new_screen_pt(t_contour *contour, int x, int y)
 {
 	return (transform_coordinate(contour->env, new_vec2(x, y), contour->pos));
+}
+
+
+t_vec2	new_screen_pt2(t_contour *contour, t_vec2 v)
+{
+	return (transform_coordinate(contour->env, v, contour->pos));
 }
