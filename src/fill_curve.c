@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 00:12:04 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/06/28 17:02:31 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/06/29 18:35:24 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,17 @@ static void	compute_implied_start_point(t_curve_params *params,
 		if (contour->env->subpixel)
 			subpixelize(&prev_ctrl);
 		params->start_pt = create_implied_point(prev_ctrl, params->ctrl_pt);
+		if (contour->env->zoom <= 0)
+		{
+
+			ft_mlx_circle_put(&contour->env->mlx->img, new_screen_pt2(contour, prev_ctrl),
+				10, GREEN);
+			ft_mlx_circle_put(&contour->env->mlx->img, new_screen_pt2(contour, params->ctrl_pt),
+				10, WHITE);
+			ft_mlx_circle_put(&contour->env->mlx->img, new_screen_pt2(contour, params->start_pt),
+				10, GREEN);
+			printf("heyy!!!!!!!!!!!!!!!\n");
+		}
 	}
 }
 
@@ -44,6 +55,17 @@ static void	compute_implied_end_point(t_curve_params *params,
 		if (contour->env->subpixel)
 			subpixelize(&next_ctrl);
 		params->end_pt = create_implied_point(params->ctrl_pt, next_ctrl);
+		if (contour->env->zoom <= 0)
+		{
+
+			ft_mlx_circle_put(&contour->env->mlx->img, new_screen_pt2(contour, next_ctrl),
+				10, GREEN);
+			ft_mlx_circle_put(&contour->env->mlx->img, new_screen_pt2(contour, params->ctrl_pt),
+				10, WHITE);
+			ft_mlx_circle_put(&contour->env->mlx->img, new_screen_pt2(contour, params->start_pt),
+				10, GREEN);
+			printf("heyy!!!!!!!!!!!!!!!\n");
+		}
 	}
 }
 
@@ -78,7 +100,8 @@ void	process_all_off_curve_contour(t_fill_data *fill, t_contour *contour,
 			subpixelize(&params->ctrl_pt);
 		compute_implied_start_point(params, contour, last_ctrl);
 		compute_implied_end_point(params, contour, first_ctrl);
-		add_curve_fill(fill, contour, *params, 0);
+		printf("feur\n");
+		//add_curve_fill(fill, contour, *params, 0);
 		params->contour_idx++;
 	}
 }
