@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 15:24:15 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/06/29 18:34:59 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/06/29 20:09:59 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static	uint32_t	compute_end_coverage(t_subpixel_data data)
 		red_cov = data.rdiff;
 	if (data.subpixel_end <= 1)
 		green_cov = data.gdiff;
-	if (data.subpixel_end >= 2)
+	if (data.subpixel_end <= 2)
 		blue_cov = data.bdiff;
 	return (to_color(red_cov, green_cov, blue_cov));
 }
@@ -83,8 +83,8 @@ void	render_subpixel_line(t_fill_data *fill, t_contour *contour, int *x)
 	xx[0] = transform_x(contour, data.display_start);
 	xx[1] = transform_x(contour, data.display_end);
 	yy = transform_y(contour, fill->y);
-	ft_mlx_circle_put(&fill->env->mlx->img, new_vec2(xx[0], yy), 5, YELLOW);
-	ft_mlx_circle_put(&fill->env->mlx->img, new_vec2(xx[1], yy), 5, YELLOW);
+	//ft_mlx_circle_put(&fill->env->mlx->img, new_vec2(xx[0], yy), 5, YELLOW);
+	//ft_mlx_circle_put(&fill->env->mlx->img, new_vec2(xx[1], yy), 5, YELLOW);
 	ft_mlx_horizontal_line(&fill->env->mlx->img, xx, yy, fill->color);
 	if (data.subpixel_start > 0)
 		ft_mlx_pixel_put(&fill->env->mlx->img, new_vec2(transform_x(contour, data.display_start), yy), compute_start_coverage(data));
