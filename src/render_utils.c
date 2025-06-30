@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 13:48:09 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/06/29 16:17:55 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/06/30 15:22:16 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
  * @brief Convert font coordinates to screen coordinates
  */
 
-int	transform_x(t_contour *contour, int _x)
+float	transform_x(t_contour *contour, int _x)
 {
 	float	scale;
 	float	x;
@@ -50,11 +50,6 @@ int	transform_y(t_contour *contour, int _y)
 	return (y / env->zoom);
 }
 
-// check inline
-void	subpixelize(t_vec2 *pos)
-{
-	pos->x *=3;
-}
 
 t_vec2	transform_coordinate(t_env *env, t_vec2 glyph_pos, t_vec2 base_pos)
 {

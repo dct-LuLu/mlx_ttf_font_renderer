@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 21:53:00 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/06/29 18:35:17 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/06/30 13:52:54 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,11 +53,7 @@ static void	process_curve_sequence(t_fill_data *fill, t_contour *contour,
 			break ;
 		params->ctrl_pt = new_vec2(contour->glyf->x_coordinates[next_idx],
 				contour->glyf->y_coordinates[next_idx]);
-		if (fill->env->subpixel)
-			subpixelize(&params->ctrl_pt);
 		params->end_pt = find_curve_end_point(contour, next_idx, params);
-		if (fill->env->subpixel)
-			subpixelize(&params->end_pt);
 		add_curve_fill(fill, contour, *params);
 		params->start_pt = params->end_pt;
 		curr_idx = next_idx;
@@ -79,14 +75,10 @@ void	process_fill_contour_point(t_fill_data *fill, t_contour *contour,
 		next_idx = params->contour_start;
 	params->start_pt = new_vec2(contour->glyf->x_coordinates[params->contour_idx],
 			contour->glyf->y_coordinates[params->contour_idx]);
-	if (fill->env->subpixel)
-		subpixelize(&params->start_pt);
 	if (contour->glyf->flags[next_idx] & ON_CURVE)
 	{
 		params->end_pt = new_vec2(contour->glyf->x_coordinates[next_idx],
 				contour->glyf->y_coordinates[next_idx]);
-		if (fill->env->subpixel)
-			subpixelize(&params->end_pt);
 		add_edge(fill, params->start_pt, params->end_pt);
 	}
 	else

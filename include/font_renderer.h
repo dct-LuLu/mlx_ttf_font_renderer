@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 23:07:22 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/06/29 18:35:32 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/06/30 15:22:10 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,7 +158,7 @@ void	add_curve_fill(t_fill_data *fill, t_contour *contour,
 
 t_vec2	new_screen_pt(t_contour *contour, int x, int y);
 t_vec2	apply_transform(t_vec2 point, t_glyf_component *comp);
-int	transform_x(t_contour *contour, int _x);
+float	transform_x(t_contour *contour, int _x);
 int	transform_y(t_contour *contour, int _y);
 void	subpixelize(t_vec2 *pos);
 t_vec2	new_screen_pt2(t_contour *contour, t_vec2 v);
