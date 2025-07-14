@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 22:32:25 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/06/29 16:06:38 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/07/14 16:50:29 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,45 +54,6 @@ void	edit_text(int keysym, t_env *env)
 			printf("%d: '%c'\n", keysym, keysym);
 		env->cur_pos++;
 	}
-}
-
-int	save_env_state(t_env *env, const char *filename)
-{
-	FILE	*file;
-
-	file = fopen(filename, "w");
-	if (!file)
-		return (-1);
-	fprintf(file, "%zu\n", env->cur_pos);
-	fprintf(file, "%d\n", (int)env->capslock);
-	fprintf(file, "%d\n", (int)env->subpixel);
-	fprintf(file, "%d\n", env->x);
-	fprintf(file, "%d\n", env->y);
-	fprintf(file, "%d\n", env->last_x);
-	fprintf(file, "%d\n", env->last_y);
-	fprintf(file, "%d\n", env->zoom);
-	fprintf(file, "%d\n", env->view_mode);
-	fclose(file);
-	return (0);
-}
-
-int	load_env_state(t_env *env, const char *filename)
-{
-	FILE	*file;
-	int		temp[2];
-
-	file = fopen(filename, "r");
-	if (!file)
-		return (-1);
-	if (fscanf(file, "%zu\n%d\n%d\n", &env->cur_pos, &temp[0], &temp[1]) != 3)
-		return (fclose(file), -1);
-	env->capslock = (bool)temp[0];
-	env->subpixel = (bool)temp[1];
-	if (fscanf(file, "%d\n%d\n%d\n%d\n%d\n%d\n", &env->x, &env->y,
-		&env->last_x, &env->last_y, &env->zoom, &env->view_mode) != 6)
-		return (fclose(file), -1);
-	fclose(file);
-	return (0);
 }
 
 /*
@@ -160,26 +121,5 @@ int	on_button_press(int mousecode, int x, int y, t_env *env)
 		env->zoom += 1;
 	else if (mousecode == 4)
 		env->zoom -= 1;
-	//printf("x:%d y:%d\t%d\n", x, y, mousecode);
-	return (0);
-}
-
-int	on_button_release(int mousecode, int x, int y, t_env *env)
-{
-	//printf("x:%d y:%d\t%d\n", x, y, mousecode);
-	(void)x;
-	(void)y;
-	(void)mousecode;
-	(void)env;
-	return (0);
-}
-
-int	mouse_handler(int mousecode, int x, int y, t_env *env)
-{
-	(void)mousecode;
-	(void)env;
-	(void)x;
-	(void)y;
-	//printf("dddddx:%d y:%d\t%d\n", x, y, mousecode);
 	return (0);
 }
