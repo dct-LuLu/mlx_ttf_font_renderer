@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 22:13:23 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/06/29 16:09:03 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/07/14 16:58:21 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,20 @@ static t_mlx	*init_mlx(void)
 	return (mlx);
 }
 
-int	load_env_state(t_env *env, const char *filename);
+//mlx_hook(env->mlx->win, ButtonRelease, ButtonReleaseMask, &on_button_release, env);
+//mlx_mouse_hook(env->mlx->win, &mouse_handler, env);
+static void	setup_input_hooks(t_env *env)
+{
+	mlx_hook(env->mlx->win, DestroyNotify,
+		StructureNotifyMask, &kill_mlx, env->mlx);
+	mlx_hook(env->mlx->win, KeyPress,
+		KeyPressMask, &on_key_press, env);
+	mlx_hook(env->mlx->win, ButtonPress,
+		ButtonPressMask, &on_button_press, env);
+	mlx_hook(env->mlx->win, MotionNotify,
+		Button2MotionMask, &on_mwheel_drag, env);
+}
+
 void	*renderer_mainloop(t_env *env)
 {
 	env->zoom = 10;
@@ -45,13 +58,7 @@ void	*renderer_mainloop(t_env *env)
 	env->mlx = init_mlx();
 	if (!env->mlx)
 		return (NULL);
-	mlx_hook(env->mlx->win, DestroyNotify, StructureNotifyMask, &kill_mlx,
-		env->mlx);
-	mlx_hook(env->mlx->win, KeyPress, KeyPressMask, &on_key_press, env);
-	mlx_hook(env->mlx->win, ButtonPress, ButtonPressMask, &on_button_press, env);
-	//mlx_hook(env->mlx->win, ButtonRelease, ButtonReleaseMask, &on_button_release, env);
-	mlx_hook(env->mlx->win, MotionNotify, Button2MotionMask, &on_mwheel_drag, env);
-	//mlx_mouse_hook(env->mlx->win, &mouse_handler, env);
+	setup_input_hooks(env);
 	mlx_loop_hook(env->mlx->mlx, &draw_routine, env);
 	mlx_loop(env->mlx->mlx);
 	kill_mlx(env->mlx);

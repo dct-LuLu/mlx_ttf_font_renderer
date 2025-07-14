@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 23:07:22 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/06/30 15:22:10 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/07/14 16:51:15 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,6 +140,10 @@ typedef struct s_text_metrics
 
 //t_text_metrics	get_glyph_metrics(t_env *env, size_t glyph_idx);
 //int				measure_string_width(t_env *env, const char *str);
+
+int	save_env_state(t_env *env, const char *filename);
+int	load_env_state(t_env *env, const char *filename);
+
 void	draw_string(t_env *env, const char *str, t_vec2 pos, int color);
 
 void	*renderer_mainloop(t_env *env);

@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 15:24:15 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/06/30 17:16:37 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/06/30 17:25:06 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,15 +122,10 @@ static void	apply_lcd_filter(int coverage[3])
 	int	total;
 	int	filtered[3];
 	
-	// Calculate total coverage
 	total = coverage[0] + coverage[1] + coverage[2];
-	
-	// Redistribute with slight smoothing while maintaining balance
 	filtered[0] = (coverage[0] * 2 + coverage[1]) / 3;
 	filtered[1] = (coverage[0] + coverage[1] * 2 + coverage[2]) / 4;
 	filtered[2] = (coverage[1] + coverage[2] * 2) / 3;
-	
-	// Ensure total coverage is preserved (prevents color shifts)
 	int new_total = filtered[0] + filtered[1] + filtered[2];
 	if (new_total > 0)
 	{
