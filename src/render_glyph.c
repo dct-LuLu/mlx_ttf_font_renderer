@@ -81,6 +81,8 @@ static void	draw_composite_glyph(t_contour *contour)
 			comp_contour.transform = comp;
 			if (comp_contour.glyf->header->number_of_contours >= 0)
 				draw_simple_glyph(&comp_contour);
+			else if (comp_contour.glyf->header->number_of_contours == -1)
+				draw_composite_glyph(&comp_contour);
 		}
 		comp = comp->next;
 	}
