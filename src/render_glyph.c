@@ -96,7 +96,8 @@ static bool	is_glyph_onscreen(t_contour *contour)
 	header = contour->glyf->header;
 	corners[0] = new_screen_pt(contour, header->x_min, header->y_min);
 	corners[1] = new_screen_pt(contour, header->x_max, header->y_max);
-	if ((corners[1].x < 0) || (corners[0].y < 0) || (corners[0].x > WIDTH) || (corners[1].y > HEIGHT))
+	if ((corners[1].x < 0) || (corners[0].y < 0)
+		|| (corners[0].x > WIDTH) || (corners[1].y > HEIGHT))
 		return (true);
 	return (false);
 }

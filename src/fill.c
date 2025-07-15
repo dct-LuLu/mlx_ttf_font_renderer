@@ -78,7 +78,7 @@ static bool	contour_has_on_curve(t_contour *contour, t_curve_params params)
 			return (true);
 		curr_idx++;
 	}
-	printf("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\n");
+	printf("countour_has_no_on_curve\n");
 	return (false);
 }
 
@@ -101,10 +101,7 @@ static void	process_single_contour(t_contour *contour, t_fill_data *fill,
 		}
 	}
 	else
-	{
-		printf("ALED\n\naaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\n\n");
 		process_all_off_curve_contour(fill, contour, &params);
-	}
 }
 
 /*

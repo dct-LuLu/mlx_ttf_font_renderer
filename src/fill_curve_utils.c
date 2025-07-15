@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "font_renderer.h"
+#include <math.h>
 
 /*
 	Function that subdivide the curve into smaller segments
@@ -102,7 +103,7 @@ t_vec2	quad_bezier_pt(t_vec2 start, t_vec2 ctrl, t_vec2 end, float t)
 	b = 2 * m * t;
 	c = t * t;
 	return (new_vec2(((a * start.x) + (b * ctrl.x) + (c * end.x)),
-		((a * start.y) + (b * ctrl.y) + (c * end.y))));
+			((a * start.y) + (b * ctrl.y) + (c * end.y))));
 }
 
 /*
@@ -121,11 +122,10 @@ int	fast_distance(t_vec2 a, t_vec2 b)
 	return (dx + dy - (min_val >> 1) - (min_val >> 2) + (min_val >> 4));
 }
 
-#include <math.h>
 //inline
 float	clamp(float value, float min_val, float max_val)
 {
-    return (fmaxf(min_val, fminf(value, max_val)));
+	return (fmaxf(min_val, fminf(value, max_val)));
 }
 
 float	quad_bezier_res(t_curve_params params)
@@ -146,9 +146,9 @@ void	add_curve_fill(t_fill_data *fill, t_contour *contour,
 		t_curve_params params)
 {
 	const float	res = quad_bezier_res(params);
-	float	t;
-	t_vec2	a;
-	t_vec2	b;
+	float		t;
+	t_vec2		a;
+	t_vec2		b;
 
 	a = params.start_pt;
 	t = 0.0f;

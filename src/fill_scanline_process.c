@@ -42,11 +42,11 @@ static void	fill_horizontal(t_fill_data *fill, int *windings,
 		winding_number += windings[i];
 		if ((x[0] == -1) && (winding_number != 0))
 		{
-			x[0] = intersections[i];//(int)(intersections[i] + 0.5f);
+			x[0] = intersections[i];
 		}
 		else if ((x[0] != -1) && (winding_number == 0))
 		{
-			x[1] = intersections[i];//(int)(intersections[i] + 0.5f);
+			x[1] = intersections[i];
 			if (x[1] > x[0])
 			{
 				if (fill->env->subpixel)
@@ -70,7 +70,8 @@ static void	fill_horizontal(t_fill_data *fill, int *windings,
 /*
 	Enhanced scanline filling with proper vertex intersection rules
 */
-static void	fill_scanline_horizontal(t_fill_data *fill, t_edge *active_edges, t_contour *contour)
+static void	fill_scanline_horizontal(t_fill_data *fill,
+	t_edge *active_edges, t_contour *contour)
 {
 	const int	intersection_count = fill_intersections_windings(fill,
 			active_edges, fill->y);
@@ -86,10 +87,8 @@ static void	fill_scanline_horizontal(t_fill_data *fill, t_edge *active_edges, t_
 
 void	fill_scanline_process(t_fill_data *fill, t_contour *contour)
 {
-	int	total_lines_drawn;
 	int	edges_after;
 
-	total_lines_drawn = 0;
 	fill->y = fill->y_min;
 	while (fill->y <= fill->y_max)
 	{
@@ -99,7 +98,6 @@ void	fill_scanline_process(t_fill_data *fill, t_contour *contour)
 		{
 			sort_active_edges(&fill->active_edges);
 			fill_scanline_horizontal(fill, fill->active_edges, contour);
-			total_lines_drawn++;
 		}
 		remove_finished_edges(fill, &fill->active_edges, fill->y);
 		increment_x_positions(fill->active_edges);
