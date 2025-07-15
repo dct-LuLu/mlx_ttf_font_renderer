@@ -11,17 +11,24 @@
 /* ************************************************************************** */
 
 #include "font_renderer.h"
+#include "parser_tables.h"
+#include "vec2.h"
+
+//inline
+t_vec2	get_glyf_coords(t_glyf_table *glyf, int idx)
+{
+	return (new_vec2(glyf->x_coordinates[idx], glyf->y_coordinates[idx]));
+}
 
 /**
  * @brief Convert font coordinates to screen coordinates
  */
-
 float	transform_x(t_contour *contour, int _x)
 {
 	float	scale;
 	float	x;
 	t_env	*env;
-	
+
 	env = contour->env;
 	if (env->font->head->units_per_em == 0)
 		return (0);
@@ -38,7 +45,7 @@ int	transform_y(t_contour *contour, int _y)
 	float	scale;
 	float	y;
 	t_env	*env;
-	
+
 	env = contour->env;
 	if (env->font->head->units_per_em == 0 || env->zoom == 0)
 		return (0);
@@ -49,7 +56,6 @@ int	transform_y(t_contour *contour, int _y)
 		return (y * -env->zoom + 1);
 	return (y / env->zoom);
 }
-
 
 t_vec2	transform_coordinate(t_env *env, t_vec2 glyph_pos, t_vec2 base_pos)
 {
@@ -87,7 +93,6 @@ t_vec2	new_screen_pt(t_contour *contour, int x, int y)
 {
 	return (transform_coordinate(contour->env, new_vec2(x, y), contour->pos));
 }
-
 
 t_vec2	new_screen_pt2(t_contour *contour, t_vec2 v)
 {

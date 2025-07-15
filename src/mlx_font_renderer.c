@@ -35,7 +35,8 @@ static t_mlx	*init_mlx(void)
 	return (mlx);
 }
 
-//mlx_hook(env->mlx->win, ButtonRelease, ButtonReleaseMask, &on_button_release, env);
+//mlx_hook(env->mlx->win, ButtonRelease,
+// ButtonReleaseMask, &on_button_release, env);
 //mlx_mouse_hook(env->mlx->win, &mouse_handler, env);
 static void	setup_input_hooks(t_env *env)
 {

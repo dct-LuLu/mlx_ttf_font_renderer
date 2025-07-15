@@ -25,12 +25,10 @@ static t_vec2	find_curve_end_point(t_contour *contour, int ctrl_idx,
 	next_idx = ctrl_idx + 1;
 	if (ctrl_idx == params->contour_end)
 		next_idx = params->contour_start;
-	next_pt = new_vec2(contour->glyf->x_coordinates[next_idx],
-			contour->glyf->y_coordinates[next_idx]);
+	next_pt = get_glyf_coords(contour->glyf, next_idx);
 	if (contour->glyf->flags[next_idx] & ON_CURVE)
 		return (next_pt);
-	ctrl_pt = new_vec2(contour->glyf->x_coordinates[ctrl_idx],
-			contour->glyf->y_coordinates[ctrl_idx]);
+	ctrl_pt = get_glyf_coords(contour->glyf, ctrl_idx);
 	return (create_implied_point(ctrl_pt, next_pt));
 }
 
@@ -51,8 +49,7 @@ static void	process_curve_sequence(t_fill_data *fill, t_contour *contour,
 			next_idx = params->contour_start;
 		if (contour->glyf->flags[next_idx] & ON_CURVE)
 			break ;
-		params->ctrl_pt = new_vec2(contour->glyf->x_coordinates[next_idx],
-				contour->glyf->y_coordinates[next_idx]);
+		params->ctrl_pt = get_glyf_coords(contour->glyf, next_idx);
 		params->end_pt = find_curve_end_point(contour, next_idx, params);
 		add_curve_fill(fill, contour, *params);
 		params->start_pt = params->end_pt;
@@ -73,12 +70,10 @@ void	process_fill_contour_point(t_fill_data *fill, t_contour *contour,
 	next_idx = params->contour_idx + 1;
 	if (params->contour_idx == params->contour_end)
 		next_idx = params->contour_start;
-	params->start_pt = new_vec2(contour->glyf->x_coordinates[params->contour_idx],
-			contour->glyf->y_coordinates[params->contour_idx]);
+	params->start_pt = get_glyf_coords(contour->glyf, params->contour_idx);
 	if (contour->glyf->flags[next_idx] & ON_CURVE)
 	{
-		params->end_pt = new_vec2(contour->glyf->x_coordinates[next_idx],
-				contour->glyf->y_coordinates[next_idx]);
+		params->end_pt = get_glyf_coords(contour->glyf, next_idx);
 		add_edge(fill, params->start_pt, params->end_pt);
 	}
 	else

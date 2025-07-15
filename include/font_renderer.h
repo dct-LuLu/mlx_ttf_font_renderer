@@ -52,22 +52,22 @@ typedef struct s_curve_state
 
 typedef struct s_subpixel_data
 {
-	float	coverage[MAX_GLYPH_WIDTH * 3];
-	float	filtered[MAX_GLYPH_WIDTH * 3];
-	int		bg_color;
-	int		gamma_to_linear[256];
-	int		linear_to_gamma[256];
-	int		display_start;
-	int		display_end;
-	int		subpixel_start;
-	int		subpixel_end;
+	float		coverage[MAX_GLYPH_WIDTH * 3];
+	float		filtered[MAX_GLYPH_WIDTH * 3];
+	int			bg_color;
+	int			gamma_to_linear[256];
+	int			linear_to_gamma[256];
+	int			display_start;
+	int			display_end;
+	int			subpixel_start;
+	int			subpixel_end;
 	int32_t		bg;
 	int32_t		fg;
 	uint32_t	diff;
 	uint8_t		rdiff;
 	uint8_t		gdiff;
 	uint8_t		bdiff;
-}   t_subpixel_data;
+}				t_subpixel_data;
 
 typedef struct s_env
 {
@@ -143,15 +143,15 @@ typedef struct s_text_metrics
 //t_text_metrics	get_glyph_metrics(t_env *env, size_t glyph_idx);
 //int				measure_string_width(t_env *env, const char *str);
 
-int	save_env_state(t_env *env, const char *filename);
-int	load_env_state(t_env *env, const char *filename);
+int		save_env_state(t_env *env, const char *filename);
+int		load_env_state(t_env *env, const char *filename);
 
 void	draw_string(t_env *env, const char *str, t_vec2 pos, int color);
 
 void	*renderer_mainloop(t_env *env);
 int		draw_routine(t_env *env);
 int		on_button_press(int mousecode, int x, int y, t_env *env);
-int	on_mwheel_drag(int x, int y, t_env *env);
+int		on_mwheel_drag(int x, int y, t_env *env);
 int		on_button_release(int mousecode, int x, int y, t_env *env);
 int		on_key_press(int keysym, t_env *env);
 int		mouse_handler(int mousecode, int x, int y, t_env *env);
@@ -165,9 +165,10 @@ void	add_curve_fill(t_fill_data *fill, t_contour *contour,
 t_vec2	new_screen_pt(t_contour *contour, int x, int y);
 t_vec2	apply_transform(t_vec2 point, t_glyf_component *comp);
 float	transform_x(t_contour *contour, int _x);
-int	transform_y(t_contour *contour, int _y);
+int		transform_y(t_contour *contour, int _y);
 void	subpixelize(t_vec2 *pos);
 t_vec2	new_screen_pt2(t_contour *contour, t_vec2 v);
+t_vec2	get_glyf_coords(t_glyf_table *glyf, int idx);
 
 void	draw_max_bounding_box(t_contour *contour, int color);
 void	draw_transformed_bounding_box(t_contour *contour, int scolor);
