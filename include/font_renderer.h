@@ -24,10 +24,12 @@
 
 # define ON_CURVE 0x01
 
-# define MAX_GLYPH_HEIGHT	2000
+# define MAX_GLYPH_HEIGHT	3000
 # define MAX_GLYPH_WIDTH	2500
 # define MAX_ACTIVE_EDGES	550
-# define MAX_INTERSECTIONS	100
+# define MAX_INTERSECTIONS	30
+
+# define CURVE_RESOLUTION   4.0f
 
 typedef struct s_curve_params
 {

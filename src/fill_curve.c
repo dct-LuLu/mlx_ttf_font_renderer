@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "font_renderer.h"
+#include "vec2.h"
 
 static void	compute_implied_start_point(t_curve_params *params,
 		t_contour *contour, t_vec2 last_ctrl)
@@ -37,6 +38,8 @@ static void	compute_implied_start_point(t_curve_params *params,
 		}
 	}
 }
+
+
 
 static void	compute_implied_end_point(t_curve_params *params,
 		t_contour *contour, t_vec2 first_ctrl)
@@ -92,7 +95,7 @@ void	process_all_off_curve_contour(t_fill_data *fill, t_contour *contour,
 		compute_implied_start_point(params, contour, last_ctrl);
 		compute_implied_end_point(params, contour, first_ctrl);
 		printf("feur\n");
-		//add_curve_fill(fill, contour, *params, 0);
+		add_curve_fill(fill, contour, *params);
 		params->contour_idx++;
 	}
 }

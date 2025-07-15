@@ -77,9 +77,9 @@ void	render_sb(t_fill_data *fill, t_contour *contour, int *x)
 	int				xx[2];
 	int				yy;
 
-	
+
 	data = init_subpixel_data(fill, x);
-	
+
 	xx[0] = transform_x(contour, data.display_start);
 	xx[1] = transform_x(contour, data.display_end);
 	yy = transform_y(contour, fill->y);
@@ -121,7 +121,7 @@ static void	apply_lcd_filter(int coverage[3])
 {
 	int	total;
 	int	filtered[3];
-	
+
 	total = coverage[0] + coverage[1] + coverage[2];
 	filtered[0] = (coverage[0] * 2 + coverage[1]) / 3;
 	filtered[1] = (coverage[0] + coverage[1] * 2 + coverage[2]) / 4;
@@ -130,7 +130,7 @@ static void	apply_lcd_filter(int coverage[3])
 	if (new_total > 0)
 	{
 		coverage[0] = (filtered[0] * total) / new_total;
-		coverage[1] = (filtered[1] * total) / new_total;  
+		coverage[1] = (filtered[1] * total) / new_total;
 		coverage[2] = (filtered[2] * total) / new_total;
 	}
 }
@@ -139,7 +139,7 @@ void	render_fb(t_fill_data *fill, int *x, int y)
 {
 	int	pixel_x;
 	int	subpixel_start;
-	int	subpixel_end;
+	//int	subpixel_end;
 	int	coverage[3];
 	int	color;
 	t_subpixel_data	data;
@@ -149,7 +149,7 @@ void	render_fb(t_fill_data *fill, int *x, int y)
 	while (pixel_x <= x[1] / 3)
 	{
 		subpixel_start = pixel_x * 3;
-		subpixel_end = subpixel_start + 2;
+		//subpixel_end = subpixel_start + 2;
 		coverage[0] = calculate_coverage(x[0], x[1], subpixel_start);
 		coverage[1] = calculate_coverage(x[0], x[1], subpixel_start + 1);
 		coverage[2] = calculate_coverage(x[0], x[1], subpixel_start + 2);

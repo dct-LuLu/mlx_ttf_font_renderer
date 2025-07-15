@@ -22,7 +22,7 @@ t_vec2 result[5])
 	t_vec2	q0;
 	t_vec2	q1;
 	t_vec2	r;
-	
+
 	q0.x = (p0.x + p1.x + 1) * 0.5;
 	q0.y = (p0.y + p1.y + 1) * 0.5;
 	q1.x = (p1.x + p2.x + 1) * 0.5;
@@ -49,7 +49,7 @@ static int	is_degenerate_curve(t_vec2 p0, t_vec2 p1, t_vec2 p2)
 	int	cross_product;
 	int	dxy1[2];
 	int	dxy2[2];
-	
+
 	dxy1[0] = p1.x - p0.x;
 	dxy1[1] = p1.y - p0.y;
 	dxy2[0] = p2.x - p0.x;
@@ -71,7 +71,7 @@ static bool	is_curve_flat(t_vec2 p0, t_vec2 p1, t_vec2 p2, int depth)
 	int	chord_length_sq;
 	int	dxy[2];
 	int	threshold;
-	
+
 	dxy[0] = p2.x - p0.x;
 	dxy[1] = p2.y - p0.y;
 	chord_length_sq = dxy[0] * dxy[0] + dxy[1] * dxy[1];
@@ -136,7 +136,7 @@ float	quad_bezier_res(t_curve_params params)
 
 	if (((a + b) == 0) || (c == 0))
 		return (-1);
-	return (clamp(((a + b) / c) / 4.0f, 0.01f, 0.99f));
+	return (clamp(((a + b) / c) / CURVE_RESOLUTION, 0.01f, 0.99f));
 }
 
 /*
@@ -157,11 +157,11 @@ void	add_curve_fill(t_fill_data *fill, t_contour *contour,
 		b = quad_bezier_pt(params.start_pt, params.ctrl_pt, params.end_pt, t);
 		if (DEBUG && (contour->env->zoom <= 0))
 		{
-			ft_mlx_circle_put(&contour->env->mlx->img, new_screen_pt(contour, a.x / 3, a.y),
-				10, GREEN);
-			ft_mlx_circle_put(&contour->env->mlx->img, new_screen_pt(contour, b.x / 3, b.y),
-				10, GREEN);
-			ft_mlx_line_put(&contour->env->mlx->img, new_screen_pt(contour, a.x / 3, a.y), new_screen_pt(contour, b.x / 3, b.y), GREEN);
+			ft_mlx_circle_put(&contour->env->mlx->img, new_screen_pt(contour, a.x, a.y),
+				7, GREEN);
+			ft_mlx_circle_put(&contour->env->mlx->img, new_screen_pt(contour, b.x, b.y),
+				7, GREEN);
+			ft_mlx_line_put(&contour->env->mlx->img, new_screen_pt(contour, a.x, a.y), new_screen_pt(contour, b.x, b.y), GREEN);
 		}
 		add_edge(fill, a, b);
 		a = b;
