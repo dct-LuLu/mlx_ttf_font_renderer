@@ -6,13 +6,13 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 16:20:40 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/06/29 15:56:38 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/07/16 20:13:52 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "font_renderer.h"
 
-t_vec2	transform_coordinate(t_env *env, t_vec2 glyph_pos, t_vec2 base_pos);
+t_vec2	to_screen_pt(t_env *env, t_vec2 glyph_pos, t_vec2 base_pos);
 
 /**
  * @brief Get next index in contour with wrap-around
@@ -22,19 +22,6 @@ int	get_next_contour_idx(int curr_idx, int start_idx, int end_idx)
 	if (curr_idx == end_idx)
 		return (start_idx);
 	return (curr_idx + 1);
-}
-
-/**
- * @brief Get transformed point from glyph coordinates
- */
-t_vec2	get_transformed_point(t_glyf_table *glyph, int point_idx,
-		t_glyf_component *transform)
-{
-	t_vec2	point_pt;
-
-	point_pt = new_vec2(glyph->x_coordinates[point_idx],
-			glyph->y_coordinates[point_idx]);
-	return (apply_transform(point_pt, transform));
 }
 
 /**
@@ -49,6 +36,28 @@ t_vec2	create_implied_point(t_vec2 ctrl1_pt, t_vec2 ctrl2_pt)
 	return (implied_pt);
 }
 
+static void	debug_quadratic_curves_info(t_contour *contour, t_vec2 *screen)
+{
+	if (contour->env->zoom <= 0)
+	{
+		ft_mlx_circle_put(&contour->env->mlx->img, screen[0],
+			(4), RED);
+		ft_mlx_circle_put(&contour->env->mlx->img, screen[1],
+			(5), YELLOW);
+		ft_mlx_circle_put(&contour->env->mlx->img, screen[2],
+			(4), RED);
+	}
+	else
+	{
+		ft_mlx_circle_put(&contour->env->mlx->img, screen[0],
+			(3 / (float)contour->env->zoom), RED);
+		ft_mlx_circle_put(&contour->env->mlx->img, screen[1],
+			(4 / (float)contour->env->zoom), YELLOW);
+		ft_mlx_circle_put(&contour->env->mlx->img, screen[2],
+			(3 / (float)contour->env->zoom), RED);
+	}
+}
+
 /**
  * @brief Draw single quadratic curve segment using a start ctrl 
  * and end point.
@@ -58,32 +67,13 @@ void	draw_curve_segment(t_contour *contour, t_vec2 start_pt,
 {
 	t_vec2	screen[3];
 
-	screen[0] = transform_coordinate(contour->env, start_pt, contour->pos);
-	screen[1] = transform_coordinate(contour->env, ctrl_pt, contour->pos);
-	screen[2] = transform_coordinate(contour->env, end_pt, contour->pos);
+	screen[0] = to_screen_pt(contour->env, start_pt, contour->pos);
+	screen[1] = to_screen_pt(contour->env, ctrl_pt, contour->pos);
+	screen[2] = to_screen_pt(contour->env, end_pt, contour->pos);
 	ft_mlx_draw_quadratic_curve(&contour->env->mlx->img, screen,
 		contour->color);
 	if (DEBUG)
-	{
-		if (contour->env->zoom <= 0)
-		{
-			ft_mlx_circle_put(&contour->env->mlx->img, screen[0],
-				(4), RED);
-			ft_mlx_circle_put(&contour->env->mlx->img, screen[1],
-				(5), YELLOW);
-			ft_mlx_circle_put(&contour->env->mlx->img, screen[2],
-				(4), RED);
-		}
-		else
-		{
-			ft_mlx_circle_put(&contour->env->mlx->img, screen[0],
-				(3 / (float)contour->env->zoom), RED);
-			ft_mlx_circle_put(&contour->env->mlx->img, screen[1],
-				(4 / (float)contour->env->zoom), YELLOW);
-			ft_mlx_circle_put(&contour->env->mlx->img, screen[2],
-				(3 / (float)contour->env->zoom), RED);
-		}
-	}
+		debug_quadratic_curves_info(contour, screen);
 }
 
 /**

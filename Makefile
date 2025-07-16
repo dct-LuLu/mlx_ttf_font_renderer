@@ -6,7 +6,7 @@
 #    By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/11 10:16:04 by jaubry--          #+#    #+#              #
-#    Updated: 2025/07/14 16:51:35 by jaubry--         ###   ########lyon.fr    #
+#    Updated: 2025/07/16 19:48:37 by jaubry--         ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -70,9 +70,13 @@ SRCS		= main.c parser_font_ttf.c \
 			  file_utils.c \
 			  time_utils.c \
 			  save_utils.c \
+			  color_utils.c \
+			  math_utils.c \
+			  transform_utils.c \
+			  scale_utils.c \
 			  error_handler.c \
 			  img_utils.c mlx_draw.c mlx_draw_utils1.c mlx_draw_utils2.c mlx_font_renderer.c mlx_draw_curves.c \
-			  mlx_hooks.c vec2.c
+			  mlx_hooks.c mlx_fps.c vec2.c
 
 
 SRCS		:= $(addprefix $(SRCDIR)/, $(SRCS))

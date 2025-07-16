@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 21:52:49 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/06/29 16:26:31 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/07/16 00:13:39 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,8 @@ static t_fill_data	init_fill_data(t_contour *contour)
 	}
 	fill.active_edges = NULL;
 	fill.env = contour->env;
-	fill.color = contour->color;
+	fill.fg = contour->color;
+	fill.bg = 0;
 	return (fill);
 }
 

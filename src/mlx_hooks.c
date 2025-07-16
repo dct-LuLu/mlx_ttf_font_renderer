@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 22:32:25 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/07/14 16:50:29 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/07/16 00:08:29 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,8 @@ void	edit_text(int keysym, t_env *env)
 	if (env->cur_pos < 199)
 	{
 		if (ft_isprint(keysym))
-			env->text[env->cur_pos] = keysym + env->capslock * -32 * ft_isalpha(keysym);
+			env->text[env->cur_pos] = keysym + env->capslock
+				* -32 * ft_isalpha(keysym);
 		else if (keysym == 65293)
 			env->text[env->cur_pos] = '\n';
 		else

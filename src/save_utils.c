@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 16:49:57 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/07/14 16:50:06 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/07/16 00:08:07 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int	load_env_state(t_env *env, const char *filename)
 	env->capslock = (bool)temp[0];
 	env->subpixel = (bool)temp[1];
 	if (fscanf(file, "%d\n%d\n%d\n%d\n%d\n%d\n", &env->x, &env->y,
-		&env->last_x, &env->last_y, &env->zoom, &env->view_mode) != 6)
+			&env->last_x, &env->last_y, &env->zoom, &env->view_mode) != 6)
 		return (fclose(file), -1);
 	fclose(file);
 	return (0);

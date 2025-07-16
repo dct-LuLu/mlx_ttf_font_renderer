@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 16:41:38 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/06/14 00:10:58 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/07/16 17:47:42 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,10 +78,10 @@ int	has_on_curve_points(t_glyf_table *glyph, int start_idx, int end_idx)
 
 void	draw_all_off_curve_contour(t_contour *contour, t_curve_params *params)
 {
-	int		curr_idx;
 	t_vec2	start_pt;
 	t_vec2	ctrl_pt;
 	t_vec2	end_pt;
+	int		curr_idx;
 
 	curr_idx = params->contour_start;
 	while (curr_idx <= params->contour_end)
