@@ -1,28 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   time_utils.c                                       :+:      :+:    :+:   */
+/*   color_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/16 00:06:47 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/07/16 00:07:24 by jaubry--         ###   ########lyon.fr   */
+/*   Created: 2025/07/16 17:18:09 by jaubry--          #+#    #+#             */
+/*   Updated: 2025/07/16 17:40:27 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/time.h>
-#include "error_handler.h"
+#include "color_utils.h"
 
-/*
-        Function that computes the time based on EPOCH
-*/
-ssize_t	get_current_time(void)
+//inline
+uint32_t	to_color(uint8_t red, uint8_t green, uint8_t blue)
 {
-	struct timeval	time;
-
-	if (gettimeofday(&time, NULL) == -1)
-		return (error(ERR_TIME, NULL), -1);
-	return ((time.tv_sec * 1000) + (time.tv_usec / 1000));
+	return ((red << 16) | (green << 8) | blue);
 }

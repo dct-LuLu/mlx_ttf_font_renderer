@@ -1,28 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   time_utils.c                                       :+:      :+:    :+:   */
+/*   math_utils.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/16 00:06:47 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/07/16 00:07:24 by jaubry--         ###   ########lyon.fr   */
+/*   Created: 2025/07/16 20:14:20 by jaubry--          #+#    #+#             */
+/*   Updated: 2025/07/16 20:14:21 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/time.h>
-#include "error_handler.h"
+#ifndef MATH_UTILS_H
+# define MATH_UTILS_H
 
-/*
-        Function that computes the time based on EPOCH
-*/
-ssize_t	get_current_time(void)
-{
-	struct timeval	time;
+# include <math.h>
+# include <stdlib.h>
+# include "vec2.h"
 
-	if (gettimeofday(&time, NULL) == -1)
-		return (error(ERR_TIME, NULL), -1);
-	return ((time.tv_sec * 1000) + (time.tv_usec / 1000));
-}
+int		fast_distance(t_vec2 a, t_vec2 b);
+
+float	clamp(float value, float min_val, float max_val);
+
+#endif //MATH_UTILS_H
