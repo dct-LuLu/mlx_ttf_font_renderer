@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 00:12:04 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/06/30 13:52:20 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/07/17 22:17:32 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,6 @@ void	process_all_off_curve_contour(t_fill_data *fill, t_contour *contour,
 		params->ctrl_pt = get_glyf_coords(contour->glyf, params->contour_idx);
 		compute_implied_start_point(params, contour, last_ctrl);
 		compute_implied_end_point(params, contour, first_ctrl);
-		printf("feur\n");
 		add_curve_fill(fill, contour, *params);
 		params->contour_idx++;
 	}

@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 21:37:58 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/07/16 19:26:19 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/07/17 23:19:47 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,13 +54,13 @@ static void	debug_curve_subdivisions(t_contour *contour, t_vec2 _a, t_vec2 _b)
 	t_vec2	a;
 	t_vec2	b;
 
-	a = to_screen_pt(contour->env, _a, contour->pos);
-	b = to_screen_pt(contour->env, _b, contour->pos);
-	if (DEBUG && (contour->env->zoom <= 0))
+	a = to_screen_pt(contour->text, _a, contour->pos);
+	b = to_screen_pt(contour->text, _b, contour->pos);
+	if (DEBUG && (contour->text->size <= 0))
 	{
-		ft_mlx_circle_put(&contour->env->mlx->img, a, 7, GREEN);
-		ft_mlx_circle_put(&contour->env->mlx->img, b, 7, GREEN);
-		ft_mlx_line_put(&contour->env->mlx->img, a, b, GREEN);
+		ft_mlx_circle_put(contour->text->img, a, 7, GREEN);
+		ft_mlx_circle_put(contour->text->img, b, 7, GREEN);
+		ft_mlx_line_put(contour->text->img, a, b, GREEN);
 	}
 }
 

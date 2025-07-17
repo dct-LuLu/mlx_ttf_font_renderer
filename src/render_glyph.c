@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 16:51:42 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/06/29 15:48:04 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/07/17 23:37:34 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,23 +20,21 @@ void	fill_glyph(t_contour *contour);
  */
 static void	draw_simple_glyph(t_contour *contour)
 {
-	int	color;
-
 	if (!contour->glyf || (contour->glyf->header->number_of_contours <= 0))
 		return ;
 	fill_glyph(contour);
-	if (DEBUG)
+	if (DEBUG || contour->text->outlined)
 	{
 		contour->idx = 0;
-		color = contour->color;
+		if (DEBUG)
+			contour->text->outline = RED;
 		while (contour->idx < contour->glyf->header->number_of_contours)
 		{
-			contour->color = RED;
 			draw_contour(contour);
 			contour->idx++;
 		}
-		contour->color = color;
-		draw_transformed_bounding_box(contour, YELLOW);
+		if (DEBUG)
+			draw_transformed_bounding_box(contour, YELLOW);
 	}
 }
 
@@ -73,10 +71,11 @@ static void	draw_composite_glyph(t_contour *contour)
 	ft_memcpy(&comp_contour, contour, sizeof(t_contour));
 	while (comp)
 	{
-		if (!(comp->glyph_index >= contour->env->font->maxp->num_glyphs
-				|| !contour->env->font->glyfs[comp->glyph_index]))
+		if (!(comp->glyph_index >= contour->text->font->maxp->num_glyphs
+				|| !contour->text->font->glyfs[comp->glyph_index]))
 		{
-			comp_contour.glyf = contour->env->font->glyfs[comp->glyph_index];
+			comp_contour.glyf = contour->text->font->glyfs[comp->glyph_index];
+			ft_memcpy(comp_contour.text, contour->text, sizeof(t_text));
 			comp_contour.pos = get_component_position(contour->pos, comp);
 			comp_contour.transform = comp;
 			if (comp_contour.glyf->header->number_of_contours >= 0)
@@ -109,9 +108,9 @@ void	draw_glyph(t_contour *contour)
 {
 	t_glyf_table	*glyph;
 
-	if (contour->glyf_idx >= contour->env->font->maxp->num_glyphs)
+	if (contour->glyf_idx >= contour->text->font->maxp->num_glyphs)
 		return ;
-	glyph = contour->env->font->glyfs[contour->glyf_idx];
+	glyph = contour->text->font->glyfs[contour->glyf_idx];
 	if (!glyph)
 		return ;
 	contour->glyf = glyph;

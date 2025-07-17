@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 22:00:00 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/07/16 20:13:27 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/07/17 23:45:35 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,21 @@
 
 void	draw_glyph(t_contour *contour);
 
-static t_vec2	advance_pen_position(t_vec2 pen_pos, t_contour ctr, t_env *env)
+static t_vec2	advance_pen_position(t_vec2 pen_pos, t_contour ctr)
 {
 	uint16_t	advance_width;
 	t_vec2		new_pos;
 
 	new_pos = pen_pos;
-	if (!env->font->hmtx || ctr.glyf_idx < 0)
+	if (!ctr.text->font->hmtx || ctr.glyf_idx < 0)
 		return (new_pos);
-	if (ctr.glyf_idx < env->font->hmtx->num_lhmtx)
-		advance_width = env->font->hmtx->lhmtx[ctr.glyf_idx].advance_width;
+	if (ctr.glyf_idx < ctr.text->font->hmtx->num_lhmtx)
+		advance_width = ctr.text->font->hmtx->lhmtx[ctr.glyf_idx].advance_width;
 	else
-		advance_width = env->font->hmtx->lhmtx[env->font->hmtx->num_lhmtx - 1]
+		advance_width = ctr.text->font->hmtx->lhmtx
+			[ctr.text->font->hmtx->num_lhmtx - 1]
 			.advance_width;
-	new_pos.x += advance_width;
+	new_pos.x += scale_x(ctr.text, 0, advance_width);
 	return (new_pos);
 }
 
@@ -38,46 +39,49 @@ static t_vec2	draw_character(t_contour ctr, t_vec2 pen_pos)
 	int		y;
 
 	ctr.pos = pen_pos;
+	new_pen_pos = advance_pen_position(pen_pos, ctr);
 	if (ctr.glyf)
 		draw_glyph(&ctr);
-	new_pen_pos = advance_pen_position(pen_pos, ctr, ctr.env);
 	if (DEBUG)
 	{
-		xpt[0] = scale_x(ctr.env, pen_pos.x, 0);
-		xpt[1] = scale_x(ctr.env, new_pen_pos.x, 0);
-		y = scale_y(ctr.env, -pen_pos.y, 200);
-		ft_mlx_horizontal_line(&ctr.env->mlx->img, xpt, y, RED);
+		xpt[0] = scale_x(ctr.text, pen_pos.x, ctr.pos.x);
+		xpt[1] = scale_x(ctr.text, new_pen_pos.x, ctr.pos.x);
+		y = scale_y(ctr.text, -pen_pos.y, ctr.pos.y);
+		ft_mlx_horizontal_line(ctr.text->img, xpt, y, RED);
 	}
 	return (new_pen_pos);
 }
 
-static t_contour	get_countour(t_env *env, char c, int color)
+
+static t_contour	get_contour(t_text *text, char c)
 {
 	t_contour	ctr;
-
+	
 	ft_bzero(&ctr, sizeof(t_contour));
 	if (c == '\0')
 	{
 		ctr.glyf_idx = -1;
 		return (ctr);
 	}
-	ctr.glyf_idx = get_glyph_index(env->font, c);
-	if (ctr.glyf_idx >= env->font->maxp->num_glyphs)
-		ctr.glyf_idx = 0;
-	ctr.env = env;
-	ctr.color = color;
-	ctr.glyf = env->font->glyfs[ctr.glyf_idx];
+	ctr.glyf_idx = get_glyph_index(text->font, c);
+	if (ctr.glyf_idx >= text->font->maxp->num_glyphs)
+	ctr.glyf_idx = 0;
+	ctr.text = text;
+	ctr.glyf = text->font->glyfs[ctr.glyf_idx];
+	ctr.pos = text->pos;
 	return (ctr);
 }
 
-void	draw_string(t_env *env, const char *str, t_vec2 pos, int color)
+
+/*
+void	draw_string(t_rast_env *env, t_text *text)
 {
 	t_vec2		pen_pos;
 	t_contour	ctr;
 	int			i;
-
+	
 	if (!str || !env || !env->font)
-		return ;
+	return ;
 	pen_pos = pos;
 	i = 0;
 	while (str[i])
@@ -90,6 +94,32 @@ void	draw_string(t_env *env, const char *str, t_vec2 pos, int color)
 		else
 		{
 			ctr = get_countour(env, str[i], color);
+			pen_pos = draw_character(ctr, pen_pos);
+		}
+		i++;
+	}
+}
+*/
+
+void	draw_text(t_text *text)
+{
+	t_vec2		pen_pos;
+	t_contour	ctr;
+	size_t		i;
+
+	pen_pos = text->pos;
+	i = 0;
+	while (text->content[i])
+	{
+		if (text->content[i] == '\n')
+		{
+			pen_pos.y += scale_y(text, 0, abs(text->font->head->y_min) + text->font->head->y_max);
+			pen_pos.x = text->pos.x;
+		}
+		else
+		{
+			ft_bzero(&ctr, sizeof(ctr));
+			ctr = get_contour(text, text->content[i]);
 			pen_pos = draw_character(ctr, pen_pos);
 		}
 		i++;

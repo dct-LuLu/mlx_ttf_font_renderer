@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 11:53:08 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/05/28 05:46:59 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/07/17 23:07:10 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "libft.h"
 #include "parser_font_ttf.h"
 
-int	read_subtables(t_ttf_font *font)
+static int	read_subtables(t_ttf_font *font)
 {
 	int	ret;
 
@@ -42,7 +42,7 @@ static int	read_tables(t_ttf_font *font)
 	return (ret);
 }
 
-int	read_ttf(t_ttf_font *font, const char *path)
+static int	read_ttf(t_ttf_font *font, const char *path)
 {
 	int	ret;
 
@@ -51,5 +51,32 @@ int	read_ttf(t_ttf_font *font, const char *path)
 		ret = read_subtables(font);
 	if (!ret)
 		ret = read_tables(font);
+	return (ret);
+}
+
+static bool	is_ttf_ext(const char *path)
+{
+	size_t	i;
+
+	i = 0;
+	while (path[i])
+	{
+		if ((path[i] == '.') && (ft_strncmp(path + i, ".ttf", 5) == 0))
+			return (true);
+		i++;
+	}
+	return (false);
+}
+
+int	init_ttf(const char *path, t_ttf_font **ptr)
+{
+	int	ret;
+
+	ret = 0;
+	if (!path || !is_ttf_ext(path))
+		return (error(ERR_FILE_EXT, ": '%s'", path));
+	ret = init_ttf_struct(ptr);
+	if (!ret)
+		ret = read_ttf(*ptr, path);
 	return (ret);
 }

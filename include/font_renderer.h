@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 23:07:22 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/07/16 20:14:30 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/07/17 23:19:15 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,35 @@
 # define ON_CURVE 0x01
 
 # define MAX_GLYPH_HEIGHT	3000
-# define MAX_GLYPH_WIDTH	2500
 # define MAX_ACTIVE_EDGES	550
 # define MAX_INTERSECTIONS	30
 
 # define CURVE_RESOLUTION   4.0f
+
+# define MAX_TEXTS 100
+# define MAX_CHARS 10
+
+typedef struct s_text
+{
+	char			content[MAX_CHARS];
+	t_ttf_font		*font;
+	t_vec2			pos;
+	unsigned int	size;
+	uint32_t		fg;
+	uint32_t		bg;
+	bool			outlined;
+	uint32_t		outline;
+	bool			subpixel;
+	t_img			*img;
+}					t_text;
+
+typedef struct s_rast_env
+{
+	t_mlx	*mlx;
+	t_text	*texts[MAX_TEXTS];
+	size_t	text_num;
+	t_text	*fps;
+}	t_rast_env;
 
 typedef struct s_curve_params
 {
@@ -51,50 +75,14 @@ typedef struct s_curve_state
 	t_vec2				start_pt;
 }						t_curve_state;
 
-typedef struct s_subpixel_data
-{
-	float		coverage[MAX_GLYPH_WIDTH * 3];
-	float		filtered[MAX_GLYPH_WIDTH * 3];
-	int			bg_color;
-	int			gamma_to_linear[256];
-	int			linear_to_gamma[256];
-	int			display_start;
-	int			display_end;
-	int			subpixel_start;
-	int			subpixel_end;
-	int32_t		bg;
-	int32_t		fg;
-	uint32_t	diff;
-	uint8_t		rdiff;
-	uint8_t		gdiff;
-	uint8_t		bdiff;
-}				t_subpixel_data;
-
-typedef struct s_env
-{
-	t_mlx				*mlx;
-	t_ttf_font			*font;
-	char				text[200];
-	size_t				cur_pos;
-	bool				capslock;
-	bool				subpixel;
-	int					x;
-	int					y;
-	int					last_x;
-	int					last_y;
-	int					zoom;
-	int					view_mode;
-}						t_env;
-
 typedef struct s_contour
 {
+	t_text				*text;
 	t_glyf_table		*glyf;
 	int					glyf_idx;
 	int					idx;
-	t_vec2				pos;
-	int					color;
 	t_glyf_component	*transform;
-	t_env				*env;
+	t_vec2				pos;
 }						t_contour;
 
 typedef struct s_edge
@@ -124,9 +112,7 @@ typedef struct s_fill_data
 	int				y_max;			// From glyph header
 	int				height;			// y_max - y_min + 1
 	int				y;
-	uint32_t		fg;
-	uint32_t		bg;
-	t_env			*env;
+	t_text			*text;
 }					t_fill_data;
 
 typedef struct s_text_metrics
@@ -136,19 +122,6 @@ typedef struct s_text_metrics
 	t_vec2		glyph_bbox_min;
 	t_vec2		glyph_bbox_max;
 }				t_text_metrics;
-
-int		save_env_state(t_env *env, const char *filename);
-int		load_env_state(t_env *env, const char *filename);
-
-void	draw_string(t_env *env, const char *str, t_vec2 pos, int color);
-
-void	*renderer_mainloop(t_env *env);
-int		draw_routine(t_env *env);
-int		on_button_press(int mousecode, int x, int y, t_env *env);
-int		on_mwheel_drag(int x, int y, t_env *env);
-//int		on_button_release(int mousecode, int x, int y, t_env *env);
-int		on_key_press(int keysym, t_env *env);
-//int		mouse_handler(int mousecode, int x, int y, t_env *env);
 
 t_vec2	create_implied_point(t_vec2 ctrl1_pt, t_vec2 ctrl2_pt);
 
@@ -160,17 +133,14 @@ t_vec2	get_transformed_point(t_glyf_table *glyf, int point_idx,
 			t_glyf_component *transform);
 t_vec2	apply_transform(t_vec2 point, t_glyf_component *comp);	
 t_vec2	new_screen_pt(t_contour *contour, int x, int y);
-t_vec2	to_screen_pt(t_env *env, t_vec2 glyph_pos, t_vec2 base_pos);
+t_vec2	to_screen_pt(t_text *text, t_vec2 glyph_pos, t_vec2 base_pos);
 t_vec2	apply_transform(t_vec2 point, t_glyf_component *comp);
-float	scale_x(t_env *env, int _x, int glyph_x);
-float	scale_y(t_env *env, int _y, int glyph_y);
-
-void	subpixelize(t_vec2 *pos);
+float	scale_x(t_text *text, int _x, int glyph_x);
+float	scale_y(t_text *text, int _y, int glyph_y);
 
 t_vec2	get_glyf_coords(t_glyf_table *glyf, int idx);
 
 void	draw_max_bounding_box(t_contour *contour, int color);
 void	draw_transformed_bounding_box(t_contour *contour, int scolor);
 
-void	free_env(t_env *env);
 #endif // FONT_RENDERER_H
