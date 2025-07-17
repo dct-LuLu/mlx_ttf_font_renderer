@@ -3,46 +3,35 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaubry-- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 10:17:42 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/06/24 19:29:29 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/07/17 23:06:48 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "font_renderer.h"
 
-static bool	is_ttf_ext(char *filename)
-{
-	size_t	i;
-
-	i = 0;
-	while (filename[i])
-	{
-		if ((filename[i] == '.') && (ft_strncmp(filename + i, ".ttf", 5) == 0))
-			return (true);
-		i++;
-	}
-	return (false);
-}
+int		init_ttf(const char *path, t_ttf_font **ptr);
+void	start_mainloop(t_rast_env *env, t_ttf_font *font);
+void	free_ttf(t_ttf_font *font);
 
 int	main(int argc, char **argv)
 {
-	t_env	*env;
+	t_ttf_font	*font;
+	t_rast_env	env;
+	int			ret;
 
+	font = NULL;
 	if (argc == 2)
 	{
-		if (!is_ttf_ext(argv[1]))
-			return (error(ERR_FILE_EXT, ": '%s'", argv[1]));
-		env = ft_calloc(sizeof(t_env), 1);
-		if (!env)
-			return (1);
-		ft_bzero(&env->text, sizeof(env->text));
-		if (init_ttf_struct(&env->font))
-			free_env(env);
-		if (!read_ttf(env->font, argv[1]))
-			renderer_mainloop(env);
-		free_env(env);
+		printf("'%s'\n", argv[1]);
+		ret = init_ttf(argv[1], &font);
+		if (ret)
+			return (ret);
+		ft_bzero(&env, sizeof(t_rast_env));
+		start_mainloop(&env, font);
+		free_ttf(font);
 	}
 	else
 		return (error(ERR_ARG_NUM, ": %d", argc - 1));

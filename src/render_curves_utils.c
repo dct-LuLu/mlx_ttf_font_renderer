@@ -6,13 +6,13 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 16:20:40 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/07/16 20:13:52 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/07/17 23:27:50 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "font_renderer.h"
 
-t_vec2	to_screen_pt(t_env *env, t_vec2 glyph_pos, t_vec2 base_pos);
+t_vec2	to_screen_pt(t_text *text, t_vec2 glyph_pos, t_vec2 base_pos);
 
 /**
  * @brief Get next index in contour with wrap-around
@@ -38,23 +38,23 @@ t_vec2	create_implied_point(t_vec2 ctrl1_pt, t_vec2 ctrl2_pt)
 
 static void	debug_quadratic_curves_info(t_contour *contour, t_vec2 *screen)
 {
-	if (contour->env->zoom <= 0)
+	if (contour->text->size <= 0)
 	{
-		ft_mlx_circle_put(&contour->env->mlx->img, screen[0],
+		ft_mlx_circle_put(contour->text->img, screen[0],
 			(4), RED);
-		ft_mlx_circle_put(&contour->env->mlx->img, screen[1],
+		ft_mlx_circle_put(contour->text->img, screen[1],
 			(5), YELLOW);
-		ft_mlx_circle_put(&contour->env->mlx->img, screen[2],
+		ft_mlx_circle_put(contour->text->img, screen[2],
 			(4), RED);
 	}
 	else
 	{
-		ft_mlx_circle_put(&contour->env->mlx->img, screen[0],
-			(3 / (float)contour->env->zoom), RED);
-		ft_mlx_circle_put(&contour->env->mlx->img, screen[1],
-			(4 / (float)contour->env->zoom), YELLOW);
-		ft_mlx_circle_put(&contour->env->mlx->img, screen[2],
-			(3 / (float)contour->env->zoom), RED);
+		ft_mlx_circle_put(contour->text->img, screen[0],
+			(3 / (float)contour->text->size), RED);
+		ft_mlx_circle_put(contour->text->img, screen[1],
+			(4 / (float)contour->text->size), YELLOW);
+		ft_mlx_circle_put(contour->text->img, screen[2],
+			(3 / (float)contour->text->size), RED);
 	}
 }
 
@@ -67,11 +67,11 @@ void	draw_curve_segment(t_contour *contour, t_vec2 start_pt,
 {
 	t_vec2	screen[3];
 
-	screen[0] = to_screen_pt(contour->env, start_pt, contour->pos);
-	screen[1] = to_screen_pt(contour->env, ctrl_pt, contour->pos);
-	screen[2] = to_screen_pt(contour->env, end_pt, contour->pos);
-	ft_mlx_draw_quadratic_curve(&contour->env->mlx->img, screen,
-		contour->color);
+	screen[0] = to_screen_pt(contour->text, start_pt, contour->pos);
+	screen[1] = to_screen_pt(contour->text, ctrl_pt, contour->pos);
+	screen[2] = to_screen_pt(contour->text, end_pt, contour->pos);
+	ft_mlx_draw_quadratic_curve(contour->text->img, screen,
+		contour->text->fg);
 	if (DEBUG)
 		debug_quadratic_curves_info(contour, screen);
 }

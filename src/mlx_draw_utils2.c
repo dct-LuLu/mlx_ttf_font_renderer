@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 21:10:43 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/06/15 21:40:17 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/07/17 13:28:07 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,10 +56,8 @@ void	ft_mlx_circle_put(t_img *img, t_vec2 center, int radius, int color)
 		{
 			distance = (x * x) + (y * y);
 			if (distance <= (radius * radius))
-			{
 				ft_mlx_pixel_put(img, new_vec2(center.x + x, center.y + y),
 					color);
-			}
 			x++;
 		}
 		y++;

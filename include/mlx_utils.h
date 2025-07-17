@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 12:09:17 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/06/14 01:46:57 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/07/17 18:08:47 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,11 +45,6 @@ typedef struct s_mlx
 	t_img			img;
 	t_vec2			origin;
 	t_vec2			size;
-	size_t			tick;
-	t_vec2			half;
-	t_vec2			quarter;
-	unsigned int	color;
-	int				ret;
 }					t_mlx;
 
 typedef struct s_line

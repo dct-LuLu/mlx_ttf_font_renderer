@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 10:02:56 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/06/11 14:04:32 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/07/17 22:41:22 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ static void	free_buf(t_buffer *buf)
 	}
 }
 
-static void	free_ttf(t_ttf_font *font)
+void	free_ttf(t_ttf_font *font)
 {
 	if (font)
 	{
@@ -72,14 +72,5 @@ static void	free_ttf(t_ttf_font *font)
 		free_tables(font);
 		free_buf(font->buf);
 		free(font);
-	}
-}
-
-void	free_env(t_env *env)
-{
-	if (env)
-	{
-		free_ttf(env->font);
-		free(env);
 	}
 }

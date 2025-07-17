@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   render_contour.c                                   :+:      :+:    :+:   */
+/*   render_outline.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 16:26:33 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/07/17 22:48:00 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/07/17 22:26:54 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ static void	draw_straight_segment(t_contour *contour, int curr_idx,
 			contour->glyf->y_coordinates[curr_idx]);
 	pt[1] = new_screen_pt(contour, contour->glyf->x_coordinates[next_idx],
 			contour->glyf->y_coordinates[next_idx]);
+	ft_mlx_line_put(contour->text->img, pt[0], pt[1], contour->text->fg);
 	if (DEBUG)
 	{
 		if (contour->text->size <= 0)
@@ -58,8 +59,6 @@ static void	draw_straight_segment(t_contour *contour, int curr_idx,
 				(7 / (float)contour->text->size), GREEN);
 		}
 	}
-	else
-		ft_mlx_line_put(contour->text->img, pt[0], pt[1], contour->text->outline);
 }
 
 /**

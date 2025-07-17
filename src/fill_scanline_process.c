@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 21:52:45 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/07/16 19:37:23 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/07/17 23:20:03 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,19 +33,19 @@ static void	render_fill_line(t_fill_data *fill, t_contour *contour, int *_x)
 	int		x[2];
 	int		y;
 
-	transformed_x[0] = scale_x(contour->env, contour->pos.x, _x[0]);
-	transformed_x[1] = scale_x(contour->env, contour->pos.x, _x[1]);
-	y = scale_y(contour->env, contour->pos.y, fill->y);
+	transformed_x[0] = scale_x(contour->text, contour->pos.x, _x[0]);
+	transformed_x[1] = scale_x(contour->text, contour->pos.x, _x[1]);
+	y = scale_y(contour->text, contour->pos.y, fill->y);
 	x[0] = (int)(transformed_x[0]);
 	x[1] = (int)(transformed_x[1]);
-	if (fill->env->subpixel)
+	if (contour->text->subpixel)
 	{
 		sub_x[0] = transformed_x[0] * 3;
 		sub_x[1] = transformed_x[1] * 3;
 		render_subpixel_line(fill, sub_x, x, y);
 	}
 	else
-		ft_mlx_horizontal_line(&fill->env->mlx->img, x, y, fill->fg);
+		ft_mlx_horizontal_line(contour->text->img, x, y, fill->text->fg);
 }
 
 /*
