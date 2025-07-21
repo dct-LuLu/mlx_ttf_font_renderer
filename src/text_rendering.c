@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 22:00:00 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/07/17 23:45:35 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/07/21 03:39:37 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static t_vec2	advance_pen_position(t_vec2 pen_pos, t_contour ctr)
 		advance_width = ctr.text->font->hmtx->lhmtx[ctr.glyf_idx].advance_width;
 	else
 		advance_width = ctr.text->font->hmtx->lhmtx
-			[ctr.text->font->hmtx->num_lhmtx - 1]
+		[ctr.text->font->hmtx->num_lhmtx - 1]
 			.advance_width;
 	new_pos.x += scale_x(ctr.text, 0, advance_width);
 	return (new_pos);
@@ -52,11 +52,10 @@ static t_vec2	draw_character(t_contour ctr, t_vec2 pen_pos)
 	return (new_pen_pos);
 }
 
-
 static t_contour	get_contour(t_text *text, char c)
 {
 	t_contour	ctr;
-	
+
 	ft_bzero(&ctr, sizeof(t_contour));
 	if (c == '\0')
 	{
@@ -65,41 +64,12 @@ static t_contour	get_contour(t_text *text, char c)
 	}
 	ctr.glyf_idx = get_glyph_index(text->font, c);
 	if (ctr.glyf_idx >= text->font->maxp->num_glyphs)
-	ctr.glyf_idx = 0;
+		ctr.glyf_idx = 0;
 	ctr.text = text;
 	ctr.glyf = text->font->glyfs[ctr.glyf_idx];
 	ctr.pos = text->pos;
 	return (ctr);
 }
-
-
-/*
-void	draw_string(t_rast_env *env, t_text *text)
-{
-	t_vec2		pen_pos;
-	t_contour	ctr;
-	int			i;
-	
-	if (!str || !env || !env->font)
-	return ;
-	pen_pos = pos;
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] == '\n')
-		{
-			pen_pos.y += abs(env->font->head->y_min) + env->font->head->y_max;
-			pen_pos.x = pos.x;
-		}
-		else
-		{
-			ctr = get_countour(env, str[i], color);
-			pen_pos = draw_character(ctr, pen_pos);
-		}
-		i++;
-	}
-}
-*/
 
 void	draw_text(t_text *text)
 {
@@ -113,7 +83,8 @@ void	draw_text(t_text *text)
 	{
 		if (text->content[i] == '\n')
 		{
-			pen_pos.y += scale_y(text, 0, abs(text->font->head->y_min) + text->font->head->y_max);
+			pen_pos.y += scale_y(text, 0, abs(text->font->head->y_min)
+					+ text->font->head->y_max);
 			pen_pos.x = text->pos.x;
 		}
 		else

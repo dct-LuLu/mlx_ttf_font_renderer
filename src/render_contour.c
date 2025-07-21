@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 16:26:33 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/07/17 22:48:00 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/07/21 03:37:30 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,22 @@ static t_curve_params	init_curve_params(int start_idx, int end_idx)
 	return (params);
 }
 
+static void	debug_draw_segments(t_contour *contour, t_vec2 *pt)
+{
+	if (contour->text->size <= 0)
+	{
+		ft_mlx_circle_put(contour->text->img, pt[0], 5, GREEN);
+		ft_mlx_circle_put(contour->text->img, pt[1], 5, GREEN);
+	}
+	else
+	{
+		ft_mlx_circle_put(contour->text->img, pt[0],
+			(7 / (float)contour->text->size), GREEN);
+		ft_mlx_circle_put(contour->text->img, pt[1],
+			(7 / (float)contour->text->size), GREEN);
+	}
+}
+
 /**
  * @brief Draw straight line between two on-curve points
  */
@@ -42,24 +58,10 @@ static void	draw_straight_segment(t_contour *contour, int curr_idx,
 	pt[1] = new_screen_pt(contour, contour->glyf->x_coordinates[next_idx],
 			contour->glyf->y_coordinates[next_idx]);
 	if (DEBUG)
-	{
-		if (contour->text->size <= 0)
-		{
-			ft_mlx_circle_put(contour->text->img, pt[0],
-				5, GREEN);
-			ft_mlx_circle_put(contour->text->img, pt[1],
-				5, GREEN);
-		}
-		else
-		{
-			ft_mlx_circle_put(contour->text->img, pt[0],
-				(7 / (float)contour->text->size), GREEN);
-			ft_mlx_circle_put(contour->text->img, pt[1],
-				(7 / (float)contour->text->size), GREEN);
-		}
-	}
+		debug_draw_segments(contour, pt);
 	else
-		ft_mlx_line_put(contour->text->img, pt[0], pt[1], contour->text->outline);
+		ft_mlx_line_put(contour->text->img, pt[0], pt[1],
+			contour->text->outline);
 }
 
 /**

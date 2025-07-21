@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 19:48:21 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/07/17 23:28:20 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/07/20 08:59:27 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,11 +58,8 @@ float	scale_y(t_text *text, int ctr_y, int glyph_y)
 */
 t_vec2	to_screen_pt(t_text *text, t_vec2 glyph_pos, t_vec2 base_pos)
 {
-	float	scale;
-
 	if (text->font->head->units_per_em == 0)
 		return (new_vec2(0, 0));
-	scale = 500.0f / (float)text->font->head->units_per_em;
 	return (new_vec2(scale_x(text, base_pos.x, glyph_pos.x),
 			scale_y(text, base_pos.y, glyph_pos.y)));
 }
