@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 22:13:23 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/07/17 23:41:36 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/07/21 03:28:41 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static void	add_test(t_rast_env *env, t_ttf_font *font)
 	text = ft_calloc(1, sizeof(t_text));
 	ft_memcpy(text->content, "test\nfeur", 5);
 	text->pos = new_vec2(WIDTH / 2, HEIGHT / 2);
-	text->size = 2;
+	text->size = 5;
 	text->fg = WHITE;
 	text->outline = RED;
 	text->outlined = false;
