@@ -6,7 +6,7 @@
 #    By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/11 10:16:04 by jaubry--          #+#    #+#              #
-#    Updated: 2025/07/17 22:48:54 by jaubry--         ###   ########lyon.fr    #
+#    Updated: 2025/07/21 10:48:13 by jaubry--         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -71,7 +71,7 @@ SRCS		= main.c parser_font_ttf.c \
 			  file_utils.c \
 			  time_utils.c \
 			  color_utils.c \
-			  math_utils.c \
+			  math_utils.c quad_bezier_utils.c \
 			  transform_utils.c \
 			  scale_utils.c \
 			  error_handler.c \

@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 23:07:22 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/07/17 23:19:15 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/07/21 12:46:21 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,6 @@
 # define MAX_GLYPH_HEIGHT	3000
 # define MAX_ACTIVE_EDGES	550
 # define MAX_INTERSECTIONS	30
-
-# define CURVE_RESOLUTION   4.0f
 
 # define MAX_TEXTS 100
 # define MAX_CHARS 10
