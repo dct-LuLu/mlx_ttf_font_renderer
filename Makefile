@@ -6,7 +6,7 @@
 #    By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/11 10:16:04 by jaubry--          #+#    #+#              #
-#    Updated: 2025/08/06 03:48:34 by jaubry--         ###   ########lyon.fr    #
+#    Updated: 2025/08/07 00:16:54 by jaubry--         ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,6 +19,7 @@ include colors.mk
 DEBUG		= $(if $(filter debug,$(MAKECMDGOALS)),1,0)
 WIDTH		= 500
 HEIGHT		= 500
+SILENCE		= 2>/dev/null
 
 # Directories
 SRCDIR		= src
@@ -44,8 +45,8 @@ IFLAGS		= -I$(INCDIR) -I$(LIBFTDIR)/include -I$(MLXDIR)
 LFLAGS		= -L$(MLXDIR) -L$(LIBFTDIR) -lXext -lX11 -lXrender -lm -lmlx -lft
 CF			= $(CC) $(CFLAGS) $(IFLAGS)
 
-AR			= ar
-ARFLAGS		= rcs
+AR          = $(if $(findstring -flto,$(CC)),llvm-ar-12,ar)
+RANLIB      = $(if $(findstring -flto,$(CC)),llvm-ranlib-12,ranlib)
 
 # VPATH
 vpath %.h $(INCDIR) $(LIBFTDIR)/$(INCDIR) $(MLXDIR)
@@ -66,7 +67,8 @@ DEPS		= $(addprefix $(DEPDIR)/, $(notdir $(SRCS:.c=.d)))
 all: $(LIBFT) $(NAME)
 debug: $(NAME)
 $(NAME): $(MLX) $(LIBFT) $(OBJS)
-	@$(AR) $(ARFLAGS) $@ $^
+	@$(AR) $(ARFLAGS) $@ $^ $(SILENCE)
+	@$(if $(findstring -flto,$(CC)),$(RANLIB) $@ $(SILENCE),)
 ifeq ($(DEBUG), 1)
 	$(call color,$(ORANGE)$(BOLD),"✓ %UL%$@%NUL% debug build complete")
 else
