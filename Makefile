@@ -6,7 +6,7 @@
 #    By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/11 10:16:04 by jaubry--          #+#    #+#              #
-#    Updated: 2025/07/21 14:50:18 by jaubry--         ###   ########.fr        #
+#    Updated: 2025/08/06 00:20:33 by jaubry--         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,27 +16,20 @@ SHELL := /bin/bash
 include colors.mk
 
 # Variables
-DEBUG		= $(if $(filter debug debug-test debug-tester,$(MAKECMDGOALS)),1,0)
+DEBUG		= $(if $(filter debug,$(MAKECMDGOALS)),1,0)
 WIDTH		= 500
 HEIGHT		= 500
 
 # Directories
-ifeq ($(if $(filter tester $(NAME_TESTER) debug-tester, $(MAKECMDGOALS)),1,0),0)
 SRCDIR		= src
 INCDIR		= include
-else
-SRCDIR		= src-tester
-INCDIR		= include-tester
-endif
 OBJDIR		= .obj
 DEPDIR		= .dep
-LIBFTDIR	= libft
-MLXDIR		= minilibx-linux
+LIBFTDIR	= ../libft
+MLXDIR		= ../minilibx-linux
 
 # Output
 NAME		= font_renderer.a
-NAME_TEST	= test_font_renderer
-NAME_TESTER	= tester_font_renderer
 LIBFT		= $(LIBFTDIR)/libft.a
 MLX			= $(MLXDIR)/libmlx.a
 
@@ -60,14 +53,9 @@ vpath %.o $(OBJDIR) $(LIBFTDIR)/$(OBJDIR)
 vpath %.d $(DEPDIR) $(LIBFTDIR)/$(DEPDIR)
 
 # Sources
-ifeq ($(if $(filter tester debug-tester $(NAME_TESTER),$(MAKECMDGOALS)),1,0),1)
-MKS			= tester.mk
-else
 MKS			= font_drawer/font_drawer.mk font_filler/font_filler.mk \
 			  ttf_parser/ttf_parser.mk text_renderer/text_renderer.mk \
 			  mlx_layer/mlx_layer.mk utils/utils.mk \
-			  $(if $(filter test debug-test,$(MAKECMDGOALS)),test/test.mk)
-endif
 include $(addprefix $(SRCDIR)/, $(MKS))
 
 
@@ -83,26 +71,6 @@ ifeq ($(DEBUG), 1)
 	$(call color,$(ORANGE)$(BOLD),"✓ %UL%$@%NUL% debug build complete")
 else
 	$(call color,$(GREEN)$(BOLD),"✓ Library %UL%$@%NUL% successfully created!")
-endif
-
-test: $(NAME_TEST)
-debug-test: $(NAME_TEST)
-$(NAME_TEST): $(MLX) $(LIBFT) $(OBJS)
-	@$(CF) $^ $(LFLAGS) -o $@
-ifeq ($(DEBUG),1)
-	$(call color,$(ORANGE)$(BOLD),"✓ Debug build %UL%$@%NUL% complete")
-else
-	$(call color,$(GREEN)$(BOLD),"✓ Program %UL%$@%NUL% successfully created!")
-endif
-
-tester: $(NAME_TESTER)
-debug-tester: $(NAME_TESTER)
-$(NAME_TESTER): $(MLX) $(LIBFT) $(OBJS)
-	@$(CF) $^ $(LFLAGS) -o $@
-ifeq ($(DEBUG),1)
-	$(call color,$(ORANGE)$(BOLD),"✓ Debug build %UL%$@%NUL% complete")
-else
-	$(call color,$(GREEN)$(BOLD),"✓ Program %UL%$@%NUL% successfully created!")
 endif
 
 $(LIBFT):
@@ -130,24 +98,6 @@ else
 endif
 endif
 endif
-ifeq ($(if $(filter test $(NAME_TEST),$(MAKECMDGOALS)),1,0),1)
-ifneq ($(shell [ -f $(NAME_TEST) ] && echo exists),exists)
-ifeq ($(DEBUG),1)
-	$(call color,$(YELLOW)$(BOLD),"$(NL)⚠ Building %UL%$(NAME_TEST)%NUL% in debug mode...")
-else
-	$(call color,$(PURPLE),"$(NL)Creating program %UL%$(NAME_TEST)%NUL%...")
-endif
-endif
-endif
-ifeq ($(if $(filter tester $(NAME_TESTER),$(MAKECMDGOALS)),1,0),1)
-ifneq ($(shell [ -f $(NAME) ] && echo exists),exists)
-ifeq ($(DEBUG),1)
-	$(call color,$(YELLOW)$(BOLD),"$(NL)⚠ Building %UL%$(NAME)%NUL% in debug mode...")
-else
-	$(call color,$(PURPLE),"$(NL)Creating program %UL%$(NAME)%NUL%...")
-endif
-endif
-endif
 
 help:
 	@echo "Available targets:"
@@ -155,14 +105,8 @@ help:
 	@echo -e "\tdebug\t\t\t\t: Build the library with debug symbols"
 	@echo -e "\tre\t\t\t\t: Rebuild $(NAME)"
 	@echo
-	@echo -e "\ttest, $(NAME_TEST)\t: Build the test program"
-	@echo -e "\tdebug-test\t\t\t: Build the test program with debug symbols"
-	@echo
-	@echo -e "\ttester, $(NAME_TESTER)\t: Build the font tester program"
-	@echo -e "\tdebug-tester\t\t\t: Build the font tester program with debug symbols"
-	@echo
 	@echo -e "\tclean\t\t\t\t: Remove object files"
-	@echo -e "\tfclean\t\t\t\t: Remove object files, libraries and program"
+	@echo -e "\tfclean\t\t\t\t: Remove object files, libraries"
 	@echo
 	@echo -e "\tprint-%\t\t\t\t: Prints makefile variable content when replacing '%'"
 
@@ -180,13 +124,9 @@ fclean:
 	@rm -rf $(OBJDIR) $(DEPDIR)
 	$(call color,$(RED),"Removing library %UL%$(NAME)")
 	@rm -f $(NAME)
-	$(call color,$(RED),"Removing program %UL%$(NAME_TEST)")
-	@rm -f $(NAME_TEST)
-	$(call color,$(RED),"Removing program %UL%$(NAME_TESTER)")
-	@rm -f $(NAME_TESTER)
 
 re: fclean all
 
 -include $(DEPS)
 
-.PHONY: all debug re test debug-test tester debug-tester clean fclean help buildmsg 
+.PHONY: all debug re clean fclean help buildmsg 
