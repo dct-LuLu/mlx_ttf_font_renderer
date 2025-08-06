@@ -6,11 +6,11 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 20:09:52 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/06/15 20:19:18 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/08/06 09:06:43 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "font_renderer.h"
+#include "rasterizer.h"
 
 void	return_edge_to_pool(t_edge_pool *pool, t_edge *edge)
 {
@@ -56,7 +56,7 @@ static t_edge	*get_edge_from_pool(t_edge_pool *pool)
 	return (&pool->edges[idx]);
 }
 
-t_edge	*init_edge(t_fill_data *fill, t_vec2 p1, t_vec2 p2)
+t_edge	*init_edge(t_fill_data *fill, t_vec2i p1, t_vec2i p2)
 {
 	t_edge	*edge;
 

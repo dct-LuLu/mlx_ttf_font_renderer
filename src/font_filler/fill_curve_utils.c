@@ -6,17 +6,18 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 21:37:58 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/07/21 10:50:26 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/08/06 10:26:27 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "font_renderer.h"
+#include "rasterizer.h"
 #include "math_utils.h"
 
-static void	debug_curve_subdivisions(t_contour *contour, t_vec2 _a, t_vec2 _b)
+static void	debug_curve_subdivisions(t_contour *contour, t_vec2i _a, t_vec2i _b)
 {
-	t_vec2	a;
-	t_vec2	b;
+	t_vec2i	a;
+	t_vec2i	b;
 
 	a = to_screen_pt(contour->text, _a, contour->pos);
 	b = to_screen_pt(contour->text, _b, contour->pos);
@@ -37,8 +38,8 @@ void	add_curve_fill(t_fill_data *fill, t_contour *contour,
 	const float	res = quad_bezier_res(params.start_pt,
 			params.ctrl_pt, params.end_pt);
 	float		t;
-	t_vec2		a;
-	t_vec2		b;
+	t_vec2i		a;
+	t_vec2i		b;
 
 	a = params.start_pt;
 	t = 0.0f;

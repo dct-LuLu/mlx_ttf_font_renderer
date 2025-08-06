@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 13:35:00 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/06/11 13:52:17 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/08/06 04:12:12 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static int	file_len(const char *path, size_t *total)
 
 	fd = open(path, O_RDONLY);
 	if (fd == -1)
-		return (close(fd), error(errno, ": file_len %s", path));
+		return (error(errno, ": file_len %s", path));
 	while (true)
 	{
 		read_ret = read(fd, temp, sizeof(temp));

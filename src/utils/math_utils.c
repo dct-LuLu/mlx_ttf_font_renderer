@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 17:32:54 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/07/16 20:13:39 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/08/06 09:06:43 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 /*
 	Euclidean distance, achieving approximately 3.5% error rate.
 */
-int	fast_distance(t_vec2 a, t_vec2 b)
+int	fast_distance(t_vec2i a, t_vec2i b)
 {
 	const int	dx = abs(b.x - a.x);
 	const int	dy = abs(b.y - a.y);

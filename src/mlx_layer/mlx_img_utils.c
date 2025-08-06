@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 12:11:45 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/05/28 02:22:58 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/08/06 03:37:54 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,14 @@
 /*
 	Function to init image with given size, will init it's metadata too.
 */
-t_img	init_img(void *mlx, int width, int height)
+t_img_data	init_img_data(t_xvar *mlx, int width, int height)
 {
-	t_img	img;
+	t_img_data	img;
 
 	img.img = mlx_new_image(mlx, width, height);
 	if (!img.img)
 		return (img);
-	img.addr = mlx_get_data_addr(img.img, &img.byte_depth, &img.line_len,
+	img.addr = (int *)mlx_get_data_addr(img.img, &img.byte_depth, &img.line_len,
 			&img.endian);
 	img.byte_depth /= 8;
 	img.width = width;
@@ -33,7 +33,7 @@ t_img	init_img(void *mlx, int width, int height)
 /*
 	Function that kills the image
 */
-void	kill_img(void *mlx, t_img *img)
+void	kill_img(t_xvar *mlx, t_img_data *img)
 {
 	if (img->img)
 	{

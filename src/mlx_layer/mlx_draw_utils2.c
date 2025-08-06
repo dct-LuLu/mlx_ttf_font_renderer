@@ -6,14 +6,14 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 21:10:43 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/07/17 13:28:07 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/08/06 09:16:25 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mlx_utils.h"
 #include <math.h>
 
-void	ft_mlx_horizontal_line(t_img *img, int xpt[2], int y, int color)
+void	ft_mlx_horizontal_line(t_img_data *img, int xpt[2], int y, int color)
 {
 	int				start_x;
 	int				end_x;
@@ -42,7 +42,7 @@ void	ft_mlx_horizontal_line(t_img *img, int xpt[2], int y, int color)
 	}
 }
 
-void	ft_mlx_circle_put(t_img *img, t_vec2 center, int radius, int color)
+void	ft_mlx_circle_put(t_img_data *img, t_vec2i center, int radius, int color)
 {
 	int	x;
 	int	y;
@@ -56,7 +56,7 @@ void	ft_mlx_circle_put(t_img *img, t_vec2 center, int radius, int color)
 		{
 			distance = (x * x) + (y * y);
 			if (distance <= (radius * radius))
-				ft_mlx_pixel_put(img, new_vec2(center.x + x, center.y + y),
+				ft_mlx_pixel_put(img, vec2i(center.x + x, center.y + y),
 					color);
 			x++;
 		}

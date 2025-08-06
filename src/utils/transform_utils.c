@@ -6,18 +6,18 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 17:49:38 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/07/16 19:47:48 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/08/06 09:06:43 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "font_renderer.h"
+#include "rasterizer.h"
 
 /*
 	Apply transformation matrix to a coordinate
 */
-t_vec2	apply_transform(t_vec2 point, t_glyf_component *comp)
+t_vec2i	apply_transform(t_vec2i point, t_glyf_component *comp)
 {
-	t_vec2	result;
+	t_vec2i	result;
 
 	if (!comp || !(comp->flags & (HAS_SCALE | HAS_XY_SCALE | HAS_2X2_MATRIX)))
 		return (point);
@@ -30,7 +30,7 @@ t_vec2	apply_transform(t_vec2 point, t_glyf_component *comp)
 	Get transformed point from glyph coordinates
 */
 // inline
-t_vec2	get_transformed_point(t_glyf_table *glyf, int point_idx,
+t_vec2i	get_transformed_point(t_glyf_table *glyf, int point_idx,
 		t_glyf_component *transform)
 {
 	return (apply_transform(get_glyf_coords(glyf, point_idx), transform));

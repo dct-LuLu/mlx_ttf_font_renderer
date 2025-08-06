@@ -6,11 +6,11 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 20:10:17 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/06/28 12:38:31 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/08/06 04:26:13 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "font_renderer.h"
+#include "rasterizer.h"
 
 /*
 	Sort intersections by x-coordinate while keeping windings aligned

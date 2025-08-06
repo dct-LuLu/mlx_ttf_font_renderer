@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 10:14:51 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/06/14 01:53:41 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/08/06 04:18:57 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,18 +39,6 @@
 # define OVERLAP_COMPOUND 0x0400          // components overlap
 # define SCALED_COMPONENT_OFFSET 0x0800   // scale offset values
 # define UNSCALED_COMPONENT_OFFSET 0x1000 // don't scale offset values
-
-/*
-typedef union u_delta
-{
-	struct
-	{
-		int8_t delta8;
-		int8_t endiant;
-	};
-	int16_t					delta16;
-}							t_delta;
-*/
 
 # pragma pack(push, 1)
 

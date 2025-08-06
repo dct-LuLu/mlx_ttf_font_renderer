@@ -6,11 +6,11 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 21:52:54 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/06/28 12:38:38 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/08/06 04:26:13 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "font_renderer.h"
+#include "rasterizer.h"
 
 /*
 	Updates x positions for all edges in active edge list for next scanline

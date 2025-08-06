@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 10:27:40 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/07/21 10:49:57 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/08/06 09:16:25 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 	bezier curves coordinates of start, end and control point and uses
 	t to travel from start to end.
 */
-t_vec2	quad_bezier_pt(t_vec2 start, t_vec2 ctrl, t_vec2 end, float t)
+t_vec2i	quad_bezier_pt(t_vec2i start, t_vec2i ctrl, t_vec2i end, float t)
 {
 	float	m;
 	float	a;
@@ -28,7 +28,7 @@ t_vec2	quad_bezier_pt(t_vec2 start, t_vec2 ctrl, t_vec2 end, float t)
 	a = m * m;
 	b = 2 * m * t;
 	c = t * t;
-	return (new_vec2(((a * start.x) + (b * ctrl.x) + (c * end.x)),
+	return (vec2i(((a * start.x) + (b * ctrl.x) + (c * end.x)),
 			((a * start.y) + (b * ctrl.y) + (c * end.y))));
 }
 
@@ -37,7 +37,7 @@ t_vec2	quad_bezier_pt(t_vec2 start, t_vec2 ctrl, t_vec2 end, float t)
 	minimal number of subdivision but with the best look for each possible
 	curves.
 */
-float	quad_bezier_res(t_vec2 start, t_vec2 ctrl, t_vec2 end)
+float	quad_bezier_res(t_vec2i start, t_vec2i ctrl, t_vec2i end)
 {
 	const float	a = fast_distance(start, ctrl);
 	const float	b = fast_distance(ctrl, end);
@@ -48,7 +48,7 @@ float	quad_bezier_res(t_vec2 start, t_vec2 ctrl, t_vec2 end)
 	return (clamp(((a + b) / c) / CURVE_RESOLUTION, 0.01f, 0.99f));
 }
 
-float	quad_curve_length(t_vec2 start, t_vec2 ctrl, t_vec2 end)
+float	quad_curve_length(t_vec2i start, t_vec2i ctrl, t_vec2i end)
 {
 	const float	chord_length = fast_distance(start, end);
 	const float	ctrl_length = fast_distance(start, ctrl)

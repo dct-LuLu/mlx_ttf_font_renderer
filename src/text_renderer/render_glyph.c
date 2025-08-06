@@ -6,11 +6,12 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 16:51:42 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/07/17 23:37:34 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/08/06 10:28:09 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "font_renderer.h"
+#include "rasterizer.h"
 
 void	draw_contour(t_contour *contour);
 void	fill_glyph(t_contour *contour);
@@ -41,15 +42,15 @@ static void	draw_simple_glyph(t_contour *contour)
 /**
  * @brief Calculate component position with offsets and scaling
  */
-t_vec2	get_component_position(t_vec2 base_pos, t_glyf_component *comp)
+t_vec2i	get_component_position(t_vec2i base_pos, t_glyf_component *comp)
 {
-	t_vec2	comp_pos;
-	t_vec2	offset;
+	t_vec2i	comp_pos;
+	t_vec2i	offset;
 
 	comp_pos = base_pos;
 	if (!comp || !(comp->flags & ARGS_ARE_XY_VALUES))
 		return (comp_pos);
-	offset = new_vec2(comp->arg1, comp->arg2);
+	offset = vec2i(comp->arg1, comp->arg2);
 	if (comp->flags & SCALED_COMPONENT_OFFSET)
 		offset = apply_transform(offset, comp);
 	comp_pos.x += offset.x;
@@ -89,7 +90,7 @@ static void	draw_composite_glyph(t_contour *contour)
 
 static bool	is_glyph_onscreen(t_contour *contour)
 {
-	t_vec2			corners[2];
+	t_vec2i			corners[2];
 	t_glyf_header	*header;
 
 	header = contour->glyf->header;

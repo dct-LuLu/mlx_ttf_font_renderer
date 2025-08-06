@@ -6,21 +6,21 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 21:53:00 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/06/30 13:52:54 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/08/06 09:06:43 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "font_renderer.h"
+#include "rasterizer.h"
 
 /*
 	Find end point for curve segment (handles implied points)
 */
-static t_vec2	find_curve_end_point(t_contour *contour, int ctrl_idx,
+static t_vec2i	find_curve_end_point(t_contour *contour, int ctrl_idx,
 		t_curve_params *params)
 {
 	int		next_idx;
-	t_vec2	next_pt;
-	t_vec2	ctrl_pt;
+	t_vec2i	next_pt;
+	t_vec2i	ctrl_pt;
 
 	next_idx = ctrl_idx + 1;
 	if (ctrl_idx == params->contour_end)

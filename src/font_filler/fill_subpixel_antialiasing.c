@@ -6,11 +6,12 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 15:24:15 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/07/17 22:27:25 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/08/06 10:26:47 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "font_renderer.h"
+#include "rasterizer.h"
 
 static int	calculate_coverage(int start, int end, int subpixel_pos)
 {
@@ -73,7 +74,7 @@ void	render_subpixel_line(t_fill_data *fill, int *sub_x, int *x, int y)
 		coverage[2] = calculate_coverage(sub_x[0], sub_x[1], sub_start + 2);
 		apply_lcd_filter(coverage);
 		color = blend_subpixels(fill->text->bg, fill->text->fg, coverage);
-		ft_mlx_pixel_put(fill->text->img, new_vec2(pixel_x, y), color);
+		ft_mlx_pixel_put(fill->text->img, vec2i(pixel_x, y), color);
 		pixel_x++;
 	}
 }

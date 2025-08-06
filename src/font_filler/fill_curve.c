@@ -6,17 +6,17 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 00:12:04 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/07/17 22:17:32 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/08/06 09:07:45 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "font_renderer.h"
-#include "vec2.h"
+#include "rasterizer.h"
+#include "libft.h"
 
 static void	compute_implied_start_point(t_curve_params *params,
-		t_contour *contour, t_vec2 last_ctrl)
+		t_contour *contour, t_vec2i last_ctrl)
 {
-	t_vec2	prev_ctrl;
+	t_vec2i	prev_ctrl;
 
 	if (params->contour_idx == params->contour_start)
 		params->start_pt = create_implied_point(last_ctrl, params->ctrl_pt);
@@ -28,9 +28,9 @@ static void	compute_implied_start_point(t_curve_params *params,
 }
 
 static void	compute_implied_end_point(t_curve_params *params,
-		t_contour *contour, t_vec2 first_ctrl)
+		t_contour *contour, t_vec2i first_ctrl)
 {
-	t_vec2	next_ctrl;
+	t_vec2i	next_ctrl;
 
 	if (params->contour_idx == params->contour_end)
 		params->end_pt = create_implied_point(params->ctrl_pt, first_ctrl);
@@ -47,8 +47,8 @@ Handle contours with no on-curve points (all ctrl points)
 void	process_all_off_curve_contour(t_fill_data *fill, t_contour *contour,
 		t_curve_params *params)
 {
-	t_vec2	first_ctrl;
-	t_vec2	last_ctrl;
+	t_vec2i	first_ctrl;
+	t_vec2i	last_ctrl;
 
 	(void)fill;
 	if (params->contour_start == params->contour_end)

@@ -6,7 +6,7 @@
 #    By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/11 10:16:04 by jaubry--          #+#    #+#              #
-#    Updated: 2025/08/06 00:20:33 by jaubry--         ###   ########.fr        #
+#    Updated: 2025/08/06 03:48:34 by jaubry--         ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,7 +29,7 @@ LIBFTDIR	= ../libft
 MLXDIR		= ../minilibx-linux
 
 # Output
-NAME		= font_renderer.a
+NAME		= libfont_renderer.a
 LIBFT		= $(LIBFTDIR)/libft.a
 MLX			= $(MLXDIR)/libmlx.a
 
@@ -55,7 +55,7 @@ vpath %.d $(DEPDIR) $(LIBFTDIR)/$(DEPDIR)
 # Sources
 MKS			= font_drawer/font_drawer.mk font_filler/font_filler.mk \
 			  ttf_parser/ttf_parser.mk text_renderer/text_renderer.mk \
-			  mlx_layer/mlx_layer.mk utils/utils.mk \
+			  mlx_layer/mlx_layer.mk utils/utils.mk
 include $(addprefix $(SRCDIR)/, $(MKS))
 
 

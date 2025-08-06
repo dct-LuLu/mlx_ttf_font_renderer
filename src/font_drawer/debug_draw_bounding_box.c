@@ -6,18 +6,19 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 13:45:29 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/07/17 22:46:12 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/08/06 10:26:00 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "font_renderer.h"
+#include "rasterizer.h"
 
 /*
 	Draw the glyph max bounding box
 */
 void	draw_transformed_bounding_box(t_contour *contour, int scolor)
 {
-	t_vec2			corners[4];
+	t_vec2i			corners[4];
 	t_glyf_header	*header;
 	int				color;
 
@@ -41,7 +42,7 @@ void	draw_transformed_bounding_box(t_contour *contour, int scolor)
 */
 void	draw_max_bounding_box(t_contour *contour, int color)
 {
-	t_vec2			corners[4];
+	t_vec2i			corners[4];
 	t_head_table	*head;
 
 	head = contour->text->font->head;
