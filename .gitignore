@@ -4,3 +4,4 @@
 *.o
 *.d
 font_renderer
+.env_save.txt
