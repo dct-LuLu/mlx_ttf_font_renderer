@@ -6,7 +6,7 @@
 #    By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/11 10:16:04 by jaubry--          #+#    #+#              #
-#    Updated: 2025/08/07 00:16:54 by jaubry--         ###   ########lyon.fr    #
+#    Updated: 2025/08/07 01:21:53 by jaubry--         ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,8 +45,9 @@ IFLAGS		= -I$(INCDIR) -I$(LIBFTDIR)/include -I$(MLXDIR)
 LFLAGS		= -L$(MLXDIR) -L$(LIBFTDIR) -lXext -lX11 -lXrender -lm -lmlx -lft
 CF			= $(CC) $(CFLAGS) $(IFLAGS)
 
-AR          = $(if $(findstring -flto,$(CC)),llvm-ar-12,ar)
-RANLIB      = $(if $(findstring -flto,$(CC)),llvm-ranlib-12,ranlib)
+AR          = $(if $(findstring -flto,$(CC)),llvm-ar-12,ar) $(SILENCE)
+ARFLAGS		= rcs
+RANLIB      = $(if $(findstring -flto,$(CC)),llvm-ranlib-12,ranlib) $(SILENCE)
 
 # VPATH
 vpath %.h $(INCDIR) $(LIBFTDIR)/$(INCDIR) $(MLXDIR)
@@ -67,8 +68,8 @@ DEPS		= $(addprefix $(DEPDIR)/, $(notdir $(SRCS:.c=.d)))
 all: $(LIBFT) $(NAME)
 debug: $(NAME)
 $(NAME): $(MLX) $(LIBFT) $(OBJS)
-	@$(AR) $(ARFLAGS) $@ $^ $(SILENCE)
-	@$(if $(findstring -flto,$(CC)),$(RANLIB) $@ $(SILENCE),)
+	$(AR) $(ARFLAGS) $@ $^
+	$(if $(findstring -flto,$(CC)),$(RANLIB) $@,)
 ifeq ($(DEBUG), 1)
 	$(call color,$(ORANGE)$(BOLD),"✓ %UL%$@%NUL% debug build complete")
 else
