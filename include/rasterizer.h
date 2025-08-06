@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 04:21:30 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/08/06 09:27:50 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/08/07 01:43:47 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,6 @@ typedef struct s_edge_pool
 	int				free_indices[MAX_ACTIVE_EDGES];
 	int				free_count;
 }					t_edge_pool;
-
 
 typedef struct s_fill_data
 {

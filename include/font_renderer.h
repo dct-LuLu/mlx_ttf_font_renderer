@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 23:07:22 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/08/06 09:06:43 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/08/07 01:42:46 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ typedef struct s_text
 	bool			outlined;
 	uint32_t		outline;
 	bool			subpixel;
-	t_img_data			*img;
+	t_img_data		*img;
 }					t_text;
 
 typedef struct s_rast_env
