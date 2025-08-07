@@ -6,13 +6,13 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 21:37:58 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/08/06 10:26:27 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/08/07 09:24:05 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "font_renderer.h"
 #include "rasterizer.h"
-#include "math_utils.h"
+#include "libft.h"
 
 static void	debug_curve_subdivisions(t_contour *contour, t_vec2i _a, t_vec2i _b)
 {

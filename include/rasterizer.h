@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 04:21:30 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/08/07 01:43:47 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/08/07 09:37:55 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define RASTERIZER_H
 
 # include "libft.h"
-# include "mlx_utils.h"
+# include "mlx_wrapper.h"
 # include "parser_font_ttf.h"
 # include "color_utils.h"
 

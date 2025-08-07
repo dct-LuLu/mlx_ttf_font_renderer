@@ -6,7 +6,7 @@
 #    By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/11 10:16:04 by jaubry--          #+#    #+#              #
-#    Updated: 2025/08/07 05:31:19 by jaubry--         ###   ########.fr        #
+#    Updated: 2025/08/07 09:36:25 by jaubry--         ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,11 +28,13 @@ OBJDIR		= .obj
 DEPDIR		= .dep
 LIBFTDIR	= ../libft
 MLXDIR		= ../minilibx-linux
+MLXWDIR		= ../mlx_wrapper
 
 # Output
-NAME		= libfont_renderer.a
+NAME		= libfont-renderer.a
 LIBFT		= $(LIBFTDIR)/libft.a
 MLX			= $(MLXDIR)/libmlx.a
+MLXW		= $(MLXWDIR)/libmlx-wrapper.a
 
 # Compiler and flags
 CC			= cc
@@ -41,7 +43,7 @@ CFLAGS		= -Wall -Wextra -Werror \
 			  -D WIDTH=$(WIDTH) -D HEIGHT=$(HEIGHT) \
 			  -std=gnu11
 DFLAGS		= -MMD -MP -MF $(DEPDIR)/$*.d
-IFLAGS		= -I$(INCDIR) -I$(LIBFTDIR)/include -I$(MLXDIR)
+IFLAGS		= -I$(INCDIR) -I$(LIBFTDIR)/include -I$(MLXDIR) -I$(MLXWDIR)/include
 CF			= $(CC) $(CFLAGS) $(IFLAGS) $(DFLAGS)
 
 AR          = $(if $(findstring -flto,$(CC)),llvm-ar-12,ar) $(SILENCE)
@@ -49,14 +51,14 @@ ARFLAGS		= rcs
 RANLIB      = $(if $(findstring -flto,$(CC)),llvm-ranlib-12,ranlib) $(SILENCE)
 
 # VPATH
-vpath %.h $(INCDIR) $(LIBFTDIR)/$(INCDIR) $(MLXDIR)
-vpath %.o $(OBJDIR) $(LIBFTDIR)/$(OBJDIR)
-vpath %.d $(DEPDIR) $(LIBFTDIR)/$(DEPDIR)
+vpath %.h $(INCDIR) $(LIBFTDIR)/$(INCDIR) $(MLXWDIR)/$(INCDIR) $(MLXDIR)
+vpath %.o $(OBJDIR) $(LIBFTDIR)/$(OBJDIR) $(MLXWDIR)/$(OBJDIR)
+vpath %.d $(DEPDIR) $(LIBFTDIR)/$(DEPDIR) $(MLXWDIR)/$(DEPDIR)
 
 # Sources
 MKS			= font_drawer/font_drawer.mk font_filler/font_filler.mk \
 			  ttf_parser/ttf_parser.mk text_renderer/text_renderer.mk \
-			  mlx_layer/mlx_layer.mk utils/utils.mk
+			  utils/utils.mk
 
 include $(addprefix $(SRCDIR)/, $(MKS))
 
@@ -67,7 +69,7 @@ all: $(NAME)
 
 debug: $(NAME)
 
-$(NAME): $(MLX) $(LIBFT) $(OBJS)
+$(NAME): $(MLXW) $(MLX) $(LIBFT) $(OBJS)
 	$(call ar-msg)
 	@$(AR) $(ARFLAGS) $@ $^
 	@$(if $(findstring -flto,$(CC)),$(RANLIB) $@,)
@@ -75,6 +77,9 @@ $(NAME): $(MLX) $(LIBFT) $(OBJS)
 
 $(LIBFT):
 	@$(MAKE) -s -C $(LIBFTDIR) $(if $(filter 1,$(DEBUG)),debug)
+
+$(MLXW): $(MLX) $(LIBFT)
+	@$(MAKE) -s -C $(MLXWDIR)
 
 $(MLX):
 	$(call mlx-build-msg)
@@ -108,13 +113,12 @@ help:
 print-% : ; $(info $* is a $(flavor $*) variable set to [$($*)]) @true
 
 clean:
-	@$(MAKE) -s -C $(LIBFTDIR) clean
+	@$(MAKE) -s -C $(MLXWDIR) clean
 	$(call rm-obj-msg)
 	@rm -rf $(OBJDIR) $(DEPDIR)
 
 fclean:
-	@$(MAKE) -s -C $(MLXDIR) clean $(SILENCE)
-	@$(MAKE) -s -C $(LIBFTDIR) fclean
+	@$(MAKE) -s -C $(MLXWDIR) fclean
 	$(call rm-obj-msg)
 	@rm -rf $(OBJDIR) $(DEPDIR)
 	$(call rm-lib-msg)
