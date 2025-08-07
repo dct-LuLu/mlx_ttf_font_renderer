@@ -6,22 +6,22 @@
 #    By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/11 10:16:04 by jaubry--          #+#    #+#              #
-#    Updated: 2025/08/07 01:21:53 by jaubry--         ###   ########lyon.fr    #
+#    Updated: 2025/08/07 05:31:19 by jaubry--         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 SHELL := /bin/bash
 
 # Print utils
-include colors.mk
+include ../../colors.mk
 
 # Variables
 DEBUG		= $(if $(filter debug,$(MAKECMDGOALS)),1,0)
 WIDTH		= 500
 HEIGHT		= 500
-SILENCE		= 2>/dev/null
 
 # Directories
+CDIR		= font_renderer
 SRCDIR		= src
 INCDIR		= include
 OBJDIR		= .obj
@@ -36,14 +36,13 @@ MLX			= $(MLXDIR)/libmlx.a
 
 # Compiler and flags
 CC			= cc
-CFLAGS		= -Ofast -Wall -Wextra -Werror \
+CFLAGS		= -Wall -Wextra -Werror \
 			  $(if $(filter 1,$(DEBUG)),-g3) -D DEBUG=$(DEBUG) \
 			  -D WIDTH=$(WIDTH) -D HEIGHT=$(HEIGHT) \
 			  -std=gnu11
 DFLAGS		= -MMD -MP -MF $(DEPDIR)/$*.d
 IFLAGS		= -I$(INCDIR) -I$(LIBFTDIR)/include -I$(MLXDIR)
-LFLAGS		= -L$(MLXDIR) -L$(LIBFTDIR) -lXext -lX11 -lXrender -lm -lmlx -lft
-CF			= $(CC) $(CFLAGS) $(IFLAGS)
+CF			= $(CC) $(CFLAGS) $(IFLAGS) $(DFLAGS)
 
 AR          = $(if $(findstring -flto,$(CC)),llvm-ar-12,ar) $(SILENCE)
 ARFLAGS		= rcs
@@ -58,48 +57,41 @@ vpath %.d $(DEPDIR) $(LIBFTDIR)/$(DEPDIR)
 MKS			= font_drawer/font_drawer.mk font_filler/font_filler.mk \
 			  ttf_parser/ttf_parser.mk text_renderer/text_renderer.mk \
 			  mlx_layer/mlx_layer.mk utils/utils.mk
+
 include $(addprefix $(SRCDIR)/, $(MKS))
-
-
 
 OBJS		= $(addprefix $(OBJDIR)/, $(notdir $(SRCS:.c=.o)))
 DEPS		= $(addprefix $(DEPDIR)/, $(notdir $(SRCS:.c=.d)))
 
-all: $(LIBFT) $(NAME)
+all: $(NAME)
+
 debug: $(NAME)
+
 $(NAME): $(MLX) $(LIBFT) $(OBJS)
-	$(AR) $(ARFLAGS) $@ $^
-	$(if $(findstring -flto,$(CC)),$(RANLIB) $@,)
-ifeq ($(DEBUG), 1)
-	$(call color,$(ORANGE)$(BOLD),"✓ %UL%$@%NUL% debug build complete")
-else
-	$(call color,$(GREEN)$(BOLD),"✓ Library %UL%$@%NUL% successfully created!")
-endif
+	$(call ar-msg)
+	@$(AR) $(ARFLAGS) $@ $^
+	@$(if $(findstring -flto,$(CC)),$(RANLIB) $@,)
+	$(call ar-finish-msg)
 
 $(LIBFT):
 	@$(MAKE) -s -C $(LIBFTDIR) $(if $(filter 1,$(DEBUG)),debug)
 
 $(MLX):
-	@echo -e "$(PURPLE)-> Building $(UNDERLINE)minilibx$(RESET)"
-	@$(MAKE) -s -C $(MLXDIR)
+	$(call mlx-build-msg)
+	@$(MAKE) -s -C $(MLXDIR) $(MUTE)
+	$(call mlx-finish-msg)
 
-$(OBJDIR)/%.o: %.c | $(OBJDIR) $(DEPDIR) buildmsg
-	$(call color,$(BLUE),"➜ Compiling %UL%$<")
-	@$(CF) $(DFLAGS) -c $< -o $@
+$(OBJDIR)/%.o: %.c | buildmsg $(OBJDIR) $(DEPDIR)
+	$(call lib-compile-obj-msg)
+	@$(CF) -c $< -o $@
 
 $(OBJDIR) $(DEPDIR):
-	$(call color,$(CYAN),"Creating directory %UL%$@")
+	$(call create-dir-msg)
 	@mkdir -p $@
 
 buildmsg:
-ifeq ($(if $(filter all debug $(NAME),$(MAKECMDGOALS)),1,0),1)
 ifneq ($(shell [ -f $(NAME) ] && echo exists),exists)
-ifeq ($(DEBUG),1)
-	$(call color,$(YELLOW)$(BOLD),"$(NL)⚠ Building %UL%$(NAME)%NUL% in debug mode...")
-else
-	$(call color,$(PURPLE),"$(NL)Creating library %UL%$(NAME)%NUL%...")
-endif
-endif
+	$(call lib-build-msg)
 endif
 
 help:
@@ -117,19 +109,19 @@ print-% : ; $(info $* is a $(flavor $*) variable set to [$($*)]) @true
 
 clean:
 	@$(MAKE) -s -C $(LIBFTDIR) clean
-	$(call color,$(RED),"Cleaning %UL%$(NAME)%NUL% object files from %UL%$(OBJDIR)%NUL% and %UL%$(DEPDIR)")
+	$(call rm-obj-msg)
 	@rm -rf $(OBJDIR) $(DEPDIR)
 
 fclean:
-	@$(MAKE) -s -C $(MLXDIR) clean
+	@$(MAKE) -s -C $(MLXDIR) clean $(SILENCE)
 	@$(MAKE) -s -C $(LIBFTDIR) fclean
-	$(call color,$(RED),"Cleaning %UL%$(NAME)%NUL% object files from %UL%$(OBJDIR)%NUL% and %UL%$(DEPDIR)")
+	$(call rm-obj-msg)
 	@rm -rf $(OBJDIR) $(DEPDIR)
-	$(call color,$(RED),"Removing library %UL%$(NAME)")
+	$(call rm-lib-msg)
 	@rm -f $(NAME)
 
 re: fclean all
 
 -include $(DEPS)
 
-.PHONY: all debug re clean fclean help buildmsg 
+.PHONY: all debug re clean fclean help buildmsg print-%
