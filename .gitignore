@@ -5,4 +5,4 @@
 *.d
 font_renderer
 .env_save.txt
-libfont_renderer.a
+libfont-renderer.a
