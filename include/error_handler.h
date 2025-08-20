@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 09:10:13 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/06/28 13:07:48 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/08/20 23:32:59 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,13 @@
 # include <errno.h>
 
 # define ERR_MSG_ARG_NUM "Wrong argument number"
-# define ERR_MSG_FILE_EXT "Wrong file extension.\nOnly .ttf files are\
+# define ERR_MSG_FILE_EXT "Wrong file extension.\nOnly .ttf files are \
 supported currently"
-# define ERR_MSG_CORRUPTED_FONT "Can't read file's offset table,\
+# define ERR_MSG_CORRUPTED_FONT "Can't read file's offset table, \
 file may bee corrupted"
-# define ERR_MSG_OFFSET_SUBTABLE "Invalid font offset table values,\
+# define ERR_MSG_OFFSET_SUBTABLE "Invalid font offset table values, \
 file may be corrupted"
-# define ERR_MSG_FONT_TYPE "Invalid snft version,\
+# define ERR_MSG_FONT_TYPE "Invalid snft version, \
 font isn't in a TTF format or file may be corrupted"
 # define ERR_MSG_READ_FILE "Error while buffering file"
 # define ERR_MSG_GET_OFFSET "Could not fetch table offset"

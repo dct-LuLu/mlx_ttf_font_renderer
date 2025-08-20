@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 09:27:08 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/06/28 13:07:54 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/08/20 21:39:53 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 
 static const char	*get_err_msg(enum e_error err)
 {
+	if ((int)err == errno)
+		return (strerror(errno));
 	if (err == ERR_ARG_NUM)
 		return (ERR_MSG_ARG_NUM);
 	else if (err == ERR_FILE_EXT)
