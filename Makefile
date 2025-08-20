@@ -6,7 +6,7 @@
 #    By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/11 10:16:04 by jaubry--          #+#    #+#              #
-#    Updated: 2025/08/20 20:06:53 by jaubry--         ###   ########.fr        #
+#    Updated: 2025/08/20 21:11:52 by jaubry--         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -53,9 +53,9 @@ CFLAGS		+= $(DEBUG_FLAGS) $(FFLAGS) $(VFLAGS)
 
 CF			= $(CC) $(CFLAGS) $(IFLAGS) $(DFLAGS)
 
-AR          = $(if $(findstring -flto,$(CC)),$(FAST_AR),$(STD_AR)) $(SILENCE)
+AR          = $(if $(findstring -flto,$(FFLAGS)),$(FAST_AR),$(STD_AR))
 ARFLAGS		= rcs
-RANLIB      = $(if $(findstring -flto,$(CC)),$(FAST_RANLIB),$(STD_RANLIB)) $(SILENCE)
+RANLIB      = $(if $(findstring -flto,$(FFLAGS)),$(FAST_RANLIB),$(STD_RANLIB))
 
 # VPATH
 vpath %.h $(INCDIR) $(LIBFTDIR)/$(INCDIR) $(MLXWDIR)/$(INCDIR) $(MLXDIR)
@@ -78,9 +78,9 @@ debug:	$(NAME)
 
 $(NAME): $(MLXW) $(MLX) $(LIBFT) $(OBJS)
 	$(call ar-msg)
-	$(AR) $(ARFLAGS) $@ $^
+	@$(AR) $(ARFLAGS) $@ $^ $(SILENCE)
 ifeq ($(FAST),1)
-	@$(RANLIB) $@
+	@$(RANLIB) $@ $(SILENCE)
 endif
 	$(call ar-finish-msg)
 
