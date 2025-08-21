@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 23:07:22 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/08/07 01:42:46 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/08/21 18:56:31 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,34 @@
 # define FONT_RENDERER_H
 
 # include "rasterizer.h"
+
+# ifndef DEBUG
+#  define DEBUG 0
+# endif//DEBUG
+
+# ifndef WIDTH
+#  define WIDTH 500
+# endif//WIDTH
+
+# ifndef HEIGHT
+#  define HEIGHT 500
+# endif//HEIGHT
+
+# ifndef PERF
+#  define PERF 0
+# endif//PERF
+
+# ifndef FULLSCREEN
+#  define FULLSCREEN 0
+# endif//FULLSCREEN
+
+# ifndef WINDOWLESS
+#  define WINDOWLESS 0
+# endif//WINDOWLESS
+
+# ifndef RESIZEABLE
+#  define RESIZEABLE 0
+# endif//RESIZEABLE
 
 # define WHITE	0xFFFFFF
 # define YELLOW	0xFFFF00
