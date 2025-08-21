@@ -6,7 +6,7 @@
 #    By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/11 10:16:04 by jaubry--          #+#    #+#              #
-#    Updated: 2025/08/20 21:11:52 by jaubry--         ###   ########.fr        #
+#    Updated: 2025/08/21 18:56:40 by jaubry--         ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,9 +45,14 @@ DFLAGS		= -MMD -MP -MF $(DEPDIR)/$*.d
 
 IFLAGS		= -I$(INCDIR) -I$(MLXWDIR)/include -I$(MLXDIR) -I$(LIBFTDIR)/include
 
-VFLAGS		= -D DEBUG=$(DEBUG) \
-			  -D WIDTH=$(WIDTH) \
-			  -D HEIGHT=$(HEIGHT)
+VARS		= DEBUG=$(DEBUG) \
+			  WIDTH=$(WIDTH) \
+			  HEIGHT=$(HEIGHT) \
+			  PERF=$(PERF) \
+			  FULLSCREEN=$(FULLSCREEN) \
+			  RESIZEABLE=$(RESIZEABLE) \
+			  WINDOWLESS=$(WINDOWLESS)
+VFLAGS		= $(addprefix -D ,$(VARS))
 
 CFLAGS		+= $(DEBUG_FLAGS) $(FFLAGS) $(VFLAGS)
 
@@ -85,10 +90,10 @@ endif
 	$(call ar-finish-msg)
 
 $(LIBFT):
-	@$(MAKE) -s -C $(LIBFTDIR) $(RULE) $(MAKEFLAGS) ROOTDIR=../..
+	@$(MAKE) -s -C $(LIBFTDIR) $(RULE) $(VARS) ROOTDIR=../..
 
 $(MLXW): $(MLX) $(LIBFT)
-	@$(MAKE) -s -C $(MLXWDIR) $(RULE) $(MAKEFLAGS) ROOTDIR=../..
+	@$(MAKE) -s -C $(MLXWDIR) $(RULE) $(VARS) ROOTDIR=../..
 
 $(MLX):
 	$(call mlx-build-msg)
