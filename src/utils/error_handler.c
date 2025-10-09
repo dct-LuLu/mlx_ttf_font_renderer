@@ -38,14 +38,14 @@ static const char	*get_err_msg(enum e_error err)
 	return (strerror(errno));
 }
 
-int	error(enum e_error err, const char *format, ...)
+int	rerror(enum e_error err, const char *format, ...)
 {
 	int		errno_cpy;
 	va_list	args;
 
 	errno_cpy = errno;
 	if (err)
-		ft_dprintf(2, "Error [%d]: ", err);
+		ft_dprintf(2, "rerror [%d]: ", err);
 	ft_dprintf(2, "%s", get_err_msg(err));
 	if (DEBUG && format)
 	{

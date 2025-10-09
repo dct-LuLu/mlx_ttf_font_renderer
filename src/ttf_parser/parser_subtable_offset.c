@@ -47,7 +47,7 @@ int	read_subtable_offset(t_ttf_font *font)
 	if (DEBUG)
 		debug_offset_subtable(*(font->ot));
 	if (font->ot->sfnt_version != VALID_SFNT_VER)
-		return (error(ERR_FONT_TYPE, "current sfnt version: %d",
+		return (rerror(ERR_FONT_TYPE, "current sfnt version: %d",
 				font->ot->sfnt_version));
 	return (0);
 }

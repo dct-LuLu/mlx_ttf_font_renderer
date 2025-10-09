@@ -83,18 +83,18 @@ int	parse_table_hmtx(t_ttf_font *font, t_buffer *buf)
 	t_hmtx_table	*hmtx;
 
 	if (hmtx_offset == -1)
-		return (error(ERR_GET_OFFSET, ": hmtx"));
+		return (rerror(ERR_GET_OFFSET, ": hmtx"));
 	hmtx = ft_calloc(sizeof(t_hmtx_table), 1);
 	if (!hmtx)
-		return (error(errno, "t_hmtx_table"));
+		return (rerror(errno, "t_hmtx_table"));
 	hmtx->num_lhmtx = font->hhea->num_lhmtx;
 	hmtx->lhmtx = ft_calloc(sizeof(t_lhmtx), hmtx->num_lhmtx);
 	if (!hmtx->lhmtx)
-		return (error(errno, "hmtx->h_metrics"));
+		return (rerror(errno, "hmtx->h_metrics"));
 	buf->pos = hmtx_offset;
 	read_bytes(buf, hmtx->lhmtx, hmtx->num_lhmtx * sizeof(t_lhmtx));
 	if (fill_lsb_table(font, hmtx, buf) != 0)
-		return (error(errno, "hmtx->left_side_bearing"));
+		return (rerror(errno, "hmtx->left_side_bearing"));
 	endian_swap_table_hmtx(hmtx);
 	if (DEBUG)
 		debug_table_hmtx(*hmtx);

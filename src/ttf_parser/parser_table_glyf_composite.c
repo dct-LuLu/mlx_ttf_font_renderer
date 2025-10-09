@@ -68,7 +68,7 @@ static int	parse_component(t_glyf_component **comp, t_buffer *buf)
 
 	*comp = ft_calloc(1, sizeof(t_glyf_component));
 	if (!*comp)
-		return (error(errno, "t_glyf_component"));
+		return (rerror(errno, "t_glyf_component"));
 	(*comp)->transform[0] = 1.0f;
 	(*comp)->transform[3] = 1.0f;
 	read_bytes(buf, &(*comp)->flags, 2);
@@ -112,7 +112,7 @@ int	parse_composite_glyf(t_glyf_table *glyf, t_buffer *buf)
 		{
 			glyf->instructions = ft_calloc(glyf->instruction_length, 1);
 			if (!glyf->instructions)
-				return (error(errno, "glyf->instructions"));
+				return (rerror(errno, "glyf->instructions"));
 			read_bytes(buf, glyf->instructions, glyf->instruction_length);
 		}
 	}

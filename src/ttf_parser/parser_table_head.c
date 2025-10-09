@@ -42,10 +42,10 @@ int	parse_table_head(t_ttf_font *font, t_buffer *buf)
 	t_head_table	*head;
 
 	if (head_offset == -1)
-		return (error(ERR_GET_OFFSET, ": head"));
+		return (rerror(ERR_GET_OFFSET, ": head"));
 	head = ft_calloc(sizeof(t_head_table), 1);
 	if (!head)
-		return (error(errno, ":t_head_table"));
+		return (rerror(errno, ":t_head_table"));
 	buf->pos = head_offset + 18;
 	read_bytes(buf, &head->units_per_em, 2);
 	buf->pos = head_offset + 36;

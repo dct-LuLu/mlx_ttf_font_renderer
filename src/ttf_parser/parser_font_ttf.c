@@ -60,7 +60,7 @@ int	init_ttf(const char *path, t_ttf_font **ptr)
 
 	ret = 0;
 	if (!path || (ft_strrncmp(path, ".ttf", 4) != 0))
-		return (error(ERR_FILE_EXT, ": '%s'", path));
+		return (rerror(ERR_FILE_EXT, ": '%s'", path));
 	ret = init_ttf_struct(ptr);
 	if (!ret)
 		ret = read_ttf(*ptr, path);

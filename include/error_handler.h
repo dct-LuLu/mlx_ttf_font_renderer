@@ -24,7 +24,7 @@ file may bee corrupted"
 file may be corrupted"
 # define ERR_MSG_FONT_TYPE "Invalid snft version, \
 font isn't in a TTF format or file may be corrupted"
-# define ERR_MSG_READ_FILE "Error while buffering file"
+# define ERR_MSG_READ_FILE "rerror while buffering file"
 # define ERR_MSG_GET_OFFSET "Could not fetch table offset"
 # define ERR_MSG_TIME "Could not get current time"
 
@@ -42,6 +42,6 @@ typedef enum e_error
 	ERR_TIME,
 }	t_error;
 
-int	error(enum e_error err, const char *format, ...);
+int	rerror(enum e_error err, const char *format, ...);
 
 #endif // ERROR_HANDLER_H

@@ -55,12 +55,12 @@ static int	parse_table_glyf(t_glyf_table **glyf, t_ttf_font *font,
 	const ssize_t	glyf_offset = get_glyf_offset(font, glyf_index);
 
 	if (glyfs_table_offset == -1)
-		return (error(ERR_GET_OFFSET, ": glyf"));
+		return (rerror(ERR_GET_OFFSET, ": glyf"));
 	if (glyf_offset == -1)
 		return (-1);
 	*glyf = ft_calloc(sizeof(t_glyf_table), 1);
 	if (!*glyf)
-		return (error(errno, "t_glyf_table"));
+		return (rerror(errno, "t_glyf_table"));
 	buf->pos = glyfs_table_offset + glyf_offset;
 	if (parse_glyf_header(*glyf, buf))
 		return (1);
@@ -78,7 +78,7 @@ int	parse_table_glyfs(t_ttf_font *font, t_buffer *buf)
 
 	font->glyfs = ft_calloc(sizeof(t_glyf_table *), font->maxp->num_glyphs);
 	if (!font->glyfs)
-		return (error(errno, "t_glyf_table *"));
+		return (rerror(errno, "t_glyf_table *"));
 	i = 0;
 	while (i < font->maxp->num_glyphs - 1)
 	{

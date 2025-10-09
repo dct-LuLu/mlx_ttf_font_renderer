@@ -41,7 +41,7 @@ static int	check_entries(t_subtable_entry *subtable_entry,
 	if ((subtable_entry == NULL) && (entry_tag == 0))
 	{
 		if ((mask != MANDATORY_TAG_BIT_MASK) || (sum != MANDATORY_TAG_SUM))
-			return (error(ERR_TABLE_ENTRIES, "bit mask: %d\ttag sum: %d", mask,
+			return (rerror(ERR_TABLE_ENTRIES, "bit mask: %d\ttag sum: %d", mask,
 					sum));
 		return (0);
 	}

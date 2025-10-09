@@ -77,7 +77,7 @@ static int	continue_parse_table_loca(t_ttf_font *font,
 	else
 		font->loca->offsets = ft_calloc(num_offsets, sizeof(uint32_t));
 	if (!font->loca->offsets)
-		return (error(errno, "loca offsets allocation"));
+		return (rerror(errno, "loca offsets allocation"));
 	if (font->loca->format == 0)
 		read_bytes(buf, font->loca->offsets, num_offsets * sizeof(uint16_t));
 	else
@@ -92,10 +92,10 @@ int	parse_table_loca(t_ttf_font *font, t_buffer *buf)
 	int				ret;
 
 	if (loca_offset == -1)
-		return (error(ERR_GET_OFFSET, ": loca"));
+		return (rerror(ERR_GET_OFFSET, ": loca"));
 	font->loca = ft_calloc(sizeof(t_loca_table), 1);
 	if (!font->loca)
-		return (error(errno, "t_loca_table"));
+		return (rerror(errno, "t_loca_table"));
 	ret = continue_parse_table_loca(font, buf, loca_offset);
 	if (ret)
 		return (ret);

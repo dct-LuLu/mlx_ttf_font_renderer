@@ -27,10 +27,10 @@ int	parse_table_hhea(t_ttf_font *font, t_buffer *buf)
 	t_hhea_table	*hhea;
 
 	if (hhea_offset == -1)
-		return (error(ERR_GET_OFFSET, ": hhea"));
+		return (rerror(ERR_GET_OFFSET, ": hhea"));
 	hhea = ft_calloc(sizeof(t_hhea_table), 1);
 	if (!hhea)
-		return (error(errno, "t_hhea_table"));
+		return (rerror(errno, "t_hhea_table"));
 	buf->pos = hhea_offset + 34;
 	read_bytes(buf, &hhea->num_lhmtx, 2);
 	hhea->num_lhmtx = be16toh(hhea->num_lhmtx);

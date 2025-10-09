@@ -136,7 +136,7 @@ int	parse_simple_glyf(t_glyf_table *glyf, t_buffer *buf)
 	glyf->instruction_length = be16toh(glyf->instruction_length);
 	glyf->instructions = ft_calloc(glyf->instruction_length, 1);
 	if (!glyf->instructions)
-		return (error(errno, "glyf instructions"));
+		return (rerror(errno, "glyf instructions"));
 	read_bytes(buf, glyf->instructions, glyf->instruction_length);
 	if (parse_glyf_flags(glyf, buf))
 		return (1);

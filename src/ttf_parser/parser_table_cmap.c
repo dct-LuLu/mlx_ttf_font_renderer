@@ -114,10 +114,10 @@ int	parse_table_cmap(t_ttf_font *font, t_buffer *buf)
 	uint16_t		length;
 
 	if (cmap_offset == -1)
-		return (error(ERR_GET_OFFSET, ": cmap"));
+		return (rerror(ERR_GET_OFFSET, ": cmap"));
 	cmap = ft_calloc(sizeof(t_cmap_table), 1);
 	if (!cmap)
-		return (error(errno, ": t_cmap_table"));
+		return (rerror(errno, ": t_cmap_table"));
 	if (pre_parse_table_cmap(buf, cmap_offset))
 		return (1);
 	read_bytes(buf, &cmap->format, 2);

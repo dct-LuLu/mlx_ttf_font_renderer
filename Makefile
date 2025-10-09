@@ -6,7 +6,7 @@
 #    By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/11 10:16:04 by jaubry--          #+#    #+#              #
-#    Updated: 2025/08/21 18:56:40 by jaubry--         ###   ########lyon.fr    #
+#    Updated: 2025/10/09 19:39:21 by jaubry--         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,12 +24,14 @@ INCDIR		= include
 OBJDIR		= .obj
 DEPDIR		= .dep
 
+XCERRCALDIR	= $(LIBDIR)/xcerrcal
 LIBFTDIR	= $(LIBDIR)/libft
 MLXDIR		= $(LIBDIR)/minilibx-linux
 MLXWDIR		= $(LIBDIR)/mlx_wrapper
 
 # Output
 NAME		= libfont-renderer.a
+XCERRCAL	= $(XCERRCALDIR)/libxcerrcal.a
 LIBFT		= $(LIBFTDIR)/libft.a
 MLX			= $(MLXDIR)/libmlx.a
 MLXW		= $(MLXWDIR)/libmlx-wrapper.a
@@ -43,7 +45,7 @@ CFLAGS		= -Wall -Wextra -Werror \
 
 DFLAGS		= -MMD -MP -MF $(DEPDIR)/$*.d
 
-IFLAGS		= -I$(INCDIR) -I$(MLXWDIR)/include -I$(MLXDIR) -I$(LIBFTDIR)/include
+IFLAGS		= -I$(INCDIR) -I$(MLXWDIR)/include -I$(MLXDIR) -I$(XCERRCALDIR)/include -I$(LIBFTDIR)/include
 
 VARS		= DEBUG=$(DEBUG) \
 			  WIDTH=$(WIDTH) \
@@ -81,13 +83,16 @@ all:	$(NAME)
 fast:	$(NAME)
 debug:	$(NAME)
 
-$(NAME): $(MLXW) $(MLX) $(LIBFT) $(OBJS)
+$(NAME): $(XCERRCAL) $(MLXW) $(MLX) $(LIBFT) $(OBJS)
 	$(call ar-msg)
 	@$(AR) $(ARFLAGS) $@ $^ $(SILENCE)
 ifeq ($(FAST),1)
 	@$(RANLIB) $@ $(SILENCE)
 endif
 	$(call ar-finish-msg)
+
+$(XCERRCAL):
+	@$(MAKE) -s -C $(XCERRCALDIR) $(RULE) $(VARS) ROOTDIR=../..
 
 $(LIBFT):
 	@$(MAKE) -s -C $(LIBFTDIR) $(RULE) $(VARS) ROOTDIR=../..

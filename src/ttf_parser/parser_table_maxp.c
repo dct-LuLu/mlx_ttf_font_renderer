@@ -27,10 +27,10 @@ int	parse_table_maxp(t_ttf_font *font, t_buffer *buf)
 	t_maxp_table	*maxp;
 
 	if (maxp_offset == -1)
-		return (error(ERR_GET_OFFSET, ": maxp"));
+		return (rerror(ERR_GET_OFFSET, ": maxp"));
 	maxp = ft_calloc(sizeof(t_maxp_table), 1);
 	if (!maxp)
-		return (error(errno, ": t_maxp_table"));
+		return (rerror(errno, ": t_maxp_table"));
 	buf->pos = maxp_offset + 4;
 	read_bytes(buf, &maxp->num_glyphs, 2);
 	maxp->num_glyphs = be16toh(maxp->num_glyphs);

@@ -41,7 +41,7 @@ int	parse_glyf_header(t_glyf_table *glyf, t_buffer *buf)
 
 	glyf_header = ft_calloc(1, sizeof(t_glyf_header));
 	if (!glyf_header)
-		return (error(errno, "t_glyf_header"));
+		return (rerror(errno, "t_glyf_header"));
 	read_bytes(buf, glyf_header, sizeof(t_glyf_header));
 	endian_swap_glyf_header(glyf_header);
 	glyf->header = glyf_header;
