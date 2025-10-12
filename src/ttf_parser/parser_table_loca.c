@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 17:47:15 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/06/11 14:37:37 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/10/12 21:13:45 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ static int	continue_parse_table_loca(t_ttf_font *font,
 	else
 		font->loca->offsets = ft_calloc(num_offsets, sizeof(uint32_t));
 	if (!font->loca->offsets)
-		return (rerror(errno, "loca offsets allocation"));
+		return (-1);
 	if (font->loca->format == 0)
 		read_bytes(buf, font->loca->offsets, num_offsets * sizeof(uint16_t));
 	else
@@ -92,10 +92,13 @@ int	parse_table_loca(t_ttf_font *font, t_buffer *buf)
 	int				ret;
 
 	if (loca_offset == -1)
-		return (rerror(ERR_GET_OFFSET, ": loca"));
+	{
+		register_complex_err_msg(FRDR_E_MSG_OFFSET, "LOCA table");
+		return (error(pack_err(FRDR_ID, FRDR_E_OFFSET), FL, LN, FC));
+	}
 	font->loca = ft_calloc(sizeof(t_loca_table), 1);
 	if (!font->loca)
-		return (rerror(errno, "t_loca_table"));
+		return (-1);
 	ret = continue_parse_table_loca(font, buf, loca_offset);
 	if (ret)
 		return (ret);

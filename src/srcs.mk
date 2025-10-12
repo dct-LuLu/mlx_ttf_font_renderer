@@ -1,25 +1,21 @@
 # **************************************************************************** #
 #                                                                              #
 #                                                         :::      ::::::::    #
-#    utils.mk                                           :+:      :+:    :+:    #
+#    srcs.mk                                            :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+         #
+#    By: jaubry-- <jaubry--@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2025/07/21 12:01:29 by jaubry--          #+#    #+#              #
-#    Updated: 2025/10/12 21:17:05 by jaubry--         ###   ########.fr        #
+#    Created: 2025/10/12 18:46:14 by jaubry--          #+#    #+#              #
+#    Updated: 2025/10/12 19:01:07 by jaubry--         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-# Directories
-UTILS_DIR		= $(SRCDIR)/utils
+MKS			= font_drawer/font_drawer.mk font_filler/font_filler.mk \
+			  ttf_parser/ttf_parser.mk text_renderer/text_renderer.mk \
+			  utils/utils.mk
+include $(addprefix $(SRCDIR)/, $(MKS))
 
-# Source files
-UTILS_SRCS		= color_utils.c \
-				  file_utils.c \
-				  scale_utils.c transform_utils.c
-UTILS_SRCS		:= $(addprefix $(UTILS_DIR)/, $(UTILS_SRCS))
-
-SRCS			+= $(UTILS_SRCS)
+SRCS		+= register_frdr_errors.c
 
 # VPATH
-vpath %.c $(UTILS_DIR)
+vpath %.c $(SRCDIR)

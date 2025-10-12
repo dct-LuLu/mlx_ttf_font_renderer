@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 17:41:23 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/06/11 16:28:56 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/10/12 21:14:06 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,12 +55,15 @@ static int	parse_table_glyf(t_glyf_table **glyf, t_ttf_font *font,
 	const ssize_t	glyf_offset = get_glyf_offset(font, glyf_index);
 
 	if (glyfs_table_offset == -1)
-		return (rerror(ERR_GET_OFFSET, ": glyf"));
+	{
+		register_complex_err_msg(FRDR_E_MSG_OFFSET, "GLYF table");
+		return (error(pack_err(FRDR_ID, FRDR_E_OFFSET), FL, LN, FC));
+	}
 	if (glyf_offset == -1)
 		return (-1);
 	*glyf = ft_calloc(sizeof(t_glyf_table), 1);
 	if (!*glyf)
-		return (rerror(errno, "t_glyf_table"));
+		return (-1);
 	buf->pos = glyfs_table_offset + glyf_offset;
 	if (parse_glyf_header(*glyf, buf))
 		return (1);
@@ -78,7 +81,7 @@ int	parse_table_glyfs(t_ttf_font *font, t_buffer *buf)
 
 	font->glyfs = ft_calloc(sizeof(t_glyf_table *), font->maxp->num_glyphs);
 	if (!font->glyfs)
-		return (rerror(errno, "t_glyf_table *"));
+		return (-1);
 	i = 0;
 	while (i < font->maxp->num_glyphs - 1)
 	{

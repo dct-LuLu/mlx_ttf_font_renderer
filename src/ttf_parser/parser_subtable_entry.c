@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 15:31:36 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/05/28 02:23:35 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/10/12 20:33:26 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,13 +37,16 @@ static int	check_entries(t_subtable_entry *subtable_entry,
 {
 	static int	mask = 0;
 	static int	sum = 0;
+	int			ret;
 
 	if ((subtable_entry == NULL) && (entry_tag == 0))
 	{
+		ret = 0;
 		if ((mask != MANDATORY_TAG_BIT_MASK) || (sum != MANDATORY_TAG_SUM))
-			return (rerror(ERR_TABLE_ENTRIES, "bit mask: %d\ttag sum: %d", mask,
-					sum));
-		return (0);
+			ret = error(pack_err(FRDR_ID, FRDR_E_TAG), FL, LN, FC);
+		mask = 0;
+		sum = 0;
+		return (ret);
 	}
 	if (entry_tag)
 	{

@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 10:14:51 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/08/06 04:18:57 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/10/12 20:53:48 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 # define PARSER_TABLES_H
 
 # include "file_utils.h"
+
+# define VALID_CMAP_FORMAT 4
 
 # define REPEAT_FLAG 0x08
 

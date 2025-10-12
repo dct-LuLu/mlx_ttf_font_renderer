@@ -6,11 +6,10 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 20:29:39 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/06/12 19:59:49 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/10/12 21:14:34 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "error_handler.h"
 #include "file_utils.h"
 #include "libft.h"
 #include "parser_font_ttf.h"
@@ -23,7 +22,7 @@ static int	parse_glyf_flags(t_glyf_table *glyf, t_buffer *buf)
 
 	glyf->flags = ft_calloc(glyf->point_count, sizeof(uint8_t));
 	if (!glyf->flags)
-		return (1);
+		return (-1);
 	i = 0;
 	while (i < glyf->point_count)
 	{
@@ -105,10 +104,10 @@ static int	parse_glyf_coordinates(t_glyf_table *glyf, t_buffer *buf)
 {
 	glyf->x_coordinates = ft_calloc(glyf->point_count, sizeof(int16_t));
 	if (!glyf->x_coordinates)
-		return (1);
+		return (-1);
 	glyf->y_coordinates = ft_calloc(glyf->point_count, sizeof(int16_t));
 	if (!glyf->y_coordinates)
-		return (1);
+		return (-1);
 	parse_glyf_x_coordinates(glyf, buf);
 	parse_glyf_y_coordinates(glyf, buf);
 	return (0);
@@ -136,9 +135,9 @@ int	parse_simple_glyf(t_glyf_table *glyf, t_buffer *buf)
 	glyf->instruction_length = be16toh(glyf->instruction_length);
 	glyf->instructions = ft_calloc(glyf->instruction_length, 1);
 	if (!glyf->instructions)
-		return (rerror(errno, "glyf instructions"));
+		return (-1);
 	read_bytes(buf, glyf->instructions, glyf->instruction_length);
 	if (parse_glyf_flags(glyf, buf))
-		return (1);
+		return (-1);
 	return (parse_glyf_coordinates(glyf, buf));
 }

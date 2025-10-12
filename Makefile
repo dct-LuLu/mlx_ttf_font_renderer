@@ -6,7 +6,7 @@
 #    By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/11 10:16:04 by jaubry--          #+#    #+#              #
-#    Updated: 2025/10/09 19:39:21 by jaubry--         ###   ########.fr        #
+#    Updated: 2025/10/12 18:47:12 by jaubry--         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -70,11 +70,8 @@ vpath %.o $(OBJDIR) $(LIBFTDIR)/$(OBJDIR) $(MLXWDIR)/$(OBJDIR)
 vpath %.d $(DEPDIR) $(LIBFTDIR)/$(DEPDIR) $(MLXWDIR)/$(DEPDIR)
 
 # Sources
-MKS			= font_drawer/font_drawer.mk font_filler/font_filler.mk \
-			  ttf_parser/ttf_parser.mk text_renderer/text_renderer.mk \
-			  utils/utils.mk
 
-include $(addprefix $(SRCDIR)/, $(MKS))
+include $(SRCDIR)/srcs.mk
 
 OBJS		= $(addprefix $(OBJDIR)/, $(notdir $(SRCS:.c=.o)))
 DEPS		= $(addprefix $(DEPDIR)/, $(notdir $(SRCS:.c=.d)))
