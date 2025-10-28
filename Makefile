@@ -35,7 +35,7 @@ XCERRCAL	= $(XCERRCALDIR)/libxcerrcal.a
 LIBFT		= $(LIBFTDIR)/libft.a
 MLX			= $(MLXDIR)/libmlx.a
 MLXW		= $(MLXWDIR)/libmlx-wrapper.a
-ARCHIVES	= $(MLXW) $(MLX) $(LIBFT)
+ARCHIVES	= $(MLXW) $(MLX) $(LIBFT) $(XCERRCAL)
 
 # Compiler and flags
 CC			= cc
@@ -70,7 +70,6 @@ vpath %.o $(OBJDIR) $(LIBFTDIR)/$(OBJDIR) $(MLXWDIR)/$(OBJDIR)
 vpath %.d $(DEPDIR) $(LIBFTDIR)/$(DEPDIR) $(MLXWDIR)/$(DEPDIR)
 
 # Sources
-
 include $(SRCDIR)/srcs.mk
 
 OBJS		= $(addprefix $(OBJDIR)/, $(notdir $(SRCS:.c=.o)))
