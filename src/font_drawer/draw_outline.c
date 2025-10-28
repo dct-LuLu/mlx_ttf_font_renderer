@@ -6,11 +6,12 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 16:26:33 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/07/21 03:37:30 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/10/28 03:17:47 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "font_renderer.h"
+#include "rasterizer.h"
 
 void	draw_all_off_curve_contour(t_contour *contour, t_curve_params *params);
 int		has_on_curve_points(t_glyf_table *glyph, int start_idx, int end_idx);
@@ -29,19 +30,21 @@ static t_curve_params	init_curve_params(int start_idx, int end_idx)
 	return (params);
 }
 
-static void	debug_draw_segments(t_contour *contour, t_vec2 *pt)
+static void	debug_draw_segments(t_contour *contour, t_vec2i *pt)
 {
+	const t_rgb_int	green = (t_rgb_int){.rgb=GREEN};
+
 	if (contour->text->size <= 0)
 	{
-		ft_mlx_circle_put(contour->text->img, pt[0], 5, GREEN);
-		ft_mlx_circle_put(contour->text->img, pt[1], 5, GREEN);
+		ft_mlx_circle_put(contour->text->img, pt[0], 5, green);
+		ft_mlx_circle_put(contour->text->img, pt[1], 5, green);
 	}
 	else
 	{
 		ft_mlx_circle_put(contour->text->img, pt[0],
-			(7 / (float)contour->text->size), GREEN);
+			(7 / (float)contour->text->size), green);
 		ft_mlx_circle_put(contour->text->img, pt[1],
-			(7 / (float)contour->text->size), GREEN);
+			(7 / (float)contour->text->size), green);
 	}
 }
 
@@ -51,7 +54,7 @@ static void	debug_draw_segments(t_contour *contour, t_vec2 *pt)
 static void	draw_straight_segment(t_contour *contour, int curr_idx,
 		int next_idx)
 {
-	t_vec2	pt[2];
+	t_vec2i	pt[2];
 
 	pt[0] = new_screen_pt(contour, contour->glyf->x_coordinates[curr_idx],
 			contour->glyf->y_coordinates[curr_idx]);

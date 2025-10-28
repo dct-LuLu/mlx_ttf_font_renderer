@@ -1,0 +1,18 @@
+[submodule "lib/mlx_wrapper"]
+	path = lib/mlx_wrapper
+	url = git@github.com:dct-LuLu/mlx_wrapper.git
+	branch = library-stripped
+[submodule "lib/libft"]
+	path = lib/libft
+	url = git@github.com:dct-LuLu/libft.git
+	branch = libft-stripped
+[submodule "lib/xcerrcal"]
+	path = lib/xcerrcal
+	url = git@github.com:dct-LuLu/xcerrcal.git
+	branch = library-stripped
+[submodule "lib/minilibx-linux"]
+	path = lib/minilibx-linux
+	url = https://github.com/42paris/minilibx-linux.git
+[submodule "mkidir"]
+	path = mkidir
+	url = git@github.com:dct-LuLu/mkidir.git

@@ -6,13 +6,14 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 16:20:40 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/07/17 23:27:50 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/08/06 10:25:46 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "font_renderer.h"
+#include "rasterizer.h"
 
-t_vec2	to_screen_pt(t_text *text, t_vec2 glyph_pos, t_vec2 base_pos);
+t_vec2i	to_screen_pt(t_text *text, t_vec2i glyph_pos, t_vec2i base_pos);
 
 /**
  * @brief Get next index in contour with wrap-around
@@ -27,16 +28,16 @@ int	get_next_contour_idx(int curr_idx, int start_idx, int end_idx)
 /**
  * @brief Create implied on-curve point between two off-curve points
  */
-t_vec2	create_implied_point(t_vec2 ctrl1_pt, t_vec2 ctrl2_pt)
+t_vec2i	create_implied_point(t_vec2i ctrl1_pt, t_vec2i ctrl2_pt)
 {
-	t_vec2	implied_pt;
+	t_vec2i	implied_pt;
 
 	implied_pt.x = (ctrl1_pt.x + ctrl2_pt.x) / 2;
 	implied_pt.y = (ctrl1_pt.y + ctrl2_pt.y) / 2;
 	return (implied_pt);
 }
 
-static void	debug_quadratic_curves_info(t_contour *contour, t_vec2 *screen)
+static void	debug_quadratic_curves_info(t_contour *contour, t_vec2i *screen)
 {
 	if (contour->text->size <= 0)
 	{
@@ -62,10 +63,10 @@ static void	debug_quadratic_curves_info(t_contour *contour, t_vec2 *screen)
  * @brief Draw single quadratic curve segment using a start ctrl 
  * and end point.
  */
-void	draw_curve_segment(t_contour *contour, t_vec2 start_pt,
-		t_vec2 ctrl_pt, t_vec2 end_pt)
+void	draw_curve_segment(t_contour *contour, t_vec2i start_pt,
+		t_vec2i ctrl_pt, t_vec2i end_pt)
 {
-	t_vec2	screen[3];
+	t_vec2i	screen[3];
 
 	screen[0] = to_screen_pt(contour->text, start_pt, contour->pos);
 	screen[1] = to_screen_pt(contour->text, ctrl_pt, contour->pos);
@@ -79,10 +80,10 @@ void	draw_curve_segment(t_contour *contour, t_vec2 start_pt,
 /**
  * @brief Determine end point for curve (on-curve or implied)
  */
-t_vec2	get_curve_end_point(t_glyf_table *glyph, t_vec2 ctrl_pt,
+t_vec2i	get_curve_end_point(t_glyf_table *glyph, t_vec2i ctrl_pt,
 		int next_idx, t_glyf_component *transform)
 {
-	t_vec2	next_ctrl_pt;
+	t_vec2i	next_ctrl_pt;
 
 	if (glyph->flags[next_idx] & ON_CURVE)
 		return (get_transformed_point(glyph, next_idx, transform));

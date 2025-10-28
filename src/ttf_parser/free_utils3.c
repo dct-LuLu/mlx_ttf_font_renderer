@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   free_utils3.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaubry-- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 14:03:14 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/06/11 14:04:40 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/08/06 04:26:13 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "font_renderer.h"
+#include "rasterizer.h"
 #include <stdlib.h>
 
 static void	free_composite_glyf(t_glyf_component *comp)

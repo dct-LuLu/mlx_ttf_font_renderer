@@ -6,11 +6,10 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 19:50:12 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/05/28 02:23:49 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/10/12 21:14:25 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "error_handler.h"
 #include "file_utils.h"
 #include "libft.h"
 #include "parser_font_ttf.h"
@@ -41,7 +40,7 @@ int	parse_glyf_header(t_glyf_table *glyf, t_buffer *buf)
 
 	glyf_header = ft_calloc(1, sizeof(t_glyf_header));
 	if (!glyf_header)
-		return (error(errno, "t_glyf_header"));
+		return (-1);
 	read_bytes(buf, glyf_header, sizeof(t_glyf_header));
 	endian_swap_glyf_header(glyf_header);
 	glyf->header = glyf_header;

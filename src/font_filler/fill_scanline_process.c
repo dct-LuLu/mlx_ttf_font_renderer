@@ -6,11 +6,12 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 21:52:45 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/07/17 23:20:03 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/08/06 10:26:43 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "font_renderer.h"
+#include "rasterizer.h"
 
 int		count_edges(t_edge *edge);
 void	move_edges_to_active(t_fill_data *fill);

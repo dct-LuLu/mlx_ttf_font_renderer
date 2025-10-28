@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 15:53:48 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/05/28 02:24:46 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/10/12 20:56:12 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,13 @@ int	parse_table_maxp(t_ttf_font *font, t_buffer *buf)
 	t_maxp_table	*maxp;
 
 	if (maxp_offset == -1)
-		return (error(ERR_GET_OFFSET, ": maxp"));
+	{
+		register_complex_err_msg(FRDR_E_MSG_OFFSET, "MAXP table");
+		return (error(pack_err(FRDR_ID, FRDR_E_OFFSET), FL, LN, FC));
+	}
 	maxp = ft_calloc(sizeof(t_maxp_table), 1);
 	if (!maxp)
-		return (error(errno, ": t_maxp_table"));
+		return (-1);
 	buf->pos = maxp_offset + 4;
 	read_bytes(buf, &maxp->num_glyphs, 2);
 	maxp->num_glyphs = be16toh(maxp->num_glyphs);

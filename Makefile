@@ -6,21 +6,28 @@
 #    By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/11 10:16:04 by jaubry--          #+#    #+#              #
-#    Updated: 2025/07/21 14:50:18 by jaubry--         ###   ########.fr        #
+#    Updated: 2025/10/28 03:15:13 by jaubry--         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SHELL := /bin/bash
-
-# Print utils
-include colors.mk
+ROOTDIR		?= .
+include $(ROOTDIR)/mkidir/make_utils.mk
 
 # Variables
-DEBUG		= $(if $(filter debug debug-test debug-tester,$(MAKECMDGOALS)),1,0)
+WINDOWLESS	= 0
+FULLSCREEN	= 0
+RESIZEABLE	= 0
+ifeq ($(FULLSCREEN), 1)
+WIDTH		= 1920
+HEIGHT		= 1080
+else
 WIDTH		= 500
 HEIGHT		= 500
+endif
+PERF		= 0
 
 # Directories
+CDIR		= font_renderer
 ifeq ($(if $(filter tester $(NAME_TESTER) debug-tester, $(MAKECMDGOALS)),1,0),0)
 SRCDIR		= src
 INCDIR		= include
@@ -30,123 +37,116 @@ INCDIR		= include-tester
 endif
 OBJDIR		= .obj
 DEPDIR		= .dep
-LIBFTDIR	= libft
-MLXDIR		= minilibx-linux
+
+XCERRCALDIR	= $(LIBDIR)/xcerrcal
+LIBFTDIR	= $(LIBDIR)/libft
+MLXDIR		= $(LIBDIR)/minilibx-linux
+MLXWDIR		= $(LIBDIR)/mlx_wrapper
 
 # Output
-NAME		= font_renderer.a
-NAME_TEST	= test_font_renderer
-NAME_TESTER	= tester_font_renderer
+NAME		= libfont-renderer.a
+NAME_TEST	= font_test
+NAME_TESTER	= font_tester
+XCERRCAL	= $(XCERRCALDIR)/libxcerrcal.a
 LIBFT		= $(LIBFTDIR)/libft.a
 MLX			= $(MLXDIR)/libmlx.a
+MLXW		= $(MLXWDIR)/libmlx-wrapper.a
+ARCHIVES	= $(MLXW) $(MLX) $(LIBFT) $(XCERRCAL)
 
 # Compiler and flags
 CC			= cc
-CFLAGS		= -Ofast -Wall -Wextra -Werror \
-			  $(if $(filter 1,$(DEBUG)),-g3) -D DEBUG=$(DEBUG) \
-			  -D WIDTH=$(WIDTH) -D HEIGHT=$(HEIGHT) \
-			  -std=gnu11
-DFLAGS		= -MMD -MP -MF $(DEPDIR)/$*.d
-IFLAGS		= -I$(INCDIR) -I$(LIBFTDIR)/include -I$(MLXDIR)
-LFLAGS		= -L$(MLXDIR) -L$(LIBFTDIR) -lXext -lX11 -lXrender -lm -lmlx -lft
-CF			= $(CC) $(CFLAGS) $(IFLAGS)
 
-AR			= ar
+CFLAGS		= -Wall -Wextra -Werror \
+			  -std=gnu11
+
+DFLAGS		= -MMD -MP -MF $(DEPDIR)/$*.d
+
+IFLAGS		= -I$(INCDIR) -I$(MLXWDIR)/include -I$(MLXDIR) -I$(XCERRCALDIR)/include -I$(LIBFTDIR)/include
+
+#LFLAGS		= -L$(MLXDIR) -L$(LIBFTDIR) -lXext -lX11 -lXrender -lm -lmlx -lft
+
+LFLAGS		= -L$(MLXWDIR) -L$(LIBFTDIR) -L$(MLXDIR) -L$(XCERRCALDIR) \
+			  -lmlx-wrapper -lmlx -lft -lxcerrcal \
+			  -lXext -lX11 -lXrandr -lm
+
+VARS		= DEBUG=$(DEBUG) \
+			  WIDTH=$(WIDTH) \
+			  HEIGHT=$(HEIGHT) \
+			  PERF=$(PERF) \
+			  FULLSCREEN=$(FULLSCREEN) \
+			  RESIZEABLE=$(RESIZEABLE) \
+			  WINDOWLESS=$(WINDOWLESS)
+VFLAGS		= $(addprefix -D ,$(VARS))
+
+CFLAGS		+= $(DEBUG_FLAGS) $(FFLAGS) $(VFLAGS)
+
+CF			= $(CC) $(CFLAGS) $(IFLAGS) $(DFLAGS)
+
+AR          = $(if $(findstring -flto,$(FFLAGS)),$(FAST_AR),$(STD_AR))
 ARFLAGS		= rcs
+RANLIB      = $(if $(findstring -flto,$(FFLAGS)),$(FAST_RANLIB),$(STD_RANLIB))
 
 # VPATH
-vpath %.h $(INCDIR) $(LIBFTDIR)/$(INCDIR) $(MLXDIR)
-vpath %.o $(OBJDIR) $(LIBFTDIR)/$(OBJDIR)
-vpath %.d $(DEPDIR) $(LIBFTDIR)/$(DEPDIR)
+vpath %.h $(INCDIR) $(LIBFTDIR)/$(INCDIR) $(MLXWDIR)/$(INCDIR) $(MLXDIR)
+vpath %.o $(OBJDIR) $(LIBFTDIR)/$(OBJDIR) $(MLXWDIR)/$(OBJDIR)
+vpath %.d $(DEPDIR) $(LIBFTDIR)/$(DEPDIR) $(MLXWDIR)/$(DEPDIR)
 
 # Sources
-ifeq ($(if $(filter tester debug-tester $(NAME_TESTER),$(MAKECMDGOALS)),1,0),1)
-MKS			= tester.mk
-else
-MKS			= font_drawer/font_drawer.mk font_filler/font_filler.mk \
-			  ttf_parser/ttf_parser.mk text_renderer/text_renderer.mk \
-			  mlx_layer/mlx_layer.mk utils/utils.mk \
-			  $(if $(filter test debug-test,$(MAKECMDGOALS)),test/test.mk)
+ifeq ($(if $(filter test $(NAME_TEST),$(MAKECMDGOALS)),1,0),1)
+include $(SRCDIR)/test/test.mk
+else ifeq ($(if $(filter tester $(NAME_TESTER),$(MAKECMDGOALS)),1,0),1)
+include $(SRCDIR)/tester/tester.mk
 endif
-include $(addprefix $(SRCDIR)/, $(MKS))
-
-
+include $(SRCDIR)/srcs.mk
 
 OBJS		= $(addprefix $(OBJDIR)/, $(notdir $(SRCS:.c=.o)))
 DEPS		= $(addprefix $(DEPDIR)/, $(notdir $(SRCS:.c=.d)))
 
-all: $(LIBFT) $(NAME)
-debug: $(NAME)
-$(NAME): $(MLX) $(LIBFT) $(OBJS)
-	@$(AR) $(ARFLAGS) $@ $^
-ifeq ($(DEBUG), 1)
-	$(call color,$(ORANGE)$(BOLD),"✓ %UL%$@%NUL% debug build complete")
-else
-	$(call color,$(GREEN)$(BOLD),"✓ Library %UL%$@%NUL% successfully created!")
+all:	$(NAME)
+fast:	$(NAME)
+debug:	$(NAME)
+
+$(NAME): $(XCERRCAL) $(MLXW) $(MLX) $(LIBFT) $(OBJS)
+	$(call ar-msg)
+	@$(AR) $(ARFLAGS) $@ $^ $(SILENCE)
+ifeq ($(FAST),1)
+	@$(RANLIB) $@ $(SILENCE)
 endif
+	$(call ar-finish-msg)
 
 test: $(NAME_TEST)
-debug-test: $(NAME_TEST)
-$(NAME_TEST): $(MLX) $(LIBFT) $(OBJS)
-	@$(CF) $^ $(LFLAGS) -o $@
-ifeq ($(DEBUG),1)
-	$(call color,$(ORANGE)$(BOLD),"✓ Debug build %UL%$@%NUL% complete")
-else
-	$(call color,$(GREEN)$(BOLD),"✓ Program %UL%$@%NUL% successfully created!")
-endif
+$(NAME_TEST): $(NAME)
+	$(CF) $(TEST_SRCS) $(LFLAGS) -o $@
 
 tester: $(NAME_TESTER)
-debug-tester: $(NAME_TESTER)
-$(NAME_TESTER): $(MLX) $(LIBFT) $(OBJS)
-	@$(CF) $^ $(LFLAGS) -o $@
-ifeq ($(DEBUG),1)
-	$(call color,$(ORANGE)$(BOLD),"✓ Debug build %UL%$@%NUL% complete")
-else
-	$(call color,$(GREEN)$(BOLD),"✓ Program %UL%$@%NUL% successfully created!")
-endif
+$(NAME_TESTER): $(NAME)
+	$(CF) $(TESTER_SRCS) $(LFLAGS) -o $@
+
+$(XCERRCAL):
+	@$(MAKE) -s -C $(XCERRCALDIR) $(RULE) $(VARS) ROOTDIR=../..
 
 $(LIBFT):
-	@$(MAKE) -s -C $(LIBFTDIR) $(if $(filter 1,$(DEBUG)),debug)
+	@$(MAKE) -s -C $(LIBFTDIR) $(RULE) $(VARS) ROOTDIR=../..
+
+$(MLXW): $(MLX) $(LIBFT)
+	@$(MAKE) -s -C $(MLXWDIR) $(RULE) $(VARS) ROOTDIR=../..
 
 $(MLX):
-	@echo -e "$(PURPLE)-> Building $(UNDERLINE)minilibx$(RESET)"
-	@$(MAKE) -s -C $(MLXDIR)
+	$(call mlx-build-msg)
+	@$(MAKE) -s -C $(MLXDIR) CC="$(MLX_GCC) $(if $(filter 1,$(FAST)),$(OFLAGS))" $(MUTE)
+	$(call mlx-finish-msg)
 
-$(OBJDIR)/%.o: %.c | $(OBJDIR) $(DEPDIR) buildmsg
-	$(call color,$(BLUE),"➜ Compiling %UL%$<")
-	@$(CF) $(DFLAGS) -c $< -o $@
+$(OBJDIR)/%.o: %.c | buildmsg $(OBJDIR) $(DEPDIR)
+	$(call lib-compile-obj-msg)
+	@$(CF) -c $< -o $@
 
 $(OBJDIR) $(DEPDIR):
-	$(call color,$(CYAN),"Creating directory %UL%$@")
+	$(call create-dir-msg)
 	@mkdir -p $@
 
 buildmsg:
-ifeq ($(if $(filter all debug $(NAME),$(MAKECMDGOALS)),1,0),1)
 ifneq ($(shell [ -f $(NAME) ] && echo exists),exists)
-ifeq ($(DEBUG),1)
-	$(call color,$(YELLOW)$(BOLD),"$(NL)⚠ Building %UL%$(NAME)%NUL% in debug mode...")
-else
-	$(call color,$(PURPLE),"$(NL)Creating library %UL%$(NAME)%NUL%...")
-endif
-endif
-endif
-ifeq ($(if $(filter test $(NAME_TEST),$(MAKECMDGOALS)),1,0),1)
-ifneq ($(shell [ -f $(NAME_TEST) ] && echo exists),exists)
-ifeq ($(DEBUG),1)
-	$(call color,$(YELLOW)$(BOLD),"$(NL)⚠ Building %UL%$(NAME_TEST)%NUL% in debug mode...")
-else
-	$(call color,$(PURPLE),"$(NL)Creating program %UL%$(NAME_TEST)%NUL%...")
-endif
-endif
-endif
-ifeq ($(if $(filter tester $(NAME_TESTER),$(MAKECMDGOALS)),1,0),1)
-ifneq ($(shell [ -f $(NAME) ] && echo exists),exists)
-ifeq ($(DEBUG),1)
-	$(call color,$(YELLOW)$(BOLD),"$(NL)⚠ Building %UL%$(NAME)%NUL% in debug mode...")
-else
-	$(call color,$(PURPLE),"$(NL)Creating program %UL%$(NAME)%NUL%...")
-endif
-endif
+	$(call lib-build-msg)
 endif
 
 help:
@@ -169,16 +169,15 @@ help:
 print-% : ; $(info $* is a $(flavor $*) variable set to [$($*)]) @true
 
 clean:
-	@$(MAKE) -s -C $(LIBFTDIR) clean
-	$(call color,$(RED),"Cleaning %UL%$(NAME)%NUL% object files from %UL%$(OBJDIR)%NUL% and %UL%$(DEPDIR)")
+	@$(MAKE) -s -C $(MLXWDIR) clean ROOTDIR=../..
+	$(call rm-obj-msg)
 	@rm -rf $(OBJDIR) $(DEPDIR)
 
 fclean:
-	@$(MAKE) -s -C $(MLXDIR) clean
-	@$(MAKE) -s -C $(LIBFTDIR) fclean
-	$(call color,$(RED),"Cleaning %UL%$(NAME)%NUL% object files from %UL%$(OBJDIR)%NUL% and %UL%$(DEPDIR)")
+	@$(MAKE) -s -C $(MLXWDIR) fclean ROOTDIR=../..
+	$(call rm-obj-msg)
 	@rm -rf $(OBJDIR) $(DEPDIR)
-	$(call color,$(RED),"Removing library %UL%$(NAME)")
+	$(call rm-lib-msg)
 	@rm -f $(NAME)
 	$(call color,$(RED),"Removing program %UL%$(NAME_TEST)")
 	@rm -f $(NAME_TEST)
@@ -189,4 +188,4 @@ re: fclean all
 
 -include $(DEPS)
 
-.PHONY: all debug re test debug-test tester debug-tester clean fclean help buildmsg 
+.PHONY: all debug test tester re clean fclean help buildmsg print-%

@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 13:19:11 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/06/11 13:32:23 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/10/12 21:02:20 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ static int	parse_component(t_glyf_component **comp, t_buffer *buf)
 
 	*comp = ft_calloc(1, sizeof(t_glyf_component));
 	if (!*comp)
-		return (error(errno, "t_glyf_component"));
+		return (-1);
 	(*comp)->transform[0] = 1.0f;
 	(*comp)->transform[3] = 1.0f;
 	read_bytes(buf, &(*comp)->flags, 2);
@@ -100,7 +100,7 @@ int	parse_composite_glyf(t_glyf_table *glyf, t_buffer *buf)
 	while (flags & MORE_COMPONENTS)
 	{
 		if (parse_component(next_ptr, buf))
-			return (1);
+			return (-1);
 		flags = (*next_ptr)->flags;
 		next_ptr = &((*next_ptr)->next);
 	}
@@ -112,7 +112,7 @@ int	parse_composite_glyf(t_glyf_table *glyf, t_buffer *buf)
 		{
 			glyf->instructions = ft_calloc(glyf->instruction_length, 1);
 			if (!glyf->instructions)
-				return (error(errno, "glyf->instructions"));
+				return (-1);
 			read_bytes(buf, glyf->instructions, glyf->instruction_length);
 		}
 	}

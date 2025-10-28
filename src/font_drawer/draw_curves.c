@@ -6,18 +6,18 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 16:41:38 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/07/16 17:47:42 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/08/06 09:06:43 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "font_renderer.h"
+#include "rasterizer.h"
 
 int		get_next_contour_idx(int curr_idx, int start_idx, int end_idx);
-t_vec2	get_transformed_point(t_glyf_table *glyph, int point_idx,
+t_vec2i	get_transformed_point(t_glyf_table *glyph, int point_idx,
 			t_glyf_component *transform);
-void	draw_curve_segment(t_contour *contour, t_vec2 start_pt,
-			t_vec2 ctrl_pt, t_vec2 end_pt);
-t_vec2	get_curve_end_point(t_glyf_table *glyph, t_vec2 ctrl_pt,
+void	draw_curve_segment(t_contour *contour, t_vec2i start_pt,
+			t_vec2i ctrl_pt, t_vec2i end_pt);
+t_vec2i	get_curve_end_point(t_glyf_table *glyph, t_vec2i ctrl_pt,
 			int next_idx, t_glyf_component *transform);
 
 /**
@@ -25,8 +25,8 @@ t_vec2	get_curve_end_point(t_glyf_table *glyph, t_vec2 ctrl_pt,
  */
 static int	process_curve_iteration(t_contour *contour, t_curve_state *state)
 {
-	t_vec2	ctrl_pt;
-	t_vec2	end_pt;
+	t_vec2i	ctrl_pt;
+	t_vec2i	end_pt;
 
 	ctrl_pt = get_transformed_point(contour->glyf, state->curr_idx,
 			contour->transform);
@@ -78,9 +78,9 @@ int	has_on_curve_points(t_glyf_table *glyph, int start_idx, int end_idx)
 
 void	draw_all_off_curve_contour(t_contour *contour, t_curve_params *params)
 {
-	t_vec2	start_pt;
-	t_vec2	ctrl_pt;
-	t_vec2	end_pt;
+	t_vec2i	start_pt;
+	t_vec2i	ctrl_pt;
+	t_vec2i	end_pt;
 	int		curr_idx;
 
 	curr_idx = params->contour_start;

@@ -6,18 +6,19 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 22:00:00 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/07/21 03:39:37 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/08/06 10:28:06 by jaubry--         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "font_renderer.h"
+#include "rasterizer.h"
 
 void	draw_glyph(t_contour *contour);
 
-static t_vec2	advance_pen_position(t_vec2 pen_pos, t_contour ctr)
+static t_vec2i	advance_pen_position(t_vec2i pen_pos, t_contour ctr)
 {
 	uint16_t	advance_width;
-	t_vec2		new_pos;
+	t_vec2i		new_pos;
 
 	new_pos = pen_pos;
 	if (!ctr.text->font->hmtx || ctr.glyf_idx < 0)
@@ -32,9 +33,9 @@ static t_vec2	advance_pen_position(t_vec2 pen_pos, t_contour ctr)
 	return (new_pos);
 }
 
-static t_vec2	draw_character(t_contour ctr, t_vec2 pen_pos)
+static t_vec2i	draw_character(t_contour ctr, t_vec2i pen_pos)
 {
-	t_vec2	new_pen_pos;
+	t_vec2i	new_pen_pos;
 	int		xpt[2];
 	int		y;
 
@@ -73,7 +74,7 @@ static t_contour	get_contour(t_text *text, char c)
 
 void	draw_text(t_text *text)
 {
-	t_vec2		pen_pos;
+	t_vec2i		pen_pos;
 	t_contour	ctr;
 	size_t		i;
 

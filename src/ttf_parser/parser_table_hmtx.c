@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 16:02:23 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/06/11 11:35:08 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/10/12 21:13:23 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,18 +83,21 @@ int	parse_table_hmtx(t_ttf_font *font, t_buffer *buf)
 	t_hmtx_table	*hmtx;
 
 	if (hmtx_offset == -1)
-		return (error(ERR_GET_OFFSET, ": hmtx"));
+	{
+		register_complex_err_msg(FRDR_E_MSG_OFFSET, "HMTX table");
+		return (error(pack_err(FRDR_ID, FRDR_E_OFFSET), FL, LN, FC));
+	}
 	hmtx = ft_calloc(sizeof(t_hmtx_table), 1);
 	if (!hmtx)
-		return (error(errno, "t_hmtx_table"));
+		return (-1);
 	hmtx->num_lhmtx = font->hhea->num_lhmtx;
 	hmtx->lhmtx = ft_calloc(sizeof(t_lhmtx), hmtx->num_lhmtx);
 	if (!hmtx->lhmtx)
-		return (error(errno, "hmtx->h_metrics"));
+		return (-1);
 	buf->pos = hmtx_offset;
 	read_bytes(buf, hmtx->lhmtx, hmtx->num_lhmtx * sizeof(t_lhmtx));
 	if (fill_lsb_table(font, hmtx, buf) != 0)
-		return (error(errno, "hmtx->left_side_bearing"));
+		return (-1);
 	endian_swap_table_hmtx(hmtx);
 	if (DEBUG)
 		debug_table_hmtx(*hmtx);

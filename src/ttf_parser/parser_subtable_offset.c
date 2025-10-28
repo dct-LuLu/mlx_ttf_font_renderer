@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 15:29:45 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/06/11 16:19:30 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/10/12 21:12:24 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,9 @@ int	read_subtable_offset(t_ttf_font *font)
 	if (DEBUG)
 		debug_offset_subtable(*(font->ot));
 	if (font->ot->sfnt_version != VALID_SFNT_VER)
-		return (error(ERR_FONT_TYPE, "current sfnt version: %d",
-				font->ot->sfnt_version));
+	{
+		register_complex_err_msg(FRDR_E_MSG_SFNT, font->ot->sfnt_version, VALID_SFNT_VER);
+		return (error(pack_err(FRDR_ID, FRDR_E_SFNT), FL, LN, FC));
+	}
 	return (0);
 }
