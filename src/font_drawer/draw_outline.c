@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 16:26:33 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/08/06 10:25:32 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/10/29 03:13:51 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,17 +32,19 @@ static t_curve_params	init_curve_params(int start_idx, int end_idx)
 
 static void	debug_draw_segments(t_contour *contour, t_vec2i *pt)
 {
-	if (contour->text->size <= 0)
+	const t_rgb_int	green = (t_rgb_int){.rgb=GREEN};
+
+	if (contour->text->size >= 50)
 	{
-		ft_mlx_circle_put(contour->text->img, pt[0], 5, GREEN);
-		ft_mlx_circle_put(contour->text->img, pt[1], 5, GREEN);
+		ft_mlx_safe_circle_put(contour->text->img, pt[0], 5, green);
+		ft_mlx_safe_circle_put(contour->text->img, pt[1], 5, green);
 	}
 	else
 	{
-		ft_mlx_circle_put(contour->text->img, pt[0],
-			(7 / (float)contour->text->size), GREEN);
-		ft_mlx_circle_put(contour->text->img, pt[1],
-			(7 / (float)contour->text->size), GREEN);
+		ft_mlx_safe_circle_put(contour->text->img, pt[0],
+			(7 / (float)contour->text->size), green);
+		ft_mlx_safe_circle_put(contour->text->img, pt[1],
+			(7 / (float)contour->text->size), green);
 	}
 }
 
@@ -61,7 +63,7 @@ static void	draw_straight_segment(t_contour *contour, int curr_idx,
 	if (DEBUG)
 		debug_draw_segments(contour, pt);
 	else
-		ft_mlx_line_put(contour->text->img, pt[0], pt[1],
+		ft_mlx_line_aput(contour->text->img, pt[0], pt[1],
 			contour->text->outline);
 }
 

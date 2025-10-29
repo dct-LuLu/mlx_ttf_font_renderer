@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 04:21:30 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/08/07 09:37:55 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/10/28 23:02:46 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 # include "libft.h"
 # include "mlx_wrapper.h"
 # include "parser_font_ttf.h"
-# include "color_utils.h"
 
 # define ON_CURVE 0x01
 
@@ -110,7 +109,7 @@ float	scale_y(t_text *text, int _y, int glyph_y);
 
 t_vec2i	get_glyf_coords(t_glyf_table *glyf, int idx);
 
-void	draw_max_bounding_box(t_contour *contour, int color);
-void	draw_transformed_bounding_box(t_contour *contour, int scolor);
+void	draw_max_bounding_box(t_contour *contour, t_rgba_int color);
+void	draw_transformed_bounding_box(t_contour *contour, t_rgba_int scolor);
 
 #endif//RASTERIZER_H

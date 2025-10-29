@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 21:52:45 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/08/06 10:26:43 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/10/29 04:53:34 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static void	render_fill_line(t_fill_data *fill, t_contour *contour, int *_x)
 		render_subpixel_line(fill, sub_x, x, y);
 	}
 	else
-		ft_mlx_horizontal_line(contour->text->img, x, y, fill->text->fg);
+		ft_mlx_hline_aput(contour->text->img, x, y, fill->text->fg);
 }
 
 /*

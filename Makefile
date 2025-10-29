@@ -14,8 +14,17 @@ ROOTDIR		?= .
 include $(ROOTDIR)/mkidir/make_utils.mk
 
 # Variables
+WINDOWLESS	= 0
+FULLSCREEN	= 0
+RESIZEABLE	= 0
+ifeq ($(FULLSCREEN), 1)
+WIDTH		= 1920
+HEIGHT		= 1080
+else
 WIDTH		= 500
 HEIGHT		= 500
+endif
+PERF		= 0
 
 # Directories
 CDIR		= font_renderer
@@ -35,7 +44,6 @@ XCERRCAL	= $(XCERRCALDIR)/libxcerrcal.a
 LIBFT		= $(LIBFTDIR)/libft.a
 MLX			= $(MLXDIR)/libmlx.a
 MLXW		= $(MLXWDIR)/libmlx-wrapper.a
-ARCHIVES	= $(MLXW) $(MLX) $(LIBFT) $(XCERRCAL)
 
 # Compiler and flags
 CC			= cc
