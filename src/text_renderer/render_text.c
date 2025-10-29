@@ -29,7 +29,7 @@ static t_vec2i	advance_pen_position(t_vec2i pen_pos, t_contour ctr)
 		advance_width = ctr.text->font->hmtx->lhmtx
 		[ctr.text->font->hmtx->num_lhmtx - 1]
 			.advance_width;
-	new_pos.x += scale_x(ctr.text, 0, advance_width);//scale_x(ctr.text, advance_width, ctr.pos.x);
+	new_pos.x += scale_x(ctr.text, 0, advance_width);
 	return (new_pos);
 }
 
@@ -84,7 +84,6 @@ void	draw_text(t_text *text)
 	{
 		if (text->content[i] == '\n')
 		{
-			//pen_pos.y += scale_y(text, abs(text->font->head->y_min) + text->font->head->y_max, 0);
 			pen_pos.y -= scale_y(text, 0, abs(text->font->head->y_min) + text->font->head->y_max);
 			pen_pos.x = text->pos.x;
 		}
