@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 01:15:00 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/10/29 05:39:06 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/10/29 11:38:56 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,6 @@ static char	get_char_input(int keycode, bool maj)
 	return (c);
 }
 
-// add move and remove keys
 static void	action_char_input(t_env *env, t_mlx *mlx)
 {
 	char	c;

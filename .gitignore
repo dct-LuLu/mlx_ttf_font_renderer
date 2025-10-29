@@ -3,5 +3,9 @@
 .dep/
 *.o
 *.d
+*.a
 font_renderer
+font_test
+font_tester
+libfont-renderer.a
 .env_save.txt
