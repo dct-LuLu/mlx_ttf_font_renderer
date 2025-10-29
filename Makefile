@@ -6,7 +6,7 @@
 #    By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/11 10:16:04 by jaubry--          #+#    #+#              #
-#    Updated: 2025/10/28 03:15:13 by jaubry--         ###   ########.fr        #
+#    Updated: 2025/10/29 02:46:19 by jaubry--         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,13 +28,8 @@ PERF		= 0
 
 # Directories
 CDIR		= font_renderer
-ifeq ($(if $(filter tester $(NAME_TESTER) debug-tester, $(MAKECMDGOALS)),1,0),0)
 SRCDIR		= src
 INCDIR		= include
-else
-SRCDIR		= src-tester
-INCDIR		= include-tester
-endif
 OBJDIR		= .obj
 DEPDIR		= .dep
 
@@ -51,7 +46,7 @@ XCERRCAL	= $(XCERRCALDIR)/libxcerrcal.a
 LIBFT		= $(LIBFTDIR)/libft.a
 MLX			= $(MLXDIR)/libmlx.a
 MLXW		= $(MLXWDIR)/libmlx-wrapper.a
-ARCHIVES	= $(MLXW) $(MLX) $(LIBFT) $(XCERRCAL)
+ARCHIVES	= $(MLXW) $(MLX) $(LIBFT) $(XCERRCAL) $(LIBFT)
 
 # Compiler and flags
 CC			= cc
@@ -65,8 +60,8 @@ IFLAGS		= -I$(INCDIR) -I$(MLXWDIR)/include -I$(MLXDIR) -I$(XCERRCALDIR)/include 
 
 #LFLAGS		= -L$(MLXDIR) -L$(LIBFTDIR) -lXext -lX11 -lXrender -lm -lmlx -lft
 
-LFLAGS		= -L$(MLXWDIR) -L$(LIBFTDIR) -L$(MLXDIR) -L$(XCERRCALDIR) \
-			  -lmlx-wrapper -lmlx -lft -lxcerrcal \
+LFLAGS		= -L$(CDIR) -L$(MLXWDIR) -L$(MLXDIR) -L$(XCERRCALDIR) -L$(LIBFTDIR) \
+			  -lfont-renderer -lmlx-wrapper -lmlx -lft -lxcerrcal \
 			  -lXext -lX11 -lXrandr -lm
 
 VARS		= DEBUG=$(DEBUG) \
@@ -94,10 +89,14 @@ vpath %.d $(DEPDIR) $(LIBFTDIR)/$(DEPDIR) $(MLXWDIR)/$(DEPDIR)
 # Sources
 ifeq ($(if $(filter test $(NAME_TEST),$(MAKECMDGOALS)),1,0),1)
 include $(SRCDIR)/test/test.mk
-else ifeq ($(if $(filter tester $(NAME_TESTER),$(MAKECMDGOALS)),1,0),1)
+endif
+
+ifeq ($(if $(filter tester $(NAME_TESTER),$(MAKECMDGOALS)),1,0),1)
 include $(SRCDIR)/tester/tester.mk
 endif
+
 include $(SRCDIR)/srcs.mk
+
 
 OBJS		= $(addprefix $(OBJDIR)/, $(notdir $(SRCS:.c=.o)))
 DEPS		= $(addprefix $(DEPDIR)/, $(notdir $(SRCS:.c=.d)))
@@ -116,11 +115,11 @@ endif
 
 test: $(NAME_TEST)
 $(NAME_TEST): $(NAME)
-	$(CF) $(TEST_SRCS) $(LFLAGS) -o $@
+	$(CF) $(LFLAGS) $(TEST_SRCS) $(ARCHIVES) $(LFLAGS) -o $@
 
 tester: $(NAME_TESTER)
 $(NAME_TESTER): $(NAME)
-	$(CF) $(TESTER_SRCS) $(LFLAGS) -o $@
+	$(CF) $(LFLAGS) $(TESTER_SRCS) $(ARCHIVES) $(LFLAGS) -o $@
 
 $(XCERRCAL):
 	@$(MAKE) -s -C $(XCERRCALDIR) $(RULE) $(VARS) ROOTDIR=../..

@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 23:07:22 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/10/12 21:10:25 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/10/29 02:13:14 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,13 +43,13 @@
 #  define RESIZEABLE 0
 # endif//RESIZEABLE
 
-# define WHITE	0xFFFFFF
-# define YELLOW	0xFFFF00
-# define GREEN	0x00FF00
-# define RED	0xFF0000
+# define WHITE	0xFFFFFFFF
+# define YELLOW	0xFFFFFF00
+# define GREEN	0xFF00FF00
+# define RED	0xFFFF0000
 
 # define MAX_TEXTS 100
-# define MAX_CHARS 10
+# define MAX_CHARS 200
 
 typedef struct s_text
 {
@@ -57,10 +57,10 @@ typedef struct s_text
 	t_ttf_font		*font;
 	t_vec2i			pos;
 	unsigned int	size;
-	uint32_t		fg;
-	uint32_t		bg;
+	t_rgba_int		fg;
+	t_rgb_int		bg;
 	bool			outlined;
-	uint32_t		outline;
+	t_rgba_int		outline;
 	bool			subpixel;
 	t_img_data		*img;
 }					t_text;

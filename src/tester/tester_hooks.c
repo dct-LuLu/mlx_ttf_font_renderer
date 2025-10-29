@@ -1,44 +1,49 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   mlx_hooks.c                                        :+:      :+:    :+:   */
+/*   tester_hooks.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 22:32:25 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/07/21 03:33:37 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/10/29 02:04:42 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "font_renderer.h"
 
-/*
-	Function that safely kills the mlx instance.
-*/
-int	kill_mlx(t_mlx *mlx)
+int	on_mwheel_drag(int x, int y, t_env *env)
 {
-	if (mlx)
+	if (env->zoom <= 0)
 	{
-		if (mlx->mlx)
-		{
-			if (mlx->img.img)
-				mlx_destroy_image(mlx->mlx, mlx->img.img);
-			if (mlx->win)
-				mlx_destroy_window(mlx->mlx, mlx->win);
-			mlx_destroy_display(mlx->mlx);
-			free(mlx->mlx);
-		}
-		free(mlx);
+		env->x += (x - env->last_x) / ((-env->zoom) + 1);
+		env->y += (y - env->last_y) / ((-env->zoom) + 1);
 	}
+	else
+	{
+		env->x += env->zoom * (x - env->last_x);
+		env->y += env->zoom * (y - env->last_y);
+	}
+	if (DEBUG)
+	{
+		if ((x - env->last_x) > 0)
+			printf("+");
+		printf("%d\t", (x - env->last_x));
+		if ((y - env->last_y) > 0)
+			printf("+");
+		printf("%d\n", (y - env->last_y));
+	}
+	env->last_x = x;
+	env->last_y = y;
 	return (0);
 }
 
-/*
-	Function to handles ESC key to exit safely.
-*/
-int	on_key_press(int keysym, t_mlx *mlx)
+int	on_button_press(int mousecode, int x, int y, t_env *env)
 {
-	if (keysym == 65307)
-		return (mlx_loop_end(mlx->mlx));
+	if (mousecode == 2)
+	{
+		env->last_x = x;
+		env->last_y = y;
+	}
 	return (0);
 }

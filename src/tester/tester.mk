@@ -1,7 +1,8 @@
+
 # **************************************************************************** #
 #                                                                              #
 #                                                         :::      ::::::::    #
-#    test.mk                                            :+:      :+:    :+:    #
+#    tester.mk                                            :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
 #    By: jaubry-- <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
@@ -11,13 +12,17 @@
 # **************************************************************************** #
 
 # Directories
-TEST_DIR	= $(SRCDIR)/test
+TESTER_DIR	= $(SRCDIR)/tester
 
 # Source files
-TEST_SRCS	= main.c \
-			  mlx_font_renderer.c draw_routine.c \
-			  mlx_fps.c
-TEST_SRCS	:= $(addprefix $(TEST_DIR)/, $(TEST_SRCS))
+TESTER_SRCS	= main.c \
+			  draw_routine.c \
+			  key_hooks.c \
+			  mouse_hooks.c \
+			  setup.c \
+			  mlx_fps.c \
+			  save_file_utils.c
+TESTER_SRCS	:= $(addprefix $(TESTER_DIR)/, $(TESTER_SRCS))
 
 # VPATH
-vpath %.c $(TEST_DIR)
+vpath %.c $(TESTER_DIR)

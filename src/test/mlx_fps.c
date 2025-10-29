@@ -6,31 +6,11 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 01:52:47 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/07/17 23:40:43 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/10/29 00:03:17 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "font_renderer.h"
-
-ssize_t	get_current_time(void);
-
-static int	get_fps(void)
-{
-	static ssize_t	last_time = -1;
-	static ssize_t	fc = 0;
-	static ssize_t	result = 0;
-
-	fc++;
-	if (last_time == -1)
-		last_time = get_current_time();
-	if (get_current_time() >= last_time + 1000)
-	{
-		last_time = get_current_time();
-		result = fc;
-		fc = 0;
-	}
-	return (result);
-}
 
 static size_t	ft_itoalen(long int nb)
 {
@@ -76,21 +56,23 @@ static void	ft_itoal(int n, char *str)
 	}
 }
 
+void	update_fps(t_rast_env *env)
+{
+	ft_itoal((int)env->mlx->fps, env->fps->content);
+}
+
 void	init_fps(t_rast_env *env, t_ttf_font *font)
 {
+	const int	size = 3;
 	t_text	*fps;
 
 	fps = ft_calloc(1, sizeof(t_text));
-	fps->pos = new_vec2(0, 20);
-	fps->fg = YELLOW;
-	fps->size = 20;
+	fps->pos = vec2i(0, size * 6);
+	fps->fg = (t_rgba_int){.rgba=YELLOW};
+	fps->size = size;
 	fps->img = &(env->mlx->img);
 	fps->font = font;
 	fps->subpixel = true;
 	env->fps = fps;
 }
 
-void	update_fps(t_rast_env *env)
-{
-	ft_itoal(get_fps(), env->fps->content);
-}

@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 21:37:58 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/08/07 09:24:05 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/10/29 04:52:41 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,11 @@ static void	debug_curve_subdivisions(t_contour *contour, t_vec2i _a, t_vec2i _b)
 
 	a = to_screen_pt(contour->text, _a, contour->pos);
 	b = to_screen_pt(contour->text, _b, contour->pos);
-	if (DEBUG && (contour->text->size <= 0))
+	if (DEBUG && (contour->text->size >= 50))
 	{
-		ft_mlx_circle_put(contour->text->img, a, 7, GREEN);
-		ft_mlx_circle_put(contour->text->img, b, 7, GREEN);
-		ft_mlx_line_put(contour->text->img, a, b, GREEN);
+		ft_mlx_circle_put(contour->text->img, a, 7, (t_rgb_int){.rgb=GREEN});
+		ft_mlx_circle_put(contour->text->img, b, 7, (t_rgb_int){.rgb=GREEN});
+		ft_mlx_line_put(contour->text->img, a, b, (t_rgb_int){.rgb=GREEN});
 	}
 }
 

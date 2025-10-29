@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 15:24:15 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/08/06 10:26:47 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/10/29 04:49:31 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,23 +20,16 @@ static int	calculate_coverage(int start, int end, int subpixel_pos)
 	return (255);
 }
 
-static uint32_t	blend_subpixels(uint32_t bg_color, uint32_t fg_color,
+static t_rgba_int	blend_subpixels(t_rgb_int bg, t_rgba_int fg,
 	int coverage[3])
 {
-	uint8_t	blend[3];
-	uint8_t	bg[3];
-	uint8_t	fg[3];
+	t_rgba_int	blend;
 
-	bg[R] = (bg_color >> 16) & 0xFF;
-	bg[G] = (bg_color >> 8) & 0xFF;
-	bg[B] = bg_color & 0xFF;
-	fg[R] = (fg_color >> 16) & 0xFF;
-	fg[G] = (fg_color >> 8) & 0xFF;
-	fg[B] = fg_color & 0xFF;
-	blend[R] = bg[R] + ((fg[R] - bg[R]) * coverage[0]) / 255;
-	blend[G] = bg[G] + ((fg[G] - bg[G]) * coverage[1]) / 255;
-	blend[B] = bg[B] + ((fg[B] - bg[B]) * coverage[2]) / 255;
-	return (to_color(blend[R], blend[G], blend[B]));
+	blend.r = bg.r + ((fg.r - bg.r) * coverage[0]) / 255;
+	blend.g = bg.g + ((fg.g - bg.g) * coverage[1]) / 255;
+	blend.b = bg.b + ((fg.b - bg.b) * coverage[2]) / 255;
+	blend.a = fg.a;//sure ?
+	return (blend);
 }
 
 static void	apply_lcd_filter(int coverage[3])
@@ -63,7 +56,7 @@ void	render_subpixel_line(t_fill_data *fill, int *sub_x, int *x, int y)
 	int	sub_start;
 	int	coverage[3];
 	int	pixel_x;
-	int	color;
+	t_rgba_int	color;
 
 	pixel_x = x[0];
 	while (pixel_x <= x[1])
@@ -74,7 +67,7 @@ void	render_subpixel_line(t_fill_data *fill, int *sub_x, int *x, int y)
 		coverage[2] = calculate_coverage(sub_x[0], sub_x[1], sub_start + 2);
 		apply_lcd_filter(coverage);
 		color = blend_subpixels(fill->text->bg, fill->text->fg, coverage);
-		ft_mlx_pixel_put(fill->text->img, vec2i(pixel_x, y), color);
+		ft_mlx_safe_pixel_aput(fill->text->img, vec2i(pixel_x, y), color);
 		pixel_x++;
 	}
 }

@@ -1,36 +1,44 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   mlx_draw.c                                         :+:      :+:    :+:   */
+/*   draw_routine.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 12:39:37 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/07/16 01:52:26 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/10/29 06:30:48 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "font_renderer.h"
+#include "tester.h"
 
+void	update_fps(t_env *env);
 void	draw_glyph(t_contour *contour);
-void	show_fps(t_env *env);
 
 /**
  * @brief Draw a grid of all available glyphs
  */
-static void	draw_char(t_env *env, char c, t_vec2 pos, int color)
+static void	draw_char(t_env *env, char c, t_vec2i pos, t_rgba_int color)
 {
 	t_contour	contour;
 
 	ft_bzero(&contour, sizeof(t_contour));
-	contour.env = env;
-	contour.color = color;
-	contour.pos = pos;
 	contour.glyf_idx = get_glyph_index(env->font, c);
 	if (contour.glyf_idx >= env->font->maxp->num_glyphs)
 		return ;
+	contour.text = &(t_text)
+	{
+		.size = env->zoom,
+		.fg = color,
+		.outlined = false,
+		.subpixel = false,
+		.font = env->font,
+		.img = &(env->mlx->img)
+	};
+	contour.pos = to_screen_pt(contour.text, pos, vec2i(env->x, env->y));
 	if (DEBUG)
-		draw_max_bounding_box(&contour, RED);
+		draw_max_bounding_box(&contour, (t_rgba_int){.rgba=RED});
 	draw_glyph(&contour);
 }
 
@@ -42,15 +50,22 @@ static void	draw_glyph_grid(t_env *env, int grid_cols, float cell_width,
 	int			col;
 
 	ft_bzero(&contour, sizeof(t_contour));
-	contour.env = env;
-	contour.color = WHITE;
 	while (contour.glyf_idx < env->font->maxp->num_glyphs)
 	{
 		row = contour.glyf_idx / grid_cols;
 		col = contour.glyf_idx % grid_cols;
-		contour.pos = new_vec2(col * cell_width, row * cell_height);
+		contour.text = &(t_text)
+		{
+			.size = env->zoom,
+			.fg = (t_rgba_int){.rgba=WHITE},
+			.outlined = false,
+			.subpixel = true,
+			.font = env->font,
+			.img = &(env->mlx->img)
+		};
+		contour.pos = to_screen_pt(contour.text, vec2i(col * cell_width, -row * cell_height), vec2i(env->x, env->y));
 		if (DEBUG)
-			draw_max_bounding_box(&contour, RED);
+			draw_max_bounding_box(&contour, (t_rgba_int){.rgba=RED});
 		draw_glyph(&contour);
 		contour.glyf_idx++;
 	}
@@ -68,30 +83,23 @@ abcdefghijklmnopqrstuvwxyz0123456789";
 	cols = 16;
 	cell_width = abs(env->font->head->x_min) + env->font->head->x_max;
 	cell_height = abs(env->font->head->y_min) + env->font->head->y_max;
+	printf("w: %f, h: %f\n", cell_width, cell_height);
 	i = 0;
 	while (important[i])
 	{
 		draw_char(env, important[i],
-			new_vec2((i % cols) * cell_width, (i / cols) * cell_height), WHITE);
+			
+			vec2i((i % cols) * cell_width, (i / cols) * cell_height), (t_rgba_int){.rgba=WHITE});
 		i++;
 	}
 }
 
-static void	draw_text_example(t_env *env)
-{
-	t_vec2	pos;
-
-	pos = new_vec2(500, 500);
-	draw_string(env, env->text, pos, WHITE);
-}
-
 int	draw_routine(t_env *env)
 {
-	t_mlx		*mlx;
+	t_mlx	*mlx;
 
 	mlx = env->mlx;
-	mlx->tick += 1;
-	ft_mlx_batch_put(&mlx->img, mlx->origin, mlx->size, BACKGROUND);
+	ft_mlx_batch_put(&mlx->img, mlx->origin, mlx->size, (t_rgb_int){.rgb=BACKGROUND});
 	if (env->view_mode == 0)
 		draw_glyph_grid(env, 16, abs(env->font->head->x_min)
 			+ env->font->head->x_max, abs(env->font->head->y_min)
@@ -99,8 +107,22 @@ int	draw_routine(t_env *env)
 	else if (env->view_mode == 1)
 		draw_important_characters(env);
 	else if (env->view_mode == 2)
-		draw_text_example(env);
-	show_fps(env);
+		draw_text(env->text);
+	env->text->pos = vec2i(env->x, env->y);
+	env->text->size = env->zoom;
+	//draw_texts(env);
+	if (env->subpixel)
+	{
+		env->text->outlined = true;
+		env->text->fg = (t_rgba_int){.rgba=0};
+	}
+	else
+	{
+		env->text->outlined = false;
+		env->text->fg = (t_rgba_int){.rgba=WHITE};
+	}
+	update_fps(env);
+	draw_text(env->fps);
 	mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->img.img, 0, 0);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 12:39:37 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/07/21 03:33:48 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/10/29 00:20:20 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@ int	draw_routine(t_rast_env *env)
 	t_mlx	*mlx;
 
 	mlx = env->mlx;
-	ft_mlx_batch_put(&mlx->img, mlx->origin, mlx->size, BACKGROUND);
+	ft_mlx_batch_put(&mlx->img, mlx->origin, mlx->size, (t_rgb_int){.rgb=BACKGROUND});
+	ft_mlx_line_put(&mlx->img, mlx->origin, mlx->size, (t_rgb_int){.rgb=0xFFFFFF});
 	update_fps(env);
 	draw_texts(env);
 	draw_text(env->fps);

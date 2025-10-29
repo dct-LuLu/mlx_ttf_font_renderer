@@ -14,8 +14,7 @@
 UTILS_DIR		= $(SRCDIR)/utils
 
 # Source files
-UTILS_SRCS		= color_utils.c \
-				  file_utils.c \
+UTILS_SRCS		= file_utils.c \
 				  scale_utils.c transform_utils.c
 UTILS_SRCS		:= $(addprefix $(UTILS_DIR)/, $(UTILS_SRCS))
 

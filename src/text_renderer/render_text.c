@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 22:00:00 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/08/06 10:28:06 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2025/10/29 05:57:14 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static t_vec2i	advance_pen_position(t_vec2i pen_pos, t_contour ctr)
 		advance_width = ctr.text->font->hmtx->lhmtx
 		[ctr.text->font->hmtx->num_lhmtx - 1]
 			.advance_width;
-	new_pos.x += scale_x(ctr.text, 0, advance_width);
+	new_pos.x += scale_x(ctr.text, 0, advance_width);//scale_x(ctr.text, advance_width, ctr.pos.x);
 	return (new_pos);
 }
 
@@ -48,7 +48,7 @@ static t_vec2i	draw_character(t_contour ctr, t_vec2i pen_pos)
 		xpt[0] = scale_x(ctr.text, pen_pos.x, ctr.pos.x);
 		xpt[1] = scale_x(ctr.text, new_pen_pos.x, ctr.pos.x);
 		y = scale_y(ctr.text, -pen_pos.y, ctr.pos.y);
-		ft_mlx_horizontal_line(ctr.text->img, xpt, y, RED);
+		ft_mlx_hline_put(ctr.text->img, xpt, y, (t_rgb_int){.rgb=RED});
 	}
 	return (new_pen_pos);
 }
@@ -84,8 +84,8 @@ void	draw_text(t_text *text)
 	{
 		if (text->content[i] == '\n')
 		{
-			pen_pos.y += scale_y(text, 0, abs(text->font->head->y_min)
-					+ text->font->head->y_max);
+			//pen_pos.y += scale_y(text, abs(text->font->head->y_min) + text->font->head->y_max, 0);
+			pen_pos.y -= scale_y(text, 0, abs(text->font->head->y_min) + text->font->head->y_max);
 			pen_pos.x = text->pos.x;
 		}
 		else
