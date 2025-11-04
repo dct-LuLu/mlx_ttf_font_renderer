@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 12:39:37 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/10/29 06:30:48 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/11/04 16:53:39 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static void	draw_char(t_env *env, char c, t_vec2i pos, t_rgba_int color)
 		return ;
 	contour.text = &(t_text)
 	{
-		.size = env->zoom,
+		.font_size = env->zoom,
 		.fg = color,
 		.outlined = false,
 		.subpixel = false,
@@ -56,7 +56,7 @@ static void	draw_glyph_grid(t_env *env, int grid_cols, float cell_width,
 		col = contour.glyf_idx % grid_cols;
 		contour.text = &(t_text)
 		{
-			.size = env->zoom,
+			.font_size = env->zoom,
 			.fg = (t_rgba_int){.rgba=WHITE},
 			.outlined = false,
 			.subpixel = true,
@@ -109,7 +109,7 @@ int	draw_routine(t_env *env)
 	else if (env->view_mode == 2)
 		draw_text(env->text);
 	env->text->pos = vec2i(env->x, env->y);
-	env->text->size = env->zoom;
+	env->text->font_size = env->zoom;
 	//draw_texts(env);
 	if (env->subpixel)
 	{

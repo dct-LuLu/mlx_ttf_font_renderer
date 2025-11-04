@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 01:52:47 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/10/29 00:03:17 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/11/04 18:28:52 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static size_t	ft_itoalen(long int nb)
 	return (len);
 }
 
-static void	ft_itoal(int n, char *str)
+static void	ft_itoal(int n, unsigned char *str)
 {
 	long int	num;
 	size_t		i;
@@ -55,24 +55,29 @@ static void	ft_itoal(int n, char *str)
 		i++;
 	}
 }
-
-void	update_fps(t_rast_env *env)
+typedef struct s_test_env
 {
-	ft_itoal((int)env->mlx->fps, env->fps->content);
+	t_ttf_font	*font;
+	t_text		*fps;
+	t_text		*test;
+	t_mlx		*mlx_data;
+}	t_test_env;
+
+void	update_fps(t_mlx *mlx_data, t_text *fps)
+{
+	ft_itoal((int)mlx_data->fps, fps->content);
 }
 
-void	init_fps(t_rast_env *env, t_ttf_font *font)
+void	init_fps(t_test_env *env)
 {
 	const int	size = 3;
-	t_text	*fps;
 
-	fps = ft_calloc(1, sizeof(t_text));
-	fps->pos = vec2i(0, size * 6);
-	fps->fg = (t_rgba_int){.rgba=YELLOW};
-	fps->size = size;
-	fps->img = &(env->mlx->img);
-	fps->font = font;
-	fps->subpixel = true;
-	env->fps = fps;
+	env->fps = ft_calloc(1, sizeof(t_text));
+	env->fps->pos = vec2i(0, 0);
+	env->fps->fg = (t_rgba_int){.rgba=YELLOW};
+	env->fps->font_size = size;
+	env->fps->img = &(env->mlx_data->img);
+	env->fps->font = env->font;
+	env->fps->subpixel = true;
 }
 

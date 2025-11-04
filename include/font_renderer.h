@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 23:07:22 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/10/29 02:13:14 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/11/04 18:27:39 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,15 +48,17 @@
 # define GREEN	0xFF00FF00
 # define RED	0xFFFF0000
 
-# define MAX_TEXTS 100
-# define MAX_CHARS 200
+# define MAX_TEXTS 2
+# define MAX_CHARS 1000
 
 typedef struct s_text
 {
-	char			content[MAX_CHARS];
+	unsigned char	content[MAX_CHARS];
 	t_ttf_font		*font;
 	t_vec2i			pos;
-	unsigned int	size;
+	t_vec2i			lt;
+	t_vec2i			rb;
+	unsigned int	font_size;
 	t_rgba_int		fg;
 	t_rgb_int		bg;
 	bool			outlined;
@@ -64,14 +66,6 @@ typedef struct s_text
 	bool			subpixel;
 	t_img_data		*img;
 }					t_text;
-
-typedef struct s_rast_env
-{
-	t_mlx	*mlx;
-	t_text	*texts[MAX_TEXTS];
-	size_t	text_num;
-	t_text	*fps;
-}	t_rast_env;
 
 int		init_ttf(const char *path, t_ttf_font **ptr);
 void	free_ttf(t_ttf_font *font);

@@ -30,7 +30,7 @@ float	scale_x(t_text *text, int ctr_x, int glyph_x)
 {
 	if (text->font->head->units_per_em == 0)
 		return (0);
-	return (apply_scale(glyph_x, text->size,
+	return (apply_scale(glyph_x, text->font_size,
 		(float)text->font->head->units_per_em) + ctr_x);
 }
 
@@ -42,7 +42,7 @@ float	scale_y(t_text *text, int ctr_y, int glyph_y)
 {
 	if (text->font->head->units_per_em == 0)
 		return (0);
-	return (apply_scale(-glyph_y, text->size,
+	return (apply_scale(-glyph_y, text->font_size,
 		(float)text->font->head->units_per_em) + ctr_y);
 }
 

@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 16:26:33 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/10/29 03:13:51 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/11/04 18:28:05 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static void	debug_draw_segments(t_contour *contour, t_vec2i *pt)
 {
 	const t_rgb_int	green = (t_rgb_int){.rgb=GREEN};
 
-	if (contour->text->size >= 50)
+	if (contour->text->font_size >= 50)
 	{
 		ft_mlx_safe_circle_put(contour->text->img, pt[0], 5, green);
 		ft_mlx_safe_circle_put(contour->text->img, pt[1], 5, green);
@@ -42,9 +42,9 @@ static void	debug_draw_segments(t_contour *contour, t_vec2i *pt)
 	else
 	{
 		ft_mlx_safe_circle_put(contour->text->img, pt[0],
-			(7 / (float)contour->text->size), green);
+			(7 / (float)contour->text->font_size), green);
 		ft_mlx_safe_circle_put(contour->text->img, pt[1],
-			(7 / (float)contour->text->size), green);
+			(7 / (float)contour->text->font_size), green);
 	}
 }
 

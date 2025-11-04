@@ -14,13 +14,12 @@
 #include "font_renderer.h"
 
 int		init_ttf(const char *path, t_ttf_font **ptr);
-void	start_mainloop(t_rast_env *env, t_ttf_font *font);
+void	start_mainloop(t_ttf_font *font);
 void	free_ttf(t_ttf_font *font);
 
 int	main(int argc, char **argv)
 {
 	t_ttf_font	*font;
-	t_rast_env	env;
 	int			ret;
 
 	font = NULL;
@@ -30,8 +29,7 @@ int	main(int argc, char **argv)
 		ret = init_ttf(argv[1], &font);
 		if (ret)
 			return (ret);
-		ft_bzero(&env, sizeof(t_rast_env));
-		start_mainloop(&env, font);
+		start_mainloop(font);
 		free_ttf(font);
 	}
 	else

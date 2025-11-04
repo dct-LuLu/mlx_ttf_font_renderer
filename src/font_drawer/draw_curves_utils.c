@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 16:20:40 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/10/29 03:15:21 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/11/04 18:28:00 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static void	debug_quadratic_curves_info(t_contour *contour, t_vec2i *screen)
 	const t_rgb_int	red = (t_rgb_int){.rgb=RED};
 	const t_rgb_int	yellow = (t_rgb_int){.rgb=YELLOW};
 
-	if (contour->text->size >= 50)
+	if (contour->text->font_size >= 50)
 	{
 		ft_mlx_safe_circle_put(contour->text->img, screen[0], 4, red);
 		ft_mlx_safe_circle_put(contour->text->img, screen[1], 5, yellow);
@@ -51,11 +51,11 @@ static void	debug_quadratic_curves_info(t_contour *contour, t_vec2i *screen)
 	else
 	{
 		ft_mlx_safe_circle_put(contour->text->img, screen[0],
-			(3 / (float)contour->text->size), red);
+			(3 / (float)contour->text->font_size), red);
 		ft_mlx_safe_circle_put(contour->text->img, screen[1],
-			(4 / (float)contour->text->size), yellow);
+			(4 / (float)contour->text->font_size), yellow);
 		ft_mlx_safe_circle_put(contour->text->img, screen[2],
-			(3 / (float)contour->text->size), red);
+			(3 / (float)contour->text->font_size), red);
 	}
 }
 

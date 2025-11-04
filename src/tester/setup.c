@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 22:13:23 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/10/29 06:01:23 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/11/04 16:54:01 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static void	add_test(t_env *env, t_ttf_font *font)
 	*(env->text) = (t_text)
 	{
 		.pos = vec2i(0, 200),
-		.size = 10,
+		.font_size = 10,
 		.fg = (t_rgba_int){.rgba=WHITE},
 		.outline = (t_rgba_int){.rgba=WHITE},
 		.outlined = false,

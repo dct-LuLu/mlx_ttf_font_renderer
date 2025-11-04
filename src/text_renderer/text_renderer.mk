@@ -14,7 +14,7 @@
 TEXT_RENDERER_DIR	= $(SRCDIR)/text_renderer
 
 # Source files
-TEXT_RENDERER_SRCS	= add_text.c render_text.c \
+TEXT_RENDERER_SRCS	= render_text.c \
 					  render_glyph.c
 TEXT_RENDERER_SRCS	:= $(addprefix $(TEXT_RENDERER_DIR)/, $(TEXT_RENDERER_SRCS))
 

@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 15:24:15 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/10/29 04:49:31 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/11/04 18:28:32 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static t_rgba_int	blend_subpixels(t_rgb_int bg, t_rgba_int fg,
 	blend.r = bg.r + ((fg.r - bg.r) * coverage[0]) / 255;
 	blend.g = bg.g + ((fg.g - bg.g) * coverage[1]) / 255;
 	blend.b = bg.b + ((fg.b - bg.b) * coverage[2]) / 255;
-	blend.a = fg.a;//sure ?
+	blend.a = fg.a;
 	return (blend);
 }
 
