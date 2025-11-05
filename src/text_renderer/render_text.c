@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 22:00:00 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/11/04 18:29:07 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/11/05 13:40:26 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static t_vec2i	draw_character(t_contour ctr, t_vec2i pen_pos)
 	{
 		xpt[0] = scale_x(ctr.text, pen_pos.x, ctr.pos.x);
 		xpt[1] = scale_x(ctr.text, new_pen_pos.x, ctr.pos.x);
-		y = scale_y(ctr.text, pen_pos.y, ctr.pos.y);
+		y = pen_pos.y;
 		ft_mlx_hline_put(ctr.text->img, xpt, y, (t_rgb_int){.rgb=RED});
 	}
 	return (new_pen_pos);
@@ -72,7 +72,7 @@ static t_contour	get_contour(t_text *text, char c)
 	return (ctr);
 }
 
-void	draw_text(t_text *text)
+void	draw_left_align_text(t_text *text)
 {
 	t_vec2i		pen_pos;
 	t_contour	ctr;
@@ -101,4 +101,43 @@ void	draw_text(t_text *text)
 		}
 		i++;
 	}
+}
+
+void	draw_right_align_text(t_text *text)
+{
+	t_vec2i		pen_pos;
+	t_contour	ctr;
+	size_t		i;
+
+	pen_pos.x = text->rb.x - measure_text_line_width(text->content, text);
+	pen_pos.y = text->lt.y + text->font_size * 6;
+	i = 0;
+	while (text->content[i])
+	{
+		if (text->content[i] == '\n')
+		{
+			pen_pos.x = text->rb.x - measure_text_line_width(text->content + i + 1, text);
+			pen_pos.y -= scale_y(text, 0, abs(text->font->head->y_min) + text->font->head->y_max);
+		}
+		else
+		{
+			ft_bzero(&ctr, sizeof(ctr));
+			ctr = get_contour(text, text->content[i]);
+			if (advance_pen_position(pen_pos, ctr).x < text->lt.x)
+			{
+				pen_pos.x = text->rb.x - measure_text_line_width(text->content + i + 1, text);
+				pen_pos.y -= scale_y(text, 0, abs(text->font->head->y_min) + text->font->head->y_max);
+			}
+			pen_pos = draw_character(ctr, pen_pos);
+		}
+		i++;
+	}
+}
+
+void	draw_text(t_text *text)
+{
+	if (text->align == LEFT_ALIGN)
+		draw_left_align_text(text);
+	else if (text->align == RIGHT_ALIGN)
+		draw_right_align_text(text);
 }

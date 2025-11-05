@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 23:07:22 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/11/04 18:27:39 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/11/05 13:19:31 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,12 +48,18 @@
 # define GREEN	0xFF00FF00
 # define RED	0xFFFF0000
 
-# define MAX_TEXTS 2
 # define MAX_CHARS 1000
+
+typedef enum e_text_align
+{
+	LEFT_ALIGN,
+	RIGHT_ALIGN,
+	CENTER_ALIGN
+}	t_text_align;
 
 typedef struct s_text
 {
-	unsigned char	content[MAX_CHARS];
+	char	content[MAX_CHARS];
 	t_ttf_font		*font;
 	t_vec2i			pos;
 	t_vec2i			lt;
@@ -64,11 +70,17 @@ typedef struct s_text
 	bool			outlined;
 	t_rgba_int		outline;
 	bool			subpixel;
+	t_text_align	align;
 	t_img_data		*img;
 }					t_text;
 
 int		init_ttf(const char *path, t_ttf_font **ptr);
 void	free_ttf(t_ttf_font *font);
 void	draw_text(t_text *text);
+
+int		measure_char_width(char c, t_text *text);
+int		measure_str_width(char *str, t_text *text);
+int		measure_text_line_width(char *str, t_text *text);
+int		measure_text_total_width(char *str, t_text *text);
 
 #endif // FONT_RENDERER_H

@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 01:52:47 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/11/04 18:28:52 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/11/05 13:13:31 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static size_t	ft_itoalen(long int nb)
 	return (len);
 }
 
-static void	ft_itoal(int n, unsigned char *str)
+static void	ft_itoal(int n, char *str)
 {
 	long int	num;
 	size_t		i;
