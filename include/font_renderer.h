@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 23:07:22 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/11/06 13:57:10 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/11/06 15:07:07 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,26 +50,28 @@
 
 # define MAX_CHARS 1000
 
+# define TEXT_FIELDS					\
+	char			content[MAX_CHARS];	\
+	unsigned int	font_size;			\
+	t_rgba_int		fg;					\
+	t_rgb_int		bg;					\
+	t_rgba_int		outline;			\
+	bool			outlined;			\
+	bool			subpixel;			\
+	t_ttf_font		*font;				\
+	t_vec2i			_text_pos;			\
+	t_vec2i			_lt_limit;			\
+	t_vec2i			_rb_limit;			\
+	t_img_data		*_img;
 
 typedef struct s_text
 {
-	char			content[MAX_CHARS];
-	unsigned int	font_size;
-	t_rgba_int		fg;
-	t_rgb_int		bg;
-	t_rgba_int		outline;
-	bool			outlined;
-	bool			subpixel;
-	t_ttf_font		*font;
-	t_vec2i			_text_pos;
-	t_vec2i			_lt_limit;
-	t_vec2i			_rb_limit;
-	t_img_data		*_img;
-}					t_text;
+	TEXT_FIELDS
+}	t_text;
 
 int		init_ttf(const char *path, t_ttf_font **ptr);
 void	free_ttf(t_ttf_font *font);
-void	draw_text(t_text *text);
+void	draw_glyph(t_contour *contour);
 
 int		measure_char_width(char c, t_text *text);
 int		measure_str_width(char *str, t_text *text);
