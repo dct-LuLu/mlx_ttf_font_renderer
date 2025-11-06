@@ -70,13 +70,11 @@ void	update_fps(t_mlx *mlx_data, t_text *fps)
 
 void	init_fps(t_test_env *env)
 {
-	const int	size = 3;
-
 	env->fps = ft_calloc(1, sizeof(t_text));
-	env->fps->pos = vec2i(0, 0);
+	env->fps->font_size = 3;
+	env->fps->_text_pos = vec2i(0, 0 + env->fps->font_size * 6);
 	env->fps->fg = (t_rgba_int){.rgba=YELLOW};
-	env->fps->font_size = size;
-	env->fps->img = &(env->mlx_data->img);
+	env->fps->_img = &(env->mlx_data->img);
 	env->fps->font = env->font;
 	env->fps->subpixel = true;
 }

@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 16:51:42 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/11/04 18:29:00 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/11/06 14:02:42 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,20 +88,21 @@ static void	draw_composite_glyph(t_contour *contour)
 
 static bool	is_glyph_onscreen(t_contour *contour)
 {
-	t_vec2i			corners[2];
-	t_glyf_header	*header;
+	const t_glyf_header	*header = contour->glyf->header;
+	const t_vec2i		corners[2] =
+	{
+		new_screen_pt(contour, header->x_min, header->y_min),
+		new_screen_pt(contour, header->x_max, header->y_max)
+	};
 
-	header = contour->glyf->header;
-	corners[0] = new_screen_pt(contour, header->x_min, header->y_min);
-	corners[1] = new_screen_pt(contour, header->x_max, header->y_max);
 	if ((corners[0].x < 0) || (corners[0].y < 0)
 		|| (corners[1].x > WIDTH) || (corners[1].y > HEIGHT))
 		return (false);
-	if ((contour->text->lt.x == 0) && (contour->text->lt.y == 0)
-			&& (contour->text->rb.x == 0) && (contour->text->rb.y == 0))
+	if ((contour->text->_lt_limit.x == 0) && (contour->text->_lt_limit.y == 0)
+			&& (contour->text->_rb_limit.x == 0) && (contour->text->_rb_limit.y == 0))
 		return (true);
-	if ((corners[0].x < contour->text->lt.x) || (corners[1].y < contour->text->lt.y)
-		|| (corners[1].x > contour->text->rb.x) || (corners[0].y > contour->text->rb.y))
+	if ((corners[0].x < contour->text->_lt_limit.x) || (corners[1].y < contour->text->_lt_limit.y)
+		|| (corners[1].x > contour->text->_rb_limit.x) || (corners[0].y > contour->text->_rb_limit.y))
 		return (false);
 	return (true);
 }

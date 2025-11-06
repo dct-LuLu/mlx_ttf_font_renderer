@@ -67,7 +67,7 @@ void	render_subpixel_line(t_fill_data *fill, int *sub_x, int *x, int y)
 		coverage[2] = calculate_coverage(sub_x[0], sub_x[1], sub_start + 2);
 		apply_lcd_filter(coverage);
 		color = blend_subpixels(fill->text->bg, fill->text->fg, coverage);
-		ft_mlx_safe_pixel_aput(fill->text->img, vec2i(pixel_x, y), color);
+		ft_mlx_safe_pixel_aput(fill->text->_img, vec2i(pixel_x, y), color);
 		pixel_x++;
 	}
 }

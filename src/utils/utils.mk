@@ -16,7 +16,8 @@ UTILS_DIR		= $(SRCDIR)/utils
 # Source files
 UTILS_SRCS		= file_utils.c \
 				  scale_utils.c transform_utils.c \
-				  measure_utils.c
+				  measure_utils.c \
+				  get_contour.c
 UTILS_SRCS		:= $(addprefix $(UTILS_DIR)/, $(UTILS_SRCS))
 
 SRCS			+= $(UTILS_SRCS)

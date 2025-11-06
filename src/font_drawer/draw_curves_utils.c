@@ -44,17 +44,17 @@ static void	debug_quadratic_curves_info(t_contour *contour, t_vec2i *screen)
 
 	if (contour->text->font_size >= 50)
 	{
-		ft_mlx_safe_circle_put(contour->text->img, screen[0], 4, red);
-		ft_mlx_safe_circle_put(contour->text->img, screen[1], 5, yellow);
-		ft_mlx_safe_circle_put(contour->text->img, screen[2], 4, red);
+		ft_mlx_safe_circle_put(contour->text->_img, screen[0], 4, red);
+		ft_mlx_safe_circle_put(contour->text->_img, screen[1], 5, yellow);
+		ft_mlx_safe_circle_put(contour->text->_img, screen[2], 4, red);
 	}
 	else
 	{
-		ft_mlx_safe_circle_put(contour->text->img, screen[0],
+		ft_mlx_safe_circle_put(contour->text->_img, screen[0],
 			(3 / (float)contour->text->font_size), red);
-		ft_mlx_safe_circle_put(contour->text->img, screen[1],
+		ft_mlx_safe_circle_put(contour->text->_img, screen[1],
 			(4 / (float)contour->text->font_size), yellow);
-		ft_mlx_safe_circle_put(contour->text->img, screen[2],
+		ft_mlx_safe_circle_put(contour->text->_img, screen[2],
 			(3 / (float)contour->text->font_size), red);
 	}
 }
@@ -71,7 +71,7 @@ void	draw_curve_segment(t_contour *contour, t_vec2i start_pt,
 	screen[0] = to_screen_pt(contour->text, start_pt, contour->pos);
 	screen[1] = to_screen_pt(contour->text, ctrl_pt, contour->pos);
 	screen[2] = to_screen_pt(contour->text, end_pt, contour->pos);
-	ft_mlx_quad_curve_aput(contour->text->img, screen,
+	ft_mlx_quad_curve_aput(contour->text->_img, screen,
 		contour->text->outline);
 	if (DEBUG)
 		debug_quadratic_curves_info(contour, screen);

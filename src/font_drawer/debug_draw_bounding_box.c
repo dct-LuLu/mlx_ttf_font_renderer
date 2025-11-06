@@ -31,10 +31,10 @@ void	draw_transformed_bounding_box(t_contour *contour, t_rgba_int scolor)
 	corners[1] = new_screen_pt(contour, header->x_max, header->y_max);
 	corners[2] = new_screen_pt(contour, header->x_max, header->y_min);
 	corners[3] = new_screen_pt(contour, header->x_min, header->y_max);
-	ft_mlx_line_aput(contour->text->img, corners[0], corners[2], color);
-	ft_mlx_line_aput(contour->text->img, corners[0], corners[3], color);
-	ft_mlx_line_aput(contour->text->img, corners[1], corners[2], color);
-	ft_mlx_line_aput(contour->text->img, corners[1], corners[3], color);
+	ft_mlx_line_aput(contour->text->_img, corners[0], corners[2], color);
+	ft_mlx_line_aput(contour->text->_img, corners[0], corners[3], color);
+	ft_mlx_line_aput(contour->text->_img, corners[1], corners[2], color);
+	ft_mlx_line_aput(contour->text->_img, corners[1], corners[3], color);
 }
 
 /*
@@ -50,8 +50,8 @@ void	draw_max_bounding_box(t_contour *contour, t_rgba_int color)
 	corners[1] = new_screen_pt(contour, head->x_max, head->y_max);
 	corners[2] = new_screen_pt(contour, head->x_max, head->y_min);
 	corners[3] = new_screen_pt(contour, head->x_min, head->y_max);
-	ft_mlx_line_aput(contour->text->img, corners[0], corners[2], color);
-	ft_mlx_line_aput(contour->text->img, corners[0], corners[3], color);
-	ft_mlx_line_aput(contour->text->img, corners[1], corners[2], color);
-	ft_mlx_line_aput(contour->text->img, corners[1], corners[3], color);
+	ft_mlx_line_aput(contour->text->_img, corners[0], corners[2], color);
+	ft_mlx_line_aput(contour->text->_img, corners[0], corners[3], color);
+	ft_mlx_line_aput(contour->text->_img, corners[1], corners[2], color);
+	ft_mlx_line_aput(contour->text->_img, corners[1], corners[3], color);
 }

@@ -67,7 +67,7 @@ void	init_fps(t_env *env, t_ttf_font *font)
 	t_text	*fps;
 
 	fps = ft_calloc(1, sizeof(t_text));
-	fps->pos = vec2i(0, 0);
+	fps->_text_pos = vec2i(0, 0);
 	fps->fg = (t_rgba_int){.rgba=YELLOW};
 	fps->font_size = 5;
 	fps->img = &(env->mlx->img);

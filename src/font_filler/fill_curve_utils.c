@@ -23,9 +23,9 @@ static void	debug_curve_subdivisions(t_contour *contour, t_vec2i _a, t_vec2i _b)
 	b = to_screen_pt(contour->text, _b, contour->pos);
 	if (DEBUG && (contour->text->font_size >= 50))
 	{
-		ft_mlx_safe_circle_put(contour->text->img, a, 7, (t_rgb_int){.rgb=GREEN});
-		ft_mlx_safe_circle_put(contour->text->img, b, 7, (t_rgb_int){.rgb=GREEN});
-		ft_mlx_line_put(contour->text->img, a, b, (t_rgb_int){.rgb=GREEN});
+		ft_mlx_safe_circle_put(contour->text->_img, a, 7, (t_rgb_int){.rgb=GREEN});
+		ft_mlx_safe_circle_put(contour->text->_img, b, 7, (t_rgb_int){.rgb=GREEN});
+		ft_mlx_line_put(contour->text->_img, a, b, (t_rgb_int){.rgb=GREEN});
 	}
 }
 

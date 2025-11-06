@@ -36,14 +36,14 @@ static void	debug_draw_segments(t_contour *contour, t_vec2i *pt)
 
 	if (contour->text->font_size >= 50)
 	{
-		ft_mlx_safe_circle_put(contour->text->img, pt[0], 5, green);
-		ft_mlx_safe_circle_put(contour->text->img, pt[1], 5, green);
+		ft_mlx_safe_circle_put(contour->text->_img, pt[0], 5, green);
+		ft_mlx_safe_circle_put(contour->text->_img, pt[1], 5, green);
 	}
 	else
 	{
-		ft_mlx_safe_circle_put(contour->text->img, pt[0],
+		ft_mlx_safe_circle_put(contour->text->_img, pt[0],
 			(7 / (float)contour->text->font_size), green);
-		ft_mlx_safe_circle_put(contour->text->img, pt[1],
+		ft_mlx_safe_circle_put(contour->text->_img, pt[1],
 			(7 / (float)contour->text->font_size), green);
 	}
 }
@@ -63,7 +63,7 @@ static void	draw_straight_segment(t_contour *contour, int curr_idx,
 	if (DEBUG)
 		debug_draw_segments(contour, pt);
 	else
-		ft_mlx_line_aput(contour->text->img, pt[0], pt[1],
+		ft_mlx_line_aput(contour->text->_img, pt[0], pt[1],
 			contour->text->outline);
 }
 

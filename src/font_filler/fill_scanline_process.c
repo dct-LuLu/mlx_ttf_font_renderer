@@ -46,7 +46,7 @@ static void	render_fill_line(t_fill_data *fill, t_contour *contour, int *_x)
 		render_subpixel_line(fill, sub_x, x, y);
 	}
 	else
-		ft_mlx_hline_aput(contour->text->img, x, y, fill->text->fg);
+		ft_mlx_hline_aput(contour->text->_img, x, y, fill->text->fg);
 }
 
 /*

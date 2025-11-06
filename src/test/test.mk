@@ -16,7 +16,8 @@ TEST_DIR	= $(SRCDIR)/test
 # Source files
 TEST_SRCS	= main.c \
 			  mlx_font_renderer.c draw_routine.c \
-			  mlx_fps.c
+			  mlx_fps.c \
+			  render_text_test.c
 TEST_SRCS	:= $(addprefix $(TEST_DIR)/, $(TEST_SRCS))
 
 # VPATH

@@ -108,7 +108,7 @@ int	draw_routine(t_env *env)
 		draw_important_characters(env);
 	else if (env->view_mode == 2)
 		draw_text(env->text);
-	env->text->pos = vec2i(env->x, env->y);
+	env->text->_text_pos = vec2i(env->x, env->y);
 	env->text->font_size = env->zoom;
 	//draw_texts(env);
 	if (env->subpixel)
