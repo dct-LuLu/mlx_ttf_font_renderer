@@ -1,22 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   add_text.c                                         :+:      :+:    :+:   */
+/*   render_text.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/17 21:59:47 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/08/06 10:27:33 by jaubry--         ###   ########lyon.fr   */
+/*   Created: 2025/06/15 22:00:00 by jaubry--          #+#    #+#             */
+/*   Updated: 2025/11/06 12:24:21 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "font_renderer.h"
 #include "rasterizer.h"
 
-void	add_text(t_rast_env *env, t_text *text)
+t_contour	get_contour(t_text *text, char c)
 {
-	if (env->text_num == MAX_TEXTS)
-		return ;
-	env->texts[env->text_num] = text;
-	env->text_num++;
+	t_contour	ctr;
+
+	ft_bzero(&ctr, sizeof(t_contour));
+	if (c == '\0')
+	{
+		ctr.glyf_idx = -1;
+		return (ctr);
+	}
+	ctr.glyf_idx = get_glyph_index(text->font, c);
+	if (ctr.glyf_idx >= text->font->maxp->num_glyphs)
+		ctr.glyf_idx = 0;
+	ctr.text = text;
+	ctr.glyf = text->font->glyfs[ctr.glyf_idx];
+	ctr.pos = text->_text_pos;
+	return (ctr);
 }

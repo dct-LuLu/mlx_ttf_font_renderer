@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 15:24:15 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/10/29 04:49:31 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/11/04 18:28:32 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static t_rgba_int	blend_subpixels(t_rgb_int bg, t_rgba_int fg,
 	blend.r = bg.r + ((fg.r - bg.r) * coverage[0]) / 255;
 	blend.g = bg.g + ((fg.g - bg.g) * coverage[1]) / 255;
 	blend.b = bg.b + ((fg.b - bg.b) * coverage[2]) / 255;
-	blend.a = fg.a;//sure ?
+	blend.a = fg.a;
 	return (blend);
 }
 
@@ -67,7 +67,7 @@ void	render_subpixel_line(t_fill_data *fill, int *sub_x, int *x, int y)
 		coverage[2] = calculate_coverage(sub_x[0], sub_x[1], sub_start + 2);
 		apply_lcd_filter(coverage);
 		color = blend_subpixels(fill->text->bg, fill->text->fg, coverage);
-		ft_mlx_safe_pixel_aput(fill->text->img, vec2i(pixel_x, y), color);
+		ft_mlx_safe_pixel_aput(fill->text->_img, vec2i(pixel_x, y), color);
 		pixel_x++;
 	}
 }

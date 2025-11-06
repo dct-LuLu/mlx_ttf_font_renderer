@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 16:20:40 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/10/29 03:15:21 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/11/04 18:28:00 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,20 +42,20 @@ static void	debug_quadratic_curves_info(t_contour *contour, t_vec2i *screen)
 	const t_rgb_int	red = (t_rgb_int){.rgb=RED};
 	const t_rgb_int	yellow = (t_rgb_int){.rgb=YELLOW};
 
-	if (contour->text->size >= 50)
+	if (contour->text->font_size >= 50)
 	{
-		ft_mlx_safe_circle_put(contour->text->img, screen[0], 4, red);
-		ft_mlx_safe_circle_put(contour->text->img, screen[1], 5, yellow);
-		ft_mlx_safe_circle_put(contour->text->img, screen[2], 4, red);
+		ft_mlx_safe_circle_put(contour->text->_img, screen[0], 4, red);
+		ft_mlx_safe_circle_put(contour->text->_img, screen[1], 5, yellow);
+		ft_mlx_safe_circle_put(contour->text->_img, screen[2], 4, red);
 	}
 	else
 	{
-		ft_mlx_safe_circle_put(contour->text->img, screen[0],
-			(3 / (float)contour->text->size), red);
-		ft_mlx_safe_circle_put(contour->text->img, screen[1],
-			(4 / (float)contour->text->size), yellow);
-		ft_mlx_safe_circle_put(contour->text->img, screen[2],
-			(3 / (float)contour->text->size), red);
+		ft_mlx_safe_circle_put(contour->text->_img, screen[0],
+			(3 / (float)contour->text->font_size), red);
+		ft_mlx_safe_circle_put(contour->text->_img, screen[1],
+			(4 / (float)contour->text->font_size), yellow);
+		ft_mlx_safe_circle_put(contour->text->_img, screen[2],
+			(3 / (float)contour->text->font_size), red);
 	}
 }
 
@@ -71,7 +71,7 @@ void	draw_curve_segment(t_contour *contour, t_vec2i start_pt,
 	screen[0] = to_screen_pt(contour->text, start_pt, contour->pos);
 	screen[1] = to_screen_pt(contour->text, ctrl_pt, contour->pos);
 	screen[2] = to_screen_pt(contour->text, end_pt, contour->pos);
-	ft_mlx_quad_curve_aput(contour->text->img, screen,
+	ft_mlx_quad_curve_aput(contour->text->_img, screen,
 		contour->text->outline);
 	if (DEBUG)
 		debug_quadratic_curves_info(contour, screen);

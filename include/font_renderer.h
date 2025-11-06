@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 23:07:22 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/10/29 02:13:14 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/11/06 13:57:10 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,33 +48,32 @@
 # define GREEN	0xFF00FF00
 # define RED	0xFFFF0000
 
-# define MAX_TEXTS 100
-# define MAX_CHARS 200
+# define MAX_CHARS 1000
+
 
 typedef struct s_text
 {
 	char			content[MAX_CHARS];
-	t_ttf_font		*font;
-	t_vec2i			pos;
-	unsigned int	size;
+	unsigned int	font_size;
 	t_rgba_int		fg;
 	t_rgb_int		bg;
-	bool			outlined;
 	t_rgba_int		outline;
+	bool			outlined;
 	bool			subpixel;
-	t_img_data		*img;
+	t_ttf_font		*font;
+	t_vec2i			_text_pos;
+	t_vec2i			_lt_limit;
+	t_vec2i			_rb_limit;
+	t_img_data		*_img;
 }					t_text;
-
-typedef struct s_rast_env
-{
-	t_mlx	*mlx;
-	t_text	*texts[MAX_TEXTS];
-	size_t	text_num;
-	t_text	*fps;
-}	t_rast_env;
 
 int		init_ttf(const char *path, t_ttf_font **ptr);
 void	free_ttf(t_ttf_font *font);
 void	draw_text(t_text *text);
+
+int		measure_char_width(char c, t_text *text);
+int		measure_str_width(char *str, t_text *text);
+int		measure_text_line_width(char *str, t_text *text);
+int		measure_text_total_width(char *str, t_text *text);
 
 #endif // FONT_RENDERER_H

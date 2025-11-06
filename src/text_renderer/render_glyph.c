@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 16:51:42 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/10/29 00:32:57 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/11/06 14:02:42 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@
 void	draw_contour(t_contour *contour);
 void	fill_glyph(t_contour *contour);
 
-/**
- * @brief Draw a simple glyph with optional transformation
- */
+/*
+	Draw a simple glyph with optional transformation
+*/
 static void	draw_simple_glyph(t_contour *contour)
 {
 	if (!contour->glyf || (contour->glyf->header->number_of_contours <= 0))
@@ -39,9 +39,9 @@ static void	draw_simple_glyph(t_contour *contour)
 	}
 }
 
-/**
- * @brief Calculate component position with offsets and scaling
- */
+/*
+	Calculate component position with offsets and scaling
+*/
 static t_vec2i	get_component_position(t_contour *contour, t_glyf_component *comp)
 {
 	t_vec2i	comp_pos;
@@ -56,9 +56,9 @@ static t_vec2i	get_component_position(t_contour *contour, t_glyf_component *comp
 	return (new_screen_pt(contour, offset.x, offset.y));
 }
 
-/**
- * @brief Draw a composite glyph by rendering all components
- */
+/*
+	Draw a composite glyph by rendering all components
+*/
 static void	draw_composite_glyph(t_contour *contour)
 {
 	t_glyf_component	*comp;
@@ -88,16 +88,23 @@ static void	draw_composite_glyph(t_contour *contour)
 
 static bool	is_glyph_onscreen(t_contour *contour)
 {
-	t_vec2i			corners[2];
-	t_glyf_header	*header;
+	const t_glyf_header	*header = contour->glyf->header;
+	const t_vec2i		corners[2] =
+	{
+		new_screen_pt(contour, header->x_min, header->y_min),
+		new_screen_pt(contour, header->x_max, header->y_max)
+	};
 
-	header = contour->glyf->header;
-	corners[0] = new_screen_pt(contour, header->x_min, header->y_min);
-	corners[1] = new_screen_pt(contour, header->x_max, header->y_max);
-	if ((corners[1].x < 0) || (corners[0].y < 0)
-		|| (corners[0].x > WIDTH) || (corners[1].y > HEIGHT))
+	if ((corners[0].x < 0) || (corners[0].y < 0)
+		|| (corners[1].x > WIDTH) || (corners[1].y > HEIGHT))
+		return (false);
+	if ((contour->text->_lt_limit.x == 0) && (contour->text->_lt_limit.y == 0)
+			&& (contour->text->_rb_limit.x == 0) && (contour->text->_rb_limit.y == 0))
 		return (true);
-	return (false);
+	if ((corners[0].x < contour->text->_lt_limit.x) || (corners[1].y < contour->text->_lt_limit.y)
+		|| (corners[1].x > contour->text->_rb_limit.x) || (corners[0].y > contour->text->_rb_limit.y))
+		return (false);
+	return (true);
 }
 
 /*
@@ -113,7 +120,7 @@ void	draw_glyph(t_contour *contour)
 	if (!glyph)
 		return ;
 	contour->glyf = glyph;
-	if (is_glyph_onscreen(contour))
+	if (!is_glyph_onscreen(contour))
 		return ;
 	if (DEBUG)
 		draw_transformed_bounding_box(contour, (t_rgba_int){.rgba=GREEN});
