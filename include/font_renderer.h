@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 23:07:22 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/11/06 15:07:07 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/12/04 20:56:36 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,5 +77,7 @@ int		measure_char_width(char c, t_text *text);
 int		measure_str_width(char *str, t_text *text);
 int		measure_text_line_width(char *str, t_text *text);
 int		measure_text_total_width(char *str, t_text *text);
+
+int		measure_line_height(t_text *text);
 
 #endif // FONT_RENDERER_H
