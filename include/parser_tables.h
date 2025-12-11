@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 10:14:51 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/10/12 20:53:48 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/12/04 20:46:02 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,8 @@ typedef struct s_maxp_table
 
 typedef struct s_hhea_table
 {
+	int16_t					ascent;
+	int16_t					descent;
 	uint16_t				num_lhmtx;
 }							t_hhea_table;
 
