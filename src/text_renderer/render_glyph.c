@@ -96,7 +96,8 @@ static bool	is_glyph_onscreen(t_contour *contour)
 	};
 
 	if ((corners[0].x < 0) || (corners[0].y < 0)
-		|| (corners[1].x > WIDTH) || (corners[1].y > HEIGHT))
+		|| (corners[1].x > contour->text->_img->width)
+		|| (corners[1].y > contour->text->_img->height))
 		return (false);
 	if ((contour->text->_lt_limit.x == 0) && (contour->text->_lt_limit.y == 0)
 			&& (contour->text->_rb_limit.x == 0) && (contour->text->_rb_limit.y == 0))
