@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 11:53:08 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/10/12 20:36:25 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/12/23 20:59:32 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,10 @@ static int	read_tables(t_ttf_font *font)
 {
 	size_t				i;
 	const t_parse_func	parse_table[] = {parse_table_head, parse_table_cmap,
-		parse_table_maxp, parse_table_hhea, parse_table_hmtx, parse_table_loca, parse_table_glyfs, NULL};
-	const char			*strtag_table[] = {"HEAD", "CMAP", "MAXP", "HHEA", "HMTX", "LOCA", "GLYF", NULL};
+		parse_table_maxp, parse_table_hhea, parse_table_hmtx,
+		parse_table_loca, parse_table_glyfs, NULL};
+	const char			*strtag_table[] = {"HEAD", "CMAP", "MAXP", "HHEA",
+		"HMTX", "LOCA", "GLYF", NULL};
 
 	i = 0;
 	while (parse_table[i])

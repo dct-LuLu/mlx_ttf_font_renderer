@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 16:20:40 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/11/04 18:28:00 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/12/23 21:04:46 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 
 t_vec2i	to_screen_pt(t_text *text, t_vec2i glyph_pos, t_vec2i base_pos);
 
-/**
- * @brief Get next index in contour with wrap-around
- */
+/*
+	Get next index in contour with wrap-around
+*/
 int	get_next_contour_idx(int curr_idx, int start_idx, int end_idx)
 {
 	if (curr_idx == end_idx)
@@ -25,9 +25,9 @@ int	get_next_contour_idx(int curr_idx, int start_idx, int end_idx)
 	return (curr_idx + 1);
 }
 
-/**
- * @brief Create implied on-curve point between two off-curve points
- */
+/*
+	Create implied on-curve point between two off-curve points
+*/
 t_vec2i	create_implied_point(t_vec2i ctrl1_pt, t_vec2i ctrl2_pt)
 {
 	t_vec2i	implied_pt;
@@ -39,8 +39,8 @@ t_vec2i	create_implied_point(t_vec2i ctrl1_pt, t_vec2i ctrl2_pt)
 
 static void	debug_quadratic_curves_info(t_contour *contour, t_vec2i *screen)
 {
-	const t_rgb_int	red = (t_rgb_int){.rgb=RED};
-	const t_rgb_int	yellow = (t_rgb_int){.rgb=YELLOW};
+	const t_rgb_int	red = (t_rgb_int){.rgb = RED};
+	const t_rgb_int	yellow = (t_rgb_int){.rgb = YELLOW};
 
 	if (contour->text->font_size >= 50)
 	{
@@ -59,10 +59,10 @@ static void	debug_quadratic_curves_info(t_contour *contour, t_vec2i *screen)
 	}
 }
 
-/**
- * @brief Draw single quadratic curve segment using a start ctrl 
- * and end point.
- */
+/*
+	@brief Draw single quadratic curve segment using a start ctrl 
+	and end point.
+*/
 void	draw_curve_segment(t_contour *contour, t_vec2i start_pt,
 		t_vec2i ctrl_pt, t_vec2i end_pt)
 {
@@ -77,9 +77,9 @@ void	draw_curve_segment(t_contour *contour, t_vec2i start_pt,
 		debug_quadratic_curves_info(contour, screen);
 }
 
-/**
- * @brief Determine end point for curve (on-curve or implied)
- */
+/*
+	@brief Determine end point for curve (on-curve or implied)
+*/
 t_vec2i	get_curve_end_point(t_glyf_table *glyph, t_vec2i ctrl_pt,
 		int next_idx, t_glyf_component *transform)
 {

@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/04 20:53:59 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/12/04 21:47:18 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/12/23 20:57:21 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,5 +14,6 @@
 
 int	measure_line_height(t_text *text)
 {
-	return (-scale_y(text, 0, (text->font->hhea->ascent + abs(text->font->hhea->descent))));
+	return (-scale_y(text, 0, (text->font->hhea->ascent
+				+ abs(text->font->hhea->descent))));
 }

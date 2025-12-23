@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 16:26:33 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/11/04 18:28:05 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/12/23 21:04:38 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@ int		has_on_curve_points(t_glyf_table *glyph, int start_idx, int end_idx);
 void	draw_curve_from_on_curve(t_contour *contour, int start_idx,
 			t_curve_params *params);
 
-/**
- * @brief Initialize curve parameters structure
- */
+/*
+	Initialize curve parameters structure
+*/
 static t_curve_params	init_curve_params(int start_idx, int end_idx)
 {
 	t_curve_params	params;
@@ -32,7 +32,7 @@ static t_curve_params	init_curve_params(int start_idx, int end_idx)
 
 static void	debug_draw_segments(t_contour *contour, t_vec2i *pt)
 {
-	const t_rgb_int	green = (t_rgb_int){.rgb=GREEN};
+	const t_rgb_int	green = (t_rgb_int){.rgb = GREEN};
 
 	if (contour->text->font_size >= 50)
 	{
@@ -48,9 +48,9 @@ static void	debug_draw_segments(t_contour *contour, t_vec2i *pt)
 	}
 }
 
-/**
- * @brief Draw straight line between two on-curve points
- */
+/*
+	Draw straight line between two on-curve points
+*/
 static void	draw_straight_segment(t_contour *contour, int curr_idx,
 		int next_idx)
 {
@@ -67,9 +67,9 @@ static void	draw_straight_segment(t_contour *contour, int curr_idx,
 			contour->text->outline);
 }
 
-/**
- * @brief Process single point in contour
- */
+/*
+	@brief Process single point in contour
+*/
 static void	process_contour_point(t_contour *contour, int curr_idx,
 		t_curve_params *params)
 {
@@ -86,9 +86,9 @@ static void	process_contour_point(t_contour *contour, int curr_idx,
 		draw_curve_from_on_curve(contour, curr_idx, params);
 }
 
-/**
- * @brief Draw a single contour with optional transformation
- */
+/*
+	@brief Draw a single contour with optional transformation
+*/
 void	draw_contour(t_contour *contour)
 {
 	int				curr_idx;

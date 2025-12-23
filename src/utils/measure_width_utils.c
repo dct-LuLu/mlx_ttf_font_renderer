@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/05 12:28:17 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/11/05 13:11:47 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/12/23 20:56:56 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,13 @@ int	measure_char_width(char c, t_text *text)
 	uint16_t		width;
 
 	if ((glyf_idx >= text->font->maxp->num_glyphs)
-			|| !text->font->hmtx || (c == '\n'))
+		|| !text->font->hmtx || (c == '\n'))
 		return (0);
 	if (glyf_idx < text->font->hmtx->num_lhmtx)
 		width = text->font->hmtx->lhmtx[glyf_idx].advance_width;
 	else
-		width = text->font->hmtx->lhmtx[text->font->hmtx->num_lhmtx - 1].advance_width;
+		width = text->font->hmtx->lhmtx[text->font->hmtx->num_lhmtx - 1]
+			.advance_width;
 	return (scale_x(text, 0, width));
 }
 
@@ -79,7 +80,7 @@ int	measure_text_total_width(char *str, t_text *text)
 	max_width = 0;
 	strs = ft_split((char *)str, '\n');
 	if (!strs)
-		return (0);//error
+		return (-1);//error
 	while (strs[i])
 	{
 		width = measure_str_width(strs[i], text);

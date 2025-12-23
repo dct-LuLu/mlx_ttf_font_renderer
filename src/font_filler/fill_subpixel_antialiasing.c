@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 15:24:15 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/11/04 18:28:32 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/12/23 21:05:44 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,9 +53,9 @@ static void	apply_lcd_filter(int coverage[3])
 
 void	render_subpixel_line(t_fill_data *fill, int *sub_x, int *x, int y)
 {
-	int	sub_start;
-	int	coverage[3];
-	int	pixel_x;
+	int			sub_start;
+	int			coverage[3];
+	int			pixel_x;
 	t_rgba_int	color;
 
 	pixel_x = x[0];

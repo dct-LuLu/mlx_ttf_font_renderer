@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 23:07:22 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/12/04 20:56:36 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/12/23 20:51:16 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,23 +50,20 @@
 
 # define MAX_CHARS 1000
 
-# define TEXT_FIELDS					\
-	char			content[MAX_CHARS];	\
-	unsigned int	font_size;			\
-	t_rgba_int		fg;					\
-	t_rgb_int		bg;					\
-	t_rgba_int		outline;			\
-	bool			outlined;			\
-	bool			subpixel;			\
-	t_ttf_font		*font;				\
-	t_vec2i			_text_pos;			\
-	t_vec2i			_lt_limit;			\
-	t_vec2i			_rb_limit;			\
-	t_img_data		*_img;
-
 typedef struct s_text
 {
-	TEXT_FIELDS
+	char			content[MAX_CHARS];
+	unsigned int	font_size;
+	t_rgba_int		fg;
+	t_rgb_int		bg;
+	t_rgba_int		outline;
+	bool			outlined;
+	bool			subpixel;
+	t_ttf_font		*font;
+	t_vec2i			_text_pos;
+	t_vec2i			_lt_limit;
+	t_vec2i			_rb_limit;
+	t_img_data		*_img;
 }	t_text;
 
 int		init_ttf(const char *path, t_ttf_font **ptr);

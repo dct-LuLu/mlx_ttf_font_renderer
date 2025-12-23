@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 10:40:32 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/10/12 21:12:50 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/12/23 21:00:27 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,7 @@ int	parse_table_cmap(t_ttf_font *font, t_buffer *buf)
 	uint16_t		length;
 
 	if (cmap_offset == -1
-			&& (register_complex_err_msg(FRDR_E_MSG_OFFSET, "CMAP table"), 1))
+		&& (register_complex_err_msg(FRDR_E_MSG_OFFSET, "CMAP table"), 1))
 		return (error(pack_err(FRDR_ID, FRDR_E_OFFSET), FL, LN, FC));
 	cmap = ft_calloc(sizeof(t_cmap_table), 1);
 	if (!cmap)
@@ -124,7 +124,8 @@ int	parse_table_cmap(t_ttf_font *font, t_buffer *buf)
 	read_bytes(buf, &cmap->format, 2);
 	cmap->format = be16toh(cmap->format);
 	if ((cmap->format != VALID_CMAP_FORMAT)
-			&& (register_complex_err_msg(FRDR_E_MSG_FCMAP, cmap->format, VALID_CMAP_FORMAT), 1))
+		&& (register_complex_err_msg(FRDR_E_MSG_FCMAP, cmap->format,
+				VALID_CMAP_FORMAT), 1))
 		return (error(pack_err(FRDR_ID, FRDR_E_FCMAP), FL, LN, FC));
 	read_bytes(buf, &length, 2);
 	length = be16toh(length);

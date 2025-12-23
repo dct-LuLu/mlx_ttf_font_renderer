@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 16:51:42 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/11/06 14:02:42 by jaubry--         ###   ########.fr       */
+/*   Updated: 2025/12/23 21:02:43 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,21 +28,23 @@ static void	draw_simple_glyph(t_contour *contour)
 	{
 		contour->idx = 0;
 		if (DEBUG)
-			contour->text->outline = (t_rgba_int){.rgba=RED};
+			contour->text->outline = (t_rgba_int){.rgba = RED};
 		while (contour->idx < contour->glyf->header->number_of_contours)
 		{
 			draw_contour(contour);
 			contour->idx++;
 		}
 		if (DEBUG)
-			draw_transformed_bounding_box(contour, (t_rgba_int){.rgba=YELLOW});
+			draw_transformed_bounding_box(contour,
+				(t_rgba_int){.rgba = YELLOW});
 	}
 }
 
 /*
 	Calculate component position with offsets and scaling
 */
-static t_vec2i	get_component_position(t_contour *contour, t_glyf_component *comp)
+static t_vec2i	get_component_position(t_contour *contour,
+					t_glyf_component *comp)
 {
 	t_vec2i	comp_pos;
 	t_vec2i	offset;
@@ -52,7 +54,7 @@ static t_vec2i	get_component_position(t_contour *contour, t_glyf_component *comp
 		return (comp_pos);
 	offset = vec2i(comp->arg1, comp->arg2);
 	if (comp->flags & SCALED_COMPONENT_OFFSET)
-	offset = apply_transform(offset, comp);
+		offset = apply_transform(offset, comp);
 	return (new_screen_pt(contour, offset.x, offset.y));
 }
 
@@ -89,8 +91,7 @@ static void	draw_composite_glyph(t_contour *contour)
 static bool	is_glyph_onscreen(t_contour *contour)
 {
 	const t_glyf_header	*header = contour->glyf->header;
-	const t_vec2i		corners[2] =
-	{
+	const t_vec2i		corners[2] = {
 		new_screen_pt(contour, header->x_min, header->y_min),
 		new_screen_pt(contour, header->x_max, header->y_max)
 	};
@@ -99,11 +100,15 @@ static bool	is_glyph_onscreen(t_contour *contour)
 		|| (corners[1].x > contour->text->_img->width)
 		|| (corners[1].y > contour->text->_img->height))
 		return (false);
-	if ((contour->text->_lt_limit.x == 0) && (contour->text->_lt_limit.y == 0)
-			&& (contour->text->_rb_limit.x == 0) && (contour->text->_rb_limit.y == 0))
+	if ((contour->text->_lt_limit.x == 0)
+		&& (contour->text->_lt_limit.y == 0)
+		&& (contour->text->_rb_limit.x == 0)
+		&& (contour->text->_rb_limit.y == 0))
 		return (true);
-	if ((corners[0].x < contour->text->_lt_limit.x) || (corners[1].y < contour->text->_lt_limit.y)
-		|| (corners[1].x > contour->text->_rb_limit.x) || (corners[0].y > contour->text->_rb_limit.y))
+	if ((corners[0].x < contour->text->_lt_limit.x)
+		|| (corners[1].y < contour->text->_lt_limit.y)
+		|| (corners[1].x > contour->text->_rb_limit.x)
+		|| (corners[0].y > contour->text->_rb_limit.y))
 		return (false);
 	return (true);
 }
@@ -124,7 +129,7 @@ void	draw_glyph(t_contour *contour)
 	if (!is_glyph_onscreen(contour))
 		return ;
 	if (DEBUG)
-		draw_transformed_bounding_box(contour, (t_rgba_int){.rgba=GREEN});
+		draw_transformed_bounding_box(contour, (t_rgba_int){.rgba = GREEN});
 	if (glyph->header->number_of_contours == -1)
 		draw_composite_glyph(contour);
 	else if (glyph->header->number_of_contours >= 0)
