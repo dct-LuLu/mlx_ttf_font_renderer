@@ -6,17 +6,33 @@
 #    By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/11 10:16:04 by jaubry--          #+#    #+#              #
-#    Updated: 2025/10/12 18:47:12 by jaubry--         ###   ########.fr        #
+#    Updated: 2026/01/04 21:06:25 by jaubry--         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
+
+# NO DEBUG 0
+# Debug ALL 1
+# Debug MLXW 2
+# Debug FTRDR 3
+# Debug MLXUI 4
+# Debug MINIRT 5
 
 ROOTDIR		?= .
 include $(ROOTDIR)/mkidir/make_utils.mk
 
 # Variables
+DEBUG_MLXUI	= 4
+
+ifeq ($(filter $(DEBUG_LVL),1 $(DEBUG_MLXUI)),)
+DEBUG		= 1
+else
+DEBUG		= 0
+endif
+
 WINDOWLESS	= 0
 FULLSCREEN	= 0
 RESIZEABLE	= 0
+
 ifeq ($(FULLSCREEN), 1)
 WIDTH		= 1920
 HEIGHT		= 1080
@@ -24,7 +40,17 @@ else
 WIDTH		= 500
 HEIGHT		= 500
 endif
+
 PERF		= 0
+
+VARS		= DEBUG=$(DEBUG) \
+			  DEBUG_LVL=$(DEBUG_LVL) \
+			  WIDTH=$(WIDTH) \
+			  HEIGHT=$(HEIGHT) \
+			  PERF=$(PERF) \
+			  FULLSCREEN=$(FULLSCREEN) \
+			  RESIZEABLE=$(RESIZEABLE) \
+			  WINDOWLESS=$(WINDOWLESS)
 
 # Directories
 CDIR		= font_renderer
@@ -55,13 +81,6 @@ DFLAGS		= -MMD -MP -MF $(DEPDIR)/$*.d
 
 IFLAGS		= -I$(INCDIR) -I$(MLXWDIR)/include -I$(MLXDIR) -I$(XCERRCALDIR)/include -I$(LIBFTDIR)/include
 
-VARS		= DEBUG=$(DEBUG) \
-			  WIDTH=$(WIDTH) \
-			  HEIGHT=$(HEIGHT) \
-			  PERF=$(PERF) \
-			  FULLSCREEN=$(FULLSCREEN) \
-			  RESIZEABLE=$(RESIZEABLE) \
-			  WINDOWLESS=$(WINDOWLESS)
 VFLAGS		= $(addprefix -D ,$(VARS))
 
 CFLAGS		+= $(DEBUG_FLAGS) $(FFLAGS) $(VFLAGS)
