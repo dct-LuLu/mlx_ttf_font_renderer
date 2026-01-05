@@ -6,27 +6,47 @@
 #    By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/11 10:16:04 by jaubry--          #+#    #+#              #
-#    Updated: 2026/01/04 21:06:25 by jaubry--         ###   ########.fr        #
+#    Updated: 2026/01/05 07:45:24 by jaubry--         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
-
-# NO DEBUG 0
-# Debug ALL 1
-# Debug MLXW 2
-# Debug FTRDR 3
-# Debug MLXUI 4
-# Debug MINIRT 5
 
 ROOTDIR		?= .
 include $(ROOTDIR)/mkidir/make_utils.mk
 
-# Variables
-DEBUG_MLXUI	= 4
+# Directories
+CDIR		= font_renderer
+SRCDIR		= src
+OBJDIR		= .obj
+DEPDIR		= .dep
 
-ifeq ($(filter $(DEBUG_LVL),1 $(DEBUG_MLXUI)),)
-DEBUG		= 1
-else
+XCERRCALDIR	= $(LIBDIR)/xcerrcal
+LIBFTDIR	= $(LIBDIR)/libft
+MLXDIR		= $(LIBDIR)/minilibx-linux
+MLXWDIR		= $(LIBDIR)/mlx_wrapper
+
+# Includes
+include $(LIBFTDIR)/includes.mk $(XCERRCALDIR)/includes.mk $(MLXWDIR)/includes.mk includes.mk
+
+INCLUDES	= $(INCDIRS_FTRDR) \
+			  $(addprefix $(MLXWDIR)/, $(INCDIRS_MLXW)) \
+			  $(MLXDIR) \
+			  $(addprefix $(XCERRCALDIR)/, $(INCDIRS_XCERRCAL)) \
+			  $(addprefix $(LIBFTDIR)/, $(INCDIRS_LIBFT))
+
+# Output
+NAME		= libfont-renderer.a
+XCERRCAL	= $(XCERRCALDIR)/libxcerrcal.a
+LIBFT		= $(LIBFTDIR)/libft.a
+MLX			= $(MLXDIR)/libmlx.a
+MLXW		= $(MLXWDIR)/libmlx-wrapper.a
+
+# Variables
+DEBUG_FTRDR	= 3
+
+ifeq ($(filter $(DEBUG_LVL),1 $(DEBUG_FTRDR)),)
 DEBUG		= 0
+else
+DEBUG		= 1
 endif
 
 WINDOWLESS	= 0
@@ -34,8 +54,8 @@ FULLSCREEN	= 0
 RESIZEABLE	= 0
 
 ifeq ($(FULLSCREEN), 1)
-WIDTH		= 1920
-HEIGHT		= 1080
+WIDTH		= $(MAX_WIDTH)
+HEIGHT		= $(MAX_HEIGHT)
 else
 WIDTH		= 500
 HEIGHT		= 500
@@ -52,47 +72,28 @@ VARS		= DEBUG=$(DEBUG) \
 			  RESIZEABLE=$(RESIZEABLE) \
 			  WINDOWLESS=$(WINDOWLESS)
 
-# Directories
-CDIR		= font_renderer
-SRCDIR		= src
-INCDIR		= include
-OBJDIR		= .obj
-DEPDIR		= .dep
-
-XCERRCALDIR	= $(LIBDIR)/xcerrcal
-LIBFTDIR	= $(LIBDIR)/libft
-MLXDIR		= $(LIBDIR)/minilibx-linux
-MLXWDIR		= $(LIBDIR)/mlx_wrapper
-
-# Output
-NAME		= libfont-renderer.a
-XCERRCAL	= $(XCERRCALDIR)/libxcerrcal.a
-LIBFT		= $(LIBFTDIR)/libft.a
-MLX			= $(MLXDIR)/libmlx.a
-MLXW		= $(MLXWDIR)/libmlx-wrapper.a
-
 # Compiler and flags
-CC			= cc
+CC			?= cc
 
 CFLAGS		= -Wall -Wextra -Werror \
 			  -std=gnu11
 
 DFLAGS		= -MMD -MP -MF $(DEPDIR)/$*.d
 
-IFLAGS		= -I$(INCDIR) -I$(MLXWDIR)/include -I$(MLXDIR) -I$(XCERRCALDIR)/include -I$(LIBFTDIR)/include
+IFLAGS		= $(addprefix -I,$(INCLUDES))
 
 VFLAGS		= $(addprefix -D ,$(VARS))
 
-CFLAGS		+= $(DEBUG_FLAGS) $(FFLAGS) $(VFLAGS)
+CFLAGS		+= $(INSPECT_FLAGS) $(PROFILE_FLAGS) $(FFLAGS) $(VFLAGS)
 
-CF			= $(CC) $(CFLAGS) $(IFLAGS) $(DFLAGS)
+CF			= $(CC) $(CFLAGS) $(IFLAGS)
 
 AR          = $(if $(findstring -flto,$(FFLAGS)),$(FAST_AR),$(STD_AR))
 ARFLAGS		= rcs
 RANLIB      = $(if $(findstring -flto,$(FFLAGS)),$(FAST_RANLIB),$(STD_RANLIB))
 
 # VPATH
-vpath %.h $(INCDIR) $(LIBFTDIR)/$(INCDIR) $(MLXWDIR)/$(INCDIR) $(MLXDIR)
+vpath %.h $(INCLUDES)
 vpath %.o $(OBJDIR) $(LIBFTDIR)/$(OBJDIR) $(MLXWDIR)/$(OBJDIR)
 vpath %.d $(DEPDIR) $(LIBFTDIR)/$(DEPDIR) $(MLXWDIR)/$(DEPDIR)
 
@@ -102,15 +103,18 @@ include $(SRCDIR)/srcs.mk
 OBJS		= $(addprefix $(OBJDIR)/, $(notdir $(SRCS:.c=.o)))
 DEPS		= $(addprefix $(DEPDIR)/, $(notdir $(SRCS:.c=.d)))
 
+
+
 all:	$(NAME)
 fast:	$(NAME)
-debug:	$(NAME)
+inspect:$(NAME)
+profile:$(NAME)
 
-$(NAME): $(XCERRCAL) $(MLXW) $(MLX) $(LIBFT) $(OBJS)
+$(NAME): $(XCERRCAL) $(MLXW) $(MLX) $(LIBFT) $(OBJS) $(INCLUDES)
 	$(call ar-msg)
-	@$(AR) $(ARFLAGS) $@ $^ $(SILENCE)
+	@$(AR) $(ARFLAGS) $@ $(OBJS)
 ifeq ($(FAST),1)
-	@$(RANLIB) $@ $(SILENCE)
+	@$(RANLIB) $@
 endif
 	$(call ar-finish-msg)
 
@@ -130,7 +134,7 @@ $(MLX):
 
 $(OBJDIR)/%.o: %.c | buildmsg $(OBJDIR) $(DEPDIR)
 	$(call lib-compile-obj-msg)
-	@$(CF) -c $< -o $@
+	@$(CF) $(DFLAGS) -c $< -o $@
 
 $(OBJDIR) $(DEPDIR):
 	$(call create-dir-msg)
