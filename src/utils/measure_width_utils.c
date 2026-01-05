@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/05 12:28:17 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/12/23 20:56:56 by jaubry--         ###   ########.fr       */
+/*   Updated: 2026/01/05 13:07:06 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,10 @@ int	measure_text_total_width(char *str, t_text *text)
 	max_width = 0;
 	strs = ft_split((char *)str, '\n');
 	if (!strs)
-		return (-1);//error
+	{
+		register_complex_err_msg(LFT_E_MSG_SPLIT, str, '\n');
+		return (neg_error(pack_err(LFT_ID, LFT_E_SPLIT), FL, LN, FC));
+	}
 	while (strs[i])
 	{
 		width = measure_str_width(strs[i], text);
