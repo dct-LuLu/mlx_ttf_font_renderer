@@ -6,7 +6,7 @@
 #    By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/11 10:16:04 by jaubry--          #+#    #+#              #
-#    Updated: 2026/01/05 07:45:24 by jaubry--         ###   ########.fr        #
+#    Updated: 2026/01/05 09:32:17 by jaubry--         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -65,6 +65,8 @@ PERF		= 0
 
 VARS		= DEBUG=$(DEBUG) \
 			  DEBUG_LVL=$(DEBUG_LVL) \
+			  MAX_WIDTH=$(MAX_WIDTH) \
+			  MAX_HEIGHT=$(MAX_HEIGHT) \
 			  WIDTH=$(WIDTH) \
 			  HEIGHT=$(HEIGHT) \
 			  PERF=$(PERF) \
