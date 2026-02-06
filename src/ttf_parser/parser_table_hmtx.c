@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 16:02:23 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/10/12 21:13:23 by jaubry--         ###   ########.fr       */
+/*   Updated: 2026/02/06 23:04:20 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ static void	endian_swap_table_hmtx(t_hmtx_table *hmtx)
 	while (i < hmtx->num_lhmtx)
 	{
 		hmtx->lhmtx[i].advance_width = be16toh(hmtx->lhmtx[i].advance_width);
-		hmtx->lhmtx[i].lsb = be16toh(hmtx->lhmtx[i].lsb);
+		hmtx->lhmtx[i].lsb = be16toh_signed(hmtx->lhmtx[i].lsb);
 		i++;
 	}
 	if (hmtx->lsbs)
@@ -58,7 +58,7 @@ static void	endian_swap_table_hmtx(t_hmtx_table *hmtx)
 		i = 0;
 		while (i < hmtx->num_lsbs)
 		{
-			hmtx->lsbs[i] = be16toh(hmtx->lsbs[i]);
+			hmtx->lsbs[i] = be16toh_signed(hmtx->lsbs[i]);
 			i++;
 		}
 	}

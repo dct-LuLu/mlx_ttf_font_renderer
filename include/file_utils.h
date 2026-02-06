@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 14:49:14 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/05/28 04:27:24 by jaubry--         ###   ########lyon.fr   */
+/*   Updated: 2026/02/06 22:59:12 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,5 +27,7 @@ typedef struct s_buffer
 int			load_file(const char *path, t_buffer **buf);
 
 void		read_bytes(t_buffer *buf, void *dest, size_t n);
+
+int16_t		be16toh_signed(int16_t value);
 
 #endif // FILE_UTILS_H

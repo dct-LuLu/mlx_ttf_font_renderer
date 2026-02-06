@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 16:43:31 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/12/04 20:47:50 by jaubry--         ###   ########.fr       */
+/*   Updated: 2026/02/06 23:02:36 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,8 @@ int	parse_table_hhea(t_ttf_font *font, t_buffer *buf)
 	read_bytes(buf, &hhea->descent, 2);
 	buf->pos = hhea_offset + 34;
 	read_bytes(buf, &hhea->num_lhmtx, 2);
-	hhea->ascent = be16toh(hhea->ascent);
-	hhea->descent = be16toh(hhea->descent);
+	hhea->ascent = be16toh_signed(hhea->ascent);
+	hhea->descent = be16toh_signed(hhea->descent);
 	hhea->num_lhmtx = be16toh(hhea->num_lhmtx);
 	if (DEBUG)
 		debug_table_hhea(*hhea);

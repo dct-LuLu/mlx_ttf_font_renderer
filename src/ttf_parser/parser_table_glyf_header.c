@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 19:50:12 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/10/12 21:14:25 by jaubry--         ###   ########.fr       */
+/*   Updated: 2026/02/06 23:05:01 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,11 @@ void	debug_glyf_header(t_glyf_header header)
 
 static void	endian_swap_glyf_header(t_glyf_header *header)
 {
-	header->number_of_contours = be16toh(header->number_of_contours);
-	header->x_min = be16toh(header->x_min);
-	header->y_min = be16toh(header->y_min);
-	header->x_max = be16toh(header->x_max);
-	header->y_max = be16toh(header->y_max);
+	header->number_of_contours = be16toh_signed(header->number_of_contours);
+	header->x_min = be16toh_signed(header->x_min);
+	header->y_min = be16toh_signed(header->y_min);
+	header->x_max = be16toh_signed(header->x_max);
+	header->y_max = be16toh_signed(header->y_max);
 }
 
 int	parse_glyf_header(t_glyf_table *glyf, t_buffer *buf)

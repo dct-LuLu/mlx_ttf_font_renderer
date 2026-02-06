@@ -6,7 +6,7 @@
 /*   By: jaubry-- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 11:39:31 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/06/11 11:41:46 by jaubry--         ###   ########.fr       */
+/*   Updated: 2026/02/06 23:03:02 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	endian_swap_table_cmap(t_cmap_table *cmap)
 	{
 		cmap->end_code[i] = be16toh(cmap->end_code[i]);
 		cmap->start_code[i] = be16toh(cmap->start_code[i]);
-		cmap->id_delta[i] = be16toh(cmap->id_delta[i]);
+		cmap->id_delta[i] = be16toh_signed(cmap->id_delta[i]);
 		cmap->id_range_offset[i] = be16toh(cmap->id_range_offset[i]);
 		i++;
 	}

@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 14:36:42 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/10/12 20:43:18 by jaubry--         ###   ########.fr       */
+/*   Updated: 2026/02/06 23:01:58 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,10 @@ static void	debug_table_head(t_head_table head)
 static void	endian_swap_table_head(t_head_table *head)
 {
 	head->units_per_em = be16toh(head->units_per_em);
-	head->x_min = be16toh(head->x_min);
-	head->y_min = be16toh(head->y_min);
-	head->x_max = be16toh(head->x_max);
-	head->y_max = be16toh(head->y_max);
+	head->x_min = be16toh_signed(head->x_min);
+	head->y_min = be16toh_signed(head->y_min);
+	head->x_max = be16toh_signed(head->x_max);
+	head->y_max = be16toh_signed(head->y_max);
 	head->index_to_loc_format = be16toh(head->index_to_loc_format);
 }
 

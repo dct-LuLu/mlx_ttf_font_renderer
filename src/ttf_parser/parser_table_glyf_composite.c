@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 13:19:11 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/10/12 21:02:20 by jaubry--         ###   ########.fr       */
+/*   Updated: 2026/02/06 23:08:27 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static float	read_f2dot14(t_buffer *buf)
 	int16_t	value;
 
 	read_bytes(buf, &value, 2);
-	value = be16toh(value);
+	value = be16toh_signed(value);
 	return ((float)value / 16384.0f);
 }
 
@@ -78,8 +78,8 @@ static int	parse_component(t_glyf_component **comp, t_buffer *buf)
 	if ((*comp)->flags & ARG1_ARG2_ARE_WORDS)
 	{
 		read_bytes(buf, args16, 4);
-		(*comp)->arg1 = be16toh(args16[0]);
-		(*comp)->arg2 = be16toh(args16[1]);
+		(*comp)->arg1 = be16toh_signed(args16[0]);
+		(*comp)->arg2 = be16toh_signed(args16[1]);
 	}
 	else
 	{

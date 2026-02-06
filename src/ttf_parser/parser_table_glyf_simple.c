@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 20:29:39 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/10/12 21:14:34 by jaubry--         ###   ########.fr       */
+/*   Updated: 2026/02/06 23:06:58 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ static void	parse_glyf_x_coordinates(t_glyf_table *glyf, t_buffer *buf)
 		else if (!(glyf->flags[i] & X_IS_SAME))
 		{
 			read_bytes(buf, &delta[0], 2);
-			delta[0] = be16toh(delta[0]);
+			delta[0] = be16toh_signed(delta[0]);
 			x += delta[0];
 		}
 		glyf->x_coordinates[i] = x;
@@ -92,7 +92,7 @@ static void	parse_glyf_y_coordinates(t_glyf_table *glyf, t_buffer *buf)
 		else if (!(glyf->flags[i] & Y_IS_SAME))
 		{
 			read_bytes(buf, &delta[0], 2);
-			delta[0] = be16toh(delta[0]);
+			delta[0] = be16toh_signed(delta[0]);
 			y += delta[0];
 		}
 		glyf->y_coordinates[i] = y;

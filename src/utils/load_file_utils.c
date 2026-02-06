@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   file_utils.c                                       :+:      :+:    :+:   */
+/*   load_file_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/14 13:35:00 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/10/12 21:16:54 by jaubry--         ###   ########.fr       */
+/*   Created: 2026/02/06 22:56:13 by jaubry--          #+#    #+#             */
+/*   Updated: 2026/02/06 22:56:48 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,10 +86,4 @@ int	load_file(const char *path, t_buffer **buf)
 	if (!(*buf)->data)
 		return (-1);
 	return (buffer_file(path, buf));
-}
-
-void	read_bytes(t_buffer *buf, void *dest, size_t n)
-{
-	ft_memcpy(dest, buf->data + buf->pos, n);
-	buf->pos += n;
 }
