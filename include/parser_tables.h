@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 10:14:51 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/12/04 20:46:02 by jaubry--         ###   ########.fr       */
+/*   Updated: 2026/02/06 23:33:19 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,6 @@
 # define OVERLAP_COMPOUND 0x0400          // components overlap
 # define SCALED_COMPONENT_OFFSET 0x0800   // scale offset values
 # define UNSCALED_COMPONENT_OFFSET 0x1000 // don't scale offset values
-
-# pragma pack(push, 1)
 
 typedef struct s_head_table
 {
@@ -86,11 +84,15 @@ typedef struct s_loca_table
 	uint16_t				format;
 }							t_loca_table;
 
+# pragma pack(push, 1)
+
 typedef struct s_lhmtx
 {
 	uint16_t				advance_width;
 	int16_t					lsb;
 }							t_lhmtx;
+
+# pragma pack(pop)
 
 typedef struct s_hmtx_table
 {
@@ -100,6 +102,8 @@ typedef struct s_hmtx_table
 	int16_t					*lsbs;
 }							t_hmtx_table;
 
+# pragma pack(push, 1)
+
 typedef struct s_glyf_header
 {
 	int16_t					number_of_contours;
@@ -108,6 +112,8 @@ typedef struct s_glyf_header
 	int16_t					x_max;
 	int16_t					y_max;
 }							t_glyf_header;
+
+# pragma pack(pop)
 
 typedef struct s_glyf_component
 {
@@ -132,6 +138,5 @@ typedef struct s_glyf_table
 	uint8_t					*instructions;
 }							t_glyf_table;
 
-# pragma pack(pop)
 
 #endif // PARSER_TABLES_H
