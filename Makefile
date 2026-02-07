@@ -6,7 +6,7 @@
 #    By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/11 10:16:04 by jaubry--          #+#    #+#              #
-#    Updated: 2026/01/05 09:41:26 by jaubry--         ###   ########.fr        #
+#    Updated: 2026/02/07 02:45:23 by jaubry--         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -106,10 +106,11 @@ DEPS		= $(addprefix $(DEPDIR)/, $(notdir $(SRCS:.c=.d)))
 
 
 
-all:	$(NAME)
-fast:	$(NAME)
-inspect:$(NAME)
-profile:$(NAME)
+all:		$(NAME)
+fast:		$(NAME)
+inspect:	$(NAME)
+profile:	$(NAME)
+sanitize:	$(NAME)
 
 $(NAME): $(XCERRCAL) $(MLXW) $(MLX) $(LIBFT) $(OBJS) $(INCLUDES)
 	$(call ar-msg)
