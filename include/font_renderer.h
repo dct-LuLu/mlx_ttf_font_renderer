@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 23:07:22 by jaubry--          #+#    #+#             */
-/*   Updated: 2025/12/23 20:51:16 by jaubry--         ###   ########.fr       */
+/*   Updated: 2026/02/16 16:48:10 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@
 # define GREEN	0xFF00FF00
 # define RED	0xFFFF0000
 
-# define MAX_CHARS 1000
+# define MAX_CHARS 100
 
 typedef struct s_text
 {
