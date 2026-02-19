@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/06 22:59:55 by jaubry--          #+#    #+#             */
-/*   Updated: 2026/02/06 23:11:51 by jaubry--         ###   ########.fr       */
+/*   Updated: 2026/02/19 15:45:26 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ void	read_bytes(t_buffer *buf, void *dest, size_t n)
 
 int16_t	be16toh_signed(int16_t value)
 {
-	uint16_t tmp;
-	
+	uint16_t	tmp;
+
 	ft_memcpy(&tmp, &value, sizeof(uint16_t));
 	tmp = be16toh(tmp);
 	ft_memcpy(&value, &tmp, sizeof(int16_t));

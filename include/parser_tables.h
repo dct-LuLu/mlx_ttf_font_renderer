@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 10:14:51 by jaubry--          #+#    #+#             */
-/*   Updated: 2026/02/06 23:33:19 by jaubry--         ###   ########.fr       */
+/*   Updated: 2026/02/19 15:45:09 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,6 +137,5 @@ typedef struct s_glyf_table
 	uint16_t				instruction_length;
 	uint8_t					*instructions;
 }							t_glyf_table;
-
 
 #endif // PARSER_TABLES_H
